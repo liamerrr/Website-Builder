@@ -32,5 +32,11 @@ und die nächste Generation entsteht durch **Kreuzung und Mutation** der Favorit
 - **Ahnenreihe** mit Rücksprung zu jedem Vorfahren, `Z` für Rückgängig, `R` für komplett neu.
 - **Automatisches Speichern**: Generation, Ahnenreihe, Inhalte und Sperren bleiben nach dem
   Neuladen erhalten (lokal im Browser). „Neu starten" setzt alles zurück.
+- **Impressum & Datenschutz**: Felder für die Pflichtangaben nach § 5 DDG; daraus entstehen ein
+  Impressum und eine passende DSGVO-Datenschutzerklärung als eigene Bereiche der Website. Fehlen
+  Pflichtangaben, warnt der Builder und markiert die Lücken in der Seite. *Vorlage, keine Rechtsberatung.*
+- **Keine Google-Verbindung beim Besucher**: Beim Export werden die Schriften (Latin-Subset, inkl.
+  Umlaute, ß, €) direkt in die HTML-Datei eingebettet. Die fertige Seite lädt nichts von Dritten –
+  ohne Internet fällt sie auf Systemschriften zurück.
 - **WYSIWYG-Export**: Vorschau und Download nutzen denselben Renderer; die exportierte Seite ist
   eigenständig, responsiv und enthält ihren Genom-Code im `<meta name="generator">`.

@@ -37,6 +37,10 @@
   input[type=text]:focus, input[type=email]:focus, textarea:focus { border-color: var(--accent); }
   textarea { resize: vertical; min-height: 64px; }
   .hint { font-size: 11.5px; color: var(--muted); margin: 4px 0 0; }
+  .legal-status { font-size: 12.5px; border-radius: 9px; padding: 7px 10px; margin-bottom: 8px; }
+  .legal-status.ok { background: rgba(124,242,156,.12); color: var(--accent); }
+  .legal-status.warn { background: rgba(255,123,123,.12); color: var(--danger); }
+  .legal-box summary { cursor: pointer; color: var(--text); font-size: 13px; margin-bottom: 10px; }
 
   .locks { display: flex; flex-wrap: wrap; gap: 6px; }
   .chip-toggle { border: 1px solid var(--line); background: var(--panel-2); border-radius: 999px; padding: 5px 11px; font-size: 12.5px; display: inline-flex; gap: 6px; align-items: center; }
@@ -101,7 +105,7 @@
   .seg button { border: 0; background: var(--panel-2); padding: 8px 12px; }
   .seg button[aria-pressed=true] { background: var(--text); color: var(--bg); }
 
-  .toast { position: fixed; bottom: 22px; left: 50%; transform: translate(-50%, 20px); background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 10px; font-weight: 600; opacity: 0; transition: .25s; pointer-events: none; z-index: 99; }
+  .toast { max-width: calc(100vw - 32px); text-align: center; position: fixed; bottom: 22px; left: 50%; transform: translate(-50%, 20px); background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 10px; font-weight: 600; opacity: 0; transition: .25s; pointer-events: none; z-index: 99; }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
   .help { font-size: 12.5px; color: var(--muted); }
@@ -137,6 +141,22 @@
       <label class="field"><span>Beschreibung</span><textarea id="c-about" rows="3"></textarea></label>
       <label class="field"><span>Leistungen (eine pro Zeile, „Titel: Text")</span><textarea id="c-features" rows="4"></textarea></label>
       <label class="field"><span>Kontakt-E-Mail</span><input type="email" id="c-email"></label>
+    </div>
+
+    <div class="group">
+      <h2>Impressum &amp; Datenschutz</h2>
+      <div class="legal-status" id="legal-status" role="status"></div>
+      <details class="legal-box" id="legal-box">
+        <summary>Angaben bearbeiten</summary>
+        <label class="field"><span>Anbieter: Name bzw. Firma mit Rechtsform *</span><input type="text" id="l-name" placeholder="z. B. Lumen Atelier GmbH"></label>
+        <label class="field"><span>Anschrift *</span><textarea id="l-address" rows="2" placeholder="Straße Nr.&#10;PLZ Ort"></textarea></label>
+        <label class="field"><span>Vertreten durch (bei Firmen)</span><input type="text" id="l-rep" placeholder="z. B. Geschäftsführerin Anna Beispiel"></label>
+        <label class="field"><span>Telefon</span><input type="text" id="l-phone"></label>
+        <label class="field"><span>Registereintrag</span><input type="text" id="l-register" placeholder="z. B. Amtsgericht München, HRB 123456"></label>
+        <label class="field"><span>USt-IdNr.</span><input type="text" id="l-vat" placeholder="z. B. DE123456789"></label>
+        <label class="field"><span>Hosting-Anbieter</span><input type="text" id="l-host" placeholder="z. B. Netlify, Inc."></label>
+        <p class="hint">Die Texte sind eine Vorlage für eine einfache Website ohne Cookies und Tracking – keine Rechtsberatung. Bitte vor der Veröffentlichung prüfen (lassen).</p>
+      </details>
     </div>
 
     <div class="group">
@@ -388,7 +408,48 @@ function parseFeatures(txt) {
   return items.length ? items : [{ t: "Leistung", d: "Beschreibe hier, was du anbietest." }];
 }
 
-function renderSite(g, content) {
+/* ---- Impressum (§ 5 DDG) & Datenschutzerklärung (DSGVO) ---- */
+const LEGAL_REQUIRED = { legalName: "Anbieter (Name/Firma)", legalAddress: "Anschrift" };
+const missingLegal = content => Object.entries(LEGAL_REQUIRED).filter(([k]) => !String(content[k] || "").trim()).map(([, l]) => l);
+
+function legalHtml(content) {
+  const v = (k, label) => String(content[k] || "").trim()
+    ? esc(content[k].trim()).replace(/\n/g, "<br>")
+    : `<span class="missing">[${label} fehlt]</span>`;
+  const opt = (k, prefix) => String(content[k] || "").trim() ? `<p>${prefix}${esc(content[k].trim()).replace(/\n/g, "<br>")}</p>` : "";
+  const email = esc(content.email || "");
+  const host = String(content.host || "").trim();
+  const now = new Date().toLocaleDateString("de-DE", { month: "long", year: "numeric" });
+  return `<section class="legal" id="impressum"><div class="wrap cols">
+<h2>Impressum</h2>
+<div>
+<p><strong>Angaben gemäß § 5 DDG</strong><br>${v("legalName", "Name/Firma")}<br>${v("legalAddress", "Anschrift")}</p>
+${opt("legalRep", "Vertreten durch: ")}
+<h3>Kontakt</h3>
+<p>${String(content.legalPhone || "").trim() ? `Telefon: ${esc(content.legalPhone.trim())}<br>` : ""}E-Mail: <a href="mailto:${email}">${email}</a></p>
+${opt("legalRegister", "Registereintrag: ")}
+${opt("legalVat", "Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG: ")}
+</div>
+</div></section>
+<section class="legal" id="datenschutz"><div class="wrap cols">
+<h2>Datenschutz&shy;erklärung</h2>
+<div>
+<h3>1. Verantwortlicher</h3>
+<p>${v("legalName", "Name/Firma")}<br>${v("legalAddress", "Anschrift")}<br>E-Mail: <a href="mailto:${email}">${email}</a></p>
+<h3>2. Hosting und Server-Logfiles</h3>
+<p>Diese Website wird ${host ? `bei ${esc(host)}` : "bei einem externen Dienstleister"} gehostet. Beim Aufruf der Seite werden technisch notwendige Daten in Server-Logfiles erfasst, insbesondere IP-Adresse, Datum und Uhrzeit des Zugriffs, aufgerufene Seite sowie Browser und Betriebssystem. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO; unser berechtigtes Interesse liegt im sicheren und stabilen Betrieb der Website.</p>
+<h3>3. Keine Cookies, kein Tracking, keine Drittanbieter</h3>
+<p>Diese Website setzt keine Cookies, verwendet keine Analyse- oder Tracking-Werkzeuge und lädt keine Inhalte von Drittanbietern. Die verwendeten Schriftarten sind direkt in die Seite eingebettet; beim Aufruf wird keine Verbindung zu Servern Dritter (z. B. Google) hergestellt.</p>
+<h3>4. Kontakt per E-Mail</h3>
+<p>Wenn Sie uns per E-Mail kontaktieren, verarbeiten wir Ihre Angaben zur Bearbeitung Ihrer Anfrage. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, sofern Ihre Anfrage mit einem Vertrag zusammenhängt, ansonsten Art. 6 Abs. 1 lit. f DSGVO. Wir löschen die Daten, sobald sie nicht mehr erforderlich sind und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</p>
+<h3>5. Ihre Rechte</h3>
+<p>Sie haben das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21). Zudem können Sie sich bei einer Datenschutz-Aufsichtsbehörde beschweren (Art. 77 DSGVO).</p>
+<p>Stand: ${now}</p>
+</div>
+</div></section>`;
+}
+
+function renderSite(g, content, opts = {}) {
   const d = decode(g), c = d.c, f = d.font;
   const name = esc(content.name || "Unbenannt");
   const initial = esc((content.name || "U").trim().charAt(0).toUpperCase());
@@ -486,17 +547,26 @@ section{padding:${d.pad}px 0}
 .cta .box{background:${c.text};color:${c.bg};border-radius:${d.radius}px;padding:clamp(36px,6vw,80px) 24px}
 .cta .box p{opacity:.8;max-width:30em;margin:0 auto 1.6em}
 .cta .mail{display:inline-block;font-family:"${f.d}",sans-serif;font-size:clamp(1.3rem,3vw,2rem);font-weight:${d.weight};color:${c.bg};text-decoration-thickness:3px;text-underline-offset:6px;text-decoration-color:${c.accent};word-break:break-all}
+.legal{border-top:1px solid ${c.line};font-size:.92rem;color:${c.muted}}
+.legal h2{font-size:1.5rem;color:${c.text}}.legal h3{font-size:1.02rem;color:${c.text};margin:1.6em 0 .4em;font-family:"${f.b}",system-ui,sans-serif;font-weight:600;letter-spacing:0}
+.legal .cols{display:grid;grid-template-columns:1fr 2fr;gap:56px}.legal p{max-width:46em}.legal a{color:${c.accentText}}
+.legal .missing{background:${c.tint};color:${c.text};padding:0 .3em;border-radius:3px}
 footer{padding:28px 0 40px;color:${c.muted};font-size:.9rem}
 footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 @media (max-width:760px){
   .nav nav{gap:16px;font-size:.95rem}.n0 .wrap{flex-direction:column;align-items:flex-start;gap:12px}
   .h1 .wrap,.h2 .row,.fzig,.frow{grid-template-columns:1fr;gap:20px}.fzig.rev .art{order:0}.h2 .actions{justify-content:flex-start}
-  .sec-head{flex-direction:column;align-items:start}.frow{gap:6px}
+  .sec-head{flex-direction:column;align-items:start}.frow{gap:6px}.legal .cols{grid-template-columns:1fr;gap:8px}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
 ${deco}`;
 
-  const fontHref = `https://fonts.googleapis.com/css2?family=${f.dq}&family=${f.bq}&display=swap`;
+  // Vorschau: Schriften von Google laden. Export: Schriften eingebettet (fontCss) – die Besucher
+  // der fertigen Seite verbinden sich mit keinem Drittanbieter.
+  const fontTags = opts.fontCss === undefined
+    ? `<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=${f.dq}&family=${f.bq}&display=swap">`
+    : opts.fontCss ? `<style>${opts.fontCss}</style>` : "";
   return `<!doctype html>
 <html lang="de">
 <head>
@@ -505,8 +575,7 @@ ${deco}`;
 <title>${name}</title>
 <meta name="description" content="${esc(content.tagline)}">
 <meta name="generator" content="Genom – evolutionärer Website-Builder · Genom ${toCode(g)}">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="${fontHref}">
+${fontTags}
 <style>${css}</style>
 </head>
 <body>
@@ -522,8 +591,9 @@ ${hero}
 <h2>Lass uns sprechen.</h2><p>Schreib uns – wir melden uns innerhalb eines Werktags.</p>
 <a class="mail" href="mailto:${email}">${email}</a>
 </div></div></section>
+${legalHtml(content)}
 </main>
-<footer><div class="wrap"><span>© ${new Date().getFullYear()} ${name}</span><span><a href="#kontakt">Impressum</a> · <a href="#kontakt">Datenschutz</a></span></div></footer>
+<footer><div class="wrap"><span>© ${new Date().getFullYear()} ${name}</span><span><a href="#impressum">Impressum</a> · <a href="#datenschutz">Datenschutz</a></span></div></footer>
 </body>
 </html>`;
 }
@@ -574,10 +644,11 @@ const DEFAULT_CONTENT = {
   about: "Wir gestalten Innenräume, die mit dem Tageslicht arbeiten statt dagegen. Seit 2014 verbinden wir Handwerk, Material und Ruhe zu Orten, an denen man gerne bleibt.",
   features: "Lichtplanung: Natürliches und künstliches Licht, perfekt aufeinander abgestimmt.\nMaterialberatung: Holz, Stein, Textil – nachhaltig ausgewählt und haptisch erlebbar.\nUmsetzung: Wir begleiten jedes Projekt von der Skizze bis zum letzten Handgriff.",
   email: "hallo@lumen-atelier.de",
+  legalName: "", legalAddress: "", legalRep: "", legalPhone: "", legalRegister: "", legalVat: "", host: "",
 };
 const state = { gen: 1, pop: [], selected: [], history: [], lineage: [], locked: new Set(), rate: 0.3, content: { ...DEFAULT_CONTENT }, modalIdx: -1 };
 
-function toast(msg) { const t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), 1800); }
+function toast(msg) { const t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), Math.max(1800, msg.length * 55)); }
 
 function cardTemplate(i) {
   const card = document.createElement("article");
@@ -717,12 +788,58 @@ function setDevice(mobile) {
   $("m-desktop").setAttribute("aria-pressed", !mobile);
   $("m-mobile").setAttribute("aria-pressed", mobile);
 }
-function download(g) {
-  const blob = new Blob([renderSite(g, state.content)], { type: "text/html" });
-  const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(blob), download: `${(state.content.name || "website").toLowerCase().replace(/[^a-z0-9äöüß]+/g, "-").replace(/^-|-$/g, "") || "website"}.html` });
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-  toast("Website heruntergeladen");
+/* ---- Schriften für den Export einbetten (DSGVO: keine Google-Verbindung beim Besucher) ---- */
+const fontCache = new Map();
+const toBase64 = buf => { let s = ""; const b = new Uint8Array(buf); for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode.apply(null, b.subarray(i, i + 0x8000)); return btoa(s); };
+async function embeddedFontCss(font) {
+  const key = font.dq + "|" + font.bq;
+  if (fontCache.has(key)) return fontCache.get(key);
+  const css = await (await fetch(`https://fonts.googleapis.com/css2?family=${font.dq}&family=${font.bq}&display=swap`)).text();
+  // Nur das Latin-Subset (deckt Deutsch inkl. Umlaute, ß und € ab); gleiche Datei = gleiche variable Schrift
+  const faces = new Map();
+  for (const m of css.matchAll(/\/\* latin \*\/\s*@font-face\s*{([^}]*)}/g)) {
+    const body = m[1], get = p => (body.match(new RegExp(p + ":\\s*([^;]+);")) || [])[1];
+    const url = (body.match(/url\(([^)]+)\)/) || [])[1];
+    if (!url) continue;
+    const id = get("font-family") + "|" + get("font-style") + "|" + url;
+    const w = parseInt(get("font-weight"), 10) || 400;
+    const f = faces.get(id) || { family: get("font-family"), style: get("font-style"), url, range: get("unicode-range"), min: w, max: w };
+    f.min = Math.min(f.min, w); f.max = Math.max(f.max, w); faces.set(id, f);
+  }
+  if (!faces.size) throw new Error("Keine Schriftdaten erhalten");
+  const out = [];
+  for (const f of faces.values()) {
+    const res = await fetch(f.url);
+    if (!res.ok) throw new Error("Schriftdatei nicht erreichbar");
+    const data = toBase64(await res.arrayBuffer());
+    out.push(`@font-face{font-family:${f.family};font-style:${f.style};font-weight:${f.min === f.max ? f.min : f.min + " " + f.max};font-display:swap;src:url(data:font/woff2;base64,${data}) format("woff2");unicode-range:${f.range}}`);
+  }
+  const result = out.join("\n");
+  fontCache.set(key, result);
+  return result;
+}
+async function exportHtml(g) {
+  let fontCss = null;
+  try { fontCss = await embeddedFontCss(decode(g).font); }
+  catch { toast("Schriften konnten nicht eingebettet werden (offline?) – es werden Systemschriften verwendet"); }
+  return renderSite(g, state.content, { fontCss });
+}
+function legalWarning() {
+  const miss = missingLegal(state.content);
+  return miss.length ? ` – Achtung: Im Impressum fehlt noch ${miss.join(" und ")}` : "";
+}
+let busy = false;
+async function download(g) {
+  if (busy) return; busy = true;
+  const btn = $("m-export"), label = btn.textContent;
+  btn.textContent = "Wird erstellt …"; btn.disabled = true;
+  try {
+    const blob = new Blob([await exportHtml(g)], { type: "text/html" });
+    const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(blob), download: `${(state.content.name || "website").toLowerCase().replace(/[^a-z0-9äöüß]+/g, "-").replace(/^-|-$/g, "") || "website"}.html` });
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    toast("Website heruntergeladen" + legalWarning());
+  } finally { btn.textContent = label; btn.disabled = false; busy = false; }
 }
 async function copyText(t, msg) {
   try { await navigator.clipboard.writeText(t); toast(msg); }
@@ -780,6 +897,12 @@ const PRESETS = {
     email: "hello@kodex-labs.de" },
 };
 const CONTENT_FIELDS = { name: "c-name", tagline: "c-tagline", about: "c-about", features: "c-features", email: "c-email" };
+const LEGAL_FIELDS = { legalName: "l-name", legalAddress: "l-address", legalRep: "l-rep", legalPhone: "l-phone", legalRegister: "l-register", legalVat: "l-vat", host: "l-host" };
+function updateLegalStatus() {
+  const miss = missingLegal(state.content), el = $("legal-status");
+  el.className = "legal-status " + (miss.length ? "warn" : "ok");
+  el.textContent = miss.length ? `⚠ Pflichtangaben fehlen: ${miss.join(", ")}` : "✓ Pflichtangaben vollständig";
+}
 function applyPreset(key) {
   const p = PRESETS[key]; if (!p) return;
   for (const [k, id] of Object.entries(CONTENT_FIELDS)) { state.content[k] = p[k]; $(id).value = p[k]; }
@@ -806,13 +929,16 @@ function bindContent() {
   const sel = $("preset");
   for (const [k, p] of Object.entries(PRESETS)) sel.appendChild(Object.assign(document.createElement("option"), { value: k, textContent: p.label }));
   sel.addEventListener("change", () => { applyPreset(sel.value); sel.value = ""; });
-  for (const [k, id] of Object.entries(CONTENT_FIELDS)) {
+  for (const [k, id] of Object.entries({ ...CONTENT_FIELDS, ...LEGAL_FIELDS })) {
     $(id).value = state.content[k];
     $(id).addEventListener("input", e => {
       state.content[k] = e.target.value;
+      updateLegalStatus();
       clearTimeout(t); t = setTimeout(() => { renderCards(); syncHash(); }, 280);
     });
   }
+  updateLegalStatus();
+  if (missingLegal(state.content).length === 0) $("legal-box").open = false;
   const locks = $("locks");
   GROUPS.forEach(grp => {
     const b = Object.assign(document.createElement("button"), { className: "chip-toggle" });
@@ -847,7 +973,7 @@ function bindContent() {
   $("m-desktop").addEventListener("click", () => setDevice(false));
   $("m-mobile").addEventListener("click", () => setDevice(true));
   $("m-export").addEventListener("click", () => download(state.pop[state.modalIdx]));
-  $("m-copy").addEventListener("click", () => copyText(renderSite(state.pop[state.modalIdx], state.content), "HTML kopiert"));
+  $("m-copy").addEventListener("click", async () => copyText(await exportHtml(state.pop[state.modalIdx]), "HTML kopiert" + legalWarning()));
   $("m-select").addEventListener("click", () => { toggleSelect(state.modalIdx); $("modal").close(); });
   $("modal").addEventListener("click", e => { if (e.target === $("modal")) $("modal").close(); });
 
