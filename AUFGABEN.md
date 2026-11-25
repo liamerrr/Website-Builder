@@ -8,8 +8,6 @@ Legende: 🔴 blockiert den Verkauf · 🟠 wichtig · 🟢 Verbesserung · ✅ 
 
 ## 1. Jetzt – bevor Geld verdient werden kann
 
-- [ ] 🔴 **Arbeit auf `main` bringen** – `main` enthält nur den ersten Commit, alles liegt im
-      Branch `claude/innovative-code-prototype-whk8au`.
 - [ ] 🔴 **Repo auf privat stellen** – es ist öffentlich; jeder kann den Builder samt Pro-Funktionen
       herunterladen und die Bezahlschranke entfernen.
       GitHub → Settings → General → Danger Zone → *Change visibility*.
@@ -59,6 +57,7 @@ Legende: 🔴 blockiert den Verkauf · 🟠 wichtig · 🟢 Verbesserung · ✅ 
 
 ## ✅ Erledigt
 
+- ✅ Alle Arbeit auf `main` gebracht (25.11.2026)
 - ✅ Evolutionärer Builder mit 20-Gen-Genom, Kreuzung, Mutation, Gen-Sperren, Genom-Codes
 - ✅ 10 Hero-Layouts, 5 Leistungs-Layouts, Farbrhythmus, Übergänge, Überschriften-Effekte, Animationen
 - ✅ 9 Bereiche mit eigenen Funktionen (Zähler, Galerie, Preise→Formular, Karussell, FAQ,

@@ -25,8 +25,8 @@ CHANGELOG.md            Was wann dazukam
 
 | Branch | Inhalt | Status |
 |---|---|---|
-| `main` | nur „Initialize repository“ | Standard-Branch auf GitHub – deshalb wirkt das Repo leer |
-| `claude/innovative-code-prototype-whk8au` | Genom komplett (alle Commits) | aktuelle Arbeit |
+| `main` | Genom komplett | Standard-Branch auf GitHub, aktueller Stand |
+| `claude/innovative-code-prototype-whk8au` | Arbeits-Branch von Claude | identisch mit `main` |
 | `codex/create-profitable-website-concept` | „LaunchLab“: Landingpage für ein Website- und Monetarisierungs-Angebot (index.html + styles.css, 20.02.2026) | nicht zusammengeführt, offen |
 
 ## Wie der Builder aufgebaut ist (`genom/index.html`)
