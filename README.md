@@ -32,8 +32,13 @@ genom/
 ## Das Gen-Labor (Oberfläche)
 
 - Rotierende **DNA-Helix**: jede Sprosse ist ein Gen deines Favoriten (Farbe = Position, Deckkraft = Wert).
-- Jeder Entwurf ist eine **Probe** mit Gen-Barcode (20 Balken); mutierte Gene leuchten auf.
-- **Δ-Anzeige**: wie weit eine Probe genetisch vom Elter entfernt ist (Elter, Feinschliff, Variante, Mutant).
+- Jeder Entwurf ist eine **Probe** mit wissenschaftlichem **Artnamen** aus ihrem Erbgut
+  (Gattung = Hero-Layout, Art = Farbton, „var. nocturna“ = dunkel), z. B. *Periodica violacea*.
+- **Durchleuchten**: Maus über eine Probe (oder Scan-Knopf) scrollt sie einmal durch die ganze Website.
+- **Chromosom-Streifen** am Rand zeigt den Aufbau der ganzen Seite als Farbbänder; ein leuchtendes
+  Fenster zeigt, welcher Teil gerade zu sehen ist.
+- **Gen-Barcode** (20 Balken), mutierte Gene leuchten auf; **Δ-Abstand** zum Elter mit Einstufung
+  (Elter, Feinschliff, Variante, Mutant); vier Kernmerkmale, Änderungen leuchten.
 - **Scan-Effekt** beim Evolvieren, holografische Ränder für Favoriten, Partikelnetz im Hintergrund.
 - Alle Animationen ruhen bei „Bewegung reduzieren“.
 

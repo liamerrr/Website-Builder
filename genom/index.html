@@ -224,9 +224,6 @@
   .dna i { flex: 1; height: calc(14% + var(--v) * 86%); border-radius: 2px 2px 0 0; background: hsl(var(--h) 92% 68%); opacity: .55; transition: height .6s cubic-bezier(.2,.7,.2,1), opacity .3s; }
   .dna i.mut { opacity: 1; box-shadow: 0 0 10px hsl(var(--h) 92% 68%); }
   .card:hover .dna i { opacity: .9; }
-  .delta { font-family: var(--mono); font-size: 10.5px; letter-spacing: .04em; color: var(--muted); padding: 6px 12px 0; display: flex; gap: 10px; align-items: center; }
-  .delta .m { flex: 1; height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; }
-  .delta .m i { display: block; height: 100%; width: var(--w); background: var(--holo); animation: spinA 4s linear infinite; }
   .tag { background: rgba(140,168,255,.07); font-family: var(--mono); font-size: 10.5px; border: 1px solid transparent; }
   .tag.diff { color: var(--accent); background: rgba(110,240,255,.08); border-color: rgba(110,240,255,.3); }
   .icon-btn { background: rgba(26,33,56,.55); }
@@ -246,6 +243,37 @@
   .score .bar i { background: var(--holo); animation: spinA 4s linear infinite; }
   .toast { background: rgba(10,14,26,.92); color: var(--text); border: 1px solid rgba(110,240,255,.35); box-shadow: 0 0 30px -8px var(--glow); font-family: var(--mono); font-size: 12.5px; font-weight: 500; }
   kbd { font-family: var(--mono); }
+
+  /* ===== Proben ===== */
+  .probe { gap: 10px; }
+  .probe .sp { display: flex; align-items: center; min-width: 0; }
+  .species { text-transform: none; letter-spacing: 0; font-family: "Space Grotesk", sans-serif; font-size: 13px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .species b { font-weight: 600; font-style: italic; }
+  .species em { color: var(--muted); font-size: 11.5px; }
+  .pg { white-space: nowrap; display: flex; align-items: center; gap: 8px; }
+  .kind { padding: 2px 7px; border-radius: 999px; border: 1px solid var(--line); font-size: 9.5px; letter-spacing: .12em; }
+  .k-elter, .k-urform { color: var(--muted); }
+  .k-feinschliff { color: var(--accent); border-color: rgba(110,240,255,.35); }
+  .k-variante { color: #b9adff; border-color: rgba(157,140,255,.45); }
+  .k-mutant { color: #ff9ae0; border-color: rgba(255,122,217,.5); box-shadow: 0 0 12px -4px rgba(255,122,217,.8); }
+  .specimen { display: grid; grid-template-columns: 9px 1fr; background: #000; }
+  .chromo { position: relative; overflow: hidden; background: var(--panel-2); border-right: 1px solid var(--line); }
+  .bands { display: flex; flex-direction: column; height: 100%; }
+  .bands i { display: block; min-height: 1px; }
+  .win { position: absolute; left: 0; right: 0; top: 0; height: 20%; border: 1.5px solid var(--accent); border-radius: 2px; box-shadow: 0 0 10px var(--accent), inset 0 0 6px rgba(110,240,255,.5); pointer-events: none; }
+  .frame iframe { will-change: transform; }
+  .scanbar { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: rgba(4,8,18,.5); pointer-events: none; opacity: 0; transition: opacity .3s; }
+  .scanbar i { display: block; height: 100%; width: 0; background: var(--holo); animation: spinA 3s linear infinite; }
+  .card.scanning .scanbar { opacity: 1; }
+  .card.scanning .frame::before { content: "Durchleuchten"; position: absolute; left: 10px; bottom: 10px; z-index: 3; font-family: var(--mono); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); background: rgba(4,8,18,.82); border: 1px solid rgba(110,240,255,.35); padding: 3px 8px; border-radius: 999px; }
+  .traits { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 12px; flex: 1; min-width: 0; }
+  .trait { font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
+  .trait small { display: block; font-family: var(--mono); font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .trait.diff { color: var(--accent); text-shadow: 0 0 12px rgba(110,240,255,.6); }
+  .trait.diff small::after { content: " ●"; color: var(--accent); }
+  .card-actions { align-self: center; }
+  .icon-btn.scanbtn[aria-pressed=true] { color: var(--accent); border-color: rgba(110,240,255,.5); box-shadow: 0 0 16px -4px var(--glow); }
+  .meta { padding-top: 12px; }
   @media (max-width: 900px) { .helix { display: none; } }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; } }
 </style>
@@ -1313,26 +1341,82 @@ const state = { gen: 1, pop: [], selected: [], history: [], lineage: [], locked:
 
 function toast(msg) { const t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), Math.max(1800, msg.length * 55)); }
 
+/* ---- Proben: Artname, Chromosom-Streifen, Durchleuchten ---- */
+const GENERA = ["Centralis", "Bifida", "Gigantea", "Fasciata", "Periodica", "Tessellata", "Placardia", "Currens", "Litterata", "Holographica"];
+const EPITHETS = [[15, "rubra"], [45, "aurantia"], [70, "flava"], [160, "viridis"], [200, "cyanea"], [250, "caerulea"], [290, "violacea"], [335, "purpurea"], [361, "rosea"]];
+function speciesName(g) {
+  const d = decode(g), hue = g[G.hue] / 255 * 360;
+  return { genus: GENERA[d.hero] || "Species", epithet: (EPITHETS.find(([h]) => hue < h) || EPITHETS[0])[1], variety: d.dark ? "nocturna" : "" };
+}
+const ICON = {
+  fav: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2.3 4 6.4 4c2.3 0 3.9 1.3 5.6 3.3C13.7 5.3 15.3 4 17.6 4 21.7 4 23.6 8.4 22 11.7 19.5 16.4 12 21 12 21z"/></svg>',
+  zoom: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>',
+  scan: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7V4h3M17 4h3v3M20 17v3h-3M7 20H4v-3M4 12h16"/></svg>',
+};
 function cardTemplate(i) {
   const card = document.createElement("article");
   card.className = "card";
   card.innerHTML = `
-    <div class="probe"><span><i class="live-dot"></i>Probe <b>${String(i + 1).padStart(2, "0")}</b></span><span class="pg"></span></div>
-    <div class="frame" role="button" tabindex="0" aria-label="Entwurf ${i + 1} als Favorit markieren"><iframe tabindex="-1" title="Entwurf ${i + 1}" loading="lazy"></iframe><span class="num">${i + 1}</span></div>
+    <div class="probe"><span class="sp"><i class="live-dot"></i><span class="species"></span></span><span class="pg"></span></div>
+    <div class="specimen">
+      <div class="chromo" aria-hidden="true" title="Aufbau der ganzen Seite"><div class="bands"></div><i class="win"></i></div>
+      <div class="frame" role="button" tabindex="0" aria-label="Probe ${i + 1} als Favorit markieren"><iframe tabindex="-1" title="Probe ${i + 1}"></iframe><span class="num">${i + 1}</span><span class="scanbar"><i></i></span></div>
+    </div>
     <div class="dna" aria-hidden="true"></div>
-    <div class="delta"></div>
-    <div class="meta"><div class="tags"></div>
+    <div class="meta"><div class="traits"></div>
       <div class="card-actions">
-        <button class="icon-btn fav" aria-pressed="false" title="Favorit (${i + 1})" aria-label="Favorit"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2.3 4 6.4 4c2.3 0 3.9 1.3 5.6 3.3C13.7 5.3 15.3 4 17.6 4 21.7 4 23.6 8.4 22 11.7 19.5 16.4 12 21 12 21z"/></svg></button>
-        <button class="icon-btn zoom" title="Vorschau" aria-label="Vorschau öffnen"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button>
+        <button class="icon-btn scanbtn" aria-pressed="false" title="Durchleuchten: ganze Seite ansehen" aria-label="Probe ${i + 1} durchleuchten">${ICON.scan}</button>
+        <button class="icon-btn fav" aria-pressed="false" title="Favorit (${i + 1})" aria-label="Favorit">${ICON.fav}</button>
+        <button class="icon-btn zoom" title="Groß ansehen" aria-label="Vorschau öffnen">${ICON.zoom}</button>
       </div>
     </div>`;
-  const frame = card.querySelector(".frame");
+  const frame = card.querySelector(".frame"), iframe = card.querySelector("iframe");
   frame.addEventListener("click", () => toggleSelect(i));
   frame.addEventListener("keydown", e => { if (e.key === " " || e.key === "Enter") { e.preventDefault(); e.stopPropagation(); toggleSelect(i); } });
+  if (window.matchMedia && matchMedia("(hover: hover)").matches) {
+    frame.addEventListener("mouseenter", () => scanCard(card, true));
+    frame.addEventListener("mouseleave", () => scanCard(card, false));
+  }
+  card.querySelector(".scanbtn").addEventListener("click", () => scanCard(card, !card._scanning));
   card.querySelector(".fav").addEventListener("click", () => toggleSelect(i));
   card.querySelector(".zoom").addEventListener("click", () => openModal(i));
+  iframe.addEventListener("load", () => analyseSpecimen(card));
   return card;
+}
+/** Misst die geladene Seite: volle Höhe und Farbbänder für den Chromosom-Streifen. */
+function analyseSpecimen(card) {
+  const iframe = card.querySelector("iframe");
+  let doc; try { doc = iframe.contentDocument; } catch { return; }
+  if (!doc || !doc.body) return;
+  const measure = () => {
+    const H = Math.max(860, doc.documentElement.scrollHeight);
+    card._docH = H;
+    iframe.style.height = H + "px";
+    const parts = [...doc.querySelectorAll("body > header, main > *, body > footer")].filter(el => el.offsetHeight > 0);
+    const bodyBg = doc.defaultView.getComputedStyle(doc.body).backgroundColor;
+    card.querySelector(".bands").innerHTML = parts.map(el => {
+      let bg = doc.defaultView.getComputedStyle(el).backgroundColor;
+      if (!bg || bg === "rgba(0, 0, 0, 0)" || bg === "transparent") bg = bodyBg;
+      return `<i style="flex:${el.offsetHeight} 0 0;background:${bg}"></i>`;
+    }).join("");
+    card.querySelector(".win").style.height = (860 / H * 100) + "%";
+  };
+  measure();
+  if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(() => { if (card.querySelector("iframe").contentDocument === doc) measure(); });
+}
+/** Durchleuchten: scrollt die Probe einmal durch die ganze Seite. */
+function scanCard(card, on) {
+  const iframe = card.querySelector("iframe"), win = card.querySelector(".win"), bar = card.querySelector(".scanbar i");
+  const s = card._scale || 0.25, H = card._docH || 860, maxY = Math.max(0, H - 860);
+  card._scanning = on && maxY > 0;
+  card.querySelector(".scanbtn").setAttribute("aria-pressed", card._scanning);
+  card.classList.toggle("scanning", card._scanning);
+  const dur = card._scanning ? (reduceMotion ? 0 : Math.min(10, Math.max(3, maxY / 650))) : (reduceMotion ? 0 : 0.7);
+  const ease = card._scanning ? "cubic-bezier(.45,0,.4,1)" : "cubic-bezier(.2,.7,.2,1)";
+  for (const el of [iframe, win, bar]) el.style.transition = `transform ${dur}s ${ease}, top ${dur}s ${ease}, width ${dur}s ${ease}`;
+  iframe.style.transform = `scale(${s}) translateY(${card._scanning ? -maxY : 0}px)`;
+  win.style.top = card._scanning ? (maxY / H * 100) + "%" : "0%";
+  bar.style.width = card._scanning ? "100%" : "0%";
 }
 
 const cards = [];
@@ -1344,8 +1428,9 @@ function buildGrid() {
 }
 function fitFrame(card) {
   const frame = card.querySelector(".frame"), w = frame.clientWidth || 320, s = w / 1280;
+  card._scale = s;
   frame.style.height = Math.round(860 * s) + "px";
-  frame.querySelector("iframe").style.transform = `scale(${s})`;
+  if (!card._scanning) frame.querySelector("iframe").style.transform = `scale(${s})`;
 }
 
 function renderCards() {
@@ -1354,20 +1439,23 @@ function renderCards() {
   state.pop.forEach((g, i) => {
     const card = cards[i], iframe = card.querySelector("iframe");
     const html = renderSite(g, state.content, { images: state.images });
-    if (iframe._html !== html) { iframe.srcdoc = html; iframe._html = html; }
+    if (iframe._html !== html) { iframe.srcdoc = html; iframe._html = html; if (card._scanning) scanCard(card, false); }
     const desc = describe(g);
-    const prevDesc = state.history.length ? describe(state.history[state.history.length - 1].parents[0]) : null;
-    card.querySelector(".tags").innerHTML = Object.entries(desc).map(([k, v]) =>
-      `<span class="tag${prevDesc && prevDesc[k] !== v ? " diff" : ""}" title="${k}">${esc(v)}</span>`).join("");
-    card.classList.toggle("elite", parentCodes.has(toCode(g)));
     const parent = state.history.length ? state.history[state.history.length - 1].parents[0] : null;
-    card.querySelector(".pg").textContent = `Gen ${String(state.gen).padStart(3, "0")} · ${toCode(g).slice(0, 6)}`;
+    const prevDesc = parent ? describe(parent) : null;
+    const KEY = [["layout", "Hero"], ["schrift", "Schrift"], ["rhythmus", "Rhythmus"], ["titel", "Titel"]];
+    card.querySelector(".traits").innerHTML = KEY.map(([k, label]) =>
+      `<span class="trait${prevDesc && prevDesc[k] !== desc[k] ? " diff" : ""}"><small>${label}</small>${esc(desc[k])}</span>`).join("");
+    card.querySelector(".traits").title = Object.entries(desc).map(([k, v]) => `${k}: ${v}`).join("\n");
+    card.classList.toggle("elite", parentCodes.has(toCode(g)));
+    const sp = speciesName(g);
+    card.querySelector(".species").innerHTML = `<b>${sp.genus} ${sp.epithet}</b>${sp.variety ? ` <em>var. ${sp.variety}</em>` : ""}`;
+    card.querySelector(".species").title = `Probe ${i + 1} · Gen ${state.gen} · ${toCode(g)}`;
     card.querySelector(".dna").innerHTML = g.map((v, k) =>
       `<i style="--v:${(v / 255).toFixed(3)};--h:${Math.round(k * 360 / g.length)}"${parent && Math.abs(v - parent[k]) > 6 ? ' class="mut"' : ""} title="${GENE_LABELS[k]}: ${v}"></i>`).join("");
     const dist = parent ? geneDistance(g, parent) : null;
-    card.querySelector(".delta").innerHTML = parent
-      ? `<span>Δ ${String(Math.round(dist * 100)).padStart(2, "0")} %</span><span class="m"><i style="--w:${Math.max(2, Math.round(dist * 100))}%"></i></span><span>${dist < 0.005 ? "Elter" : dist < 0.12 ? "Feinschliff" : dist < 0.3 ? "Variante" : "Mutant"}</span>`
-      : `<span>Δ -- %</span><span class="m"><i style="--w:0%"></i></span><span>Urform</span>`;
+    const kind = !parent ? "Urform" : dist < 0.005 ? "Elter" : dist < 0.12 ? "Feinschliff" : dist < 0.3 ? "Variante" : "Mutant";
+    card.querySelector(".pg").innerHTML = `${parent ? `Δ ${Math.round(dist * 100)} %` : "Δ –"} <span class="kind k-${kind.toLowerCase()}">${kind}</span>`;
     if (state.justEvolved) { card.style.setProperty("--d", `${i * 0.09}s`); card.classList.remove("scan"); void card.offsetWidth; card.classList.add("scan"); }
     fitFrame(card);
   });
