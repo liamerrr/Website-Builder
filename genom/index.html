@@ -159,16 +159,109 @@
     .grid { grid-template-columns: 1fr; }
   }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+  /* ===== Futur-Ebene: das Gen-Labor ===== */
+  @property --a { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+  :root {
+    --bg: #04060c; --panel: rgba(11,15,28,.74); --panel-2: rgba(26,33,56,.6); --line: rgba(140,168,255,.15);
+    --text: #e9eeff; --muted: #8f99bc; --accent: #6ef0ff; --accent-ink: #021018; --danger: #ff6b8b;
+    --glow: rgba(110,240,255,.35);
+    --holo: conic-gradient(from var(--a), #6ef0ff, #9d8cff, #ff7ad9, #ffd27a, #6ef0ff);
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  }
+  @keyframes spinA { to { --a: 360deg; } }
+  body { background: radial-gradient(1100px 700px at 88% -12%, rgba(157,140,255,.17), transparent 62%),
+                     radial-gradient(900px 640px at -12% 112%, rgba(110,240,255,.11), transparent 60%), var(--bg);
+         background-attachment: fixed; }
+  #field { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; }
+  .app { position: relative; z-index: 1; }
+  aside { background: var(--panel); -webkit-backdrop-filter: blur(18px) saturate(1.3); backdrop-filter: blur(18px) saturate(1.3); }
+  .brand h1 { font-size: 24px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; background: var(--holo); -webkit-background-clip: text; background-clip: text; color: transparent; animation: spinA 8s linear infinite; }
+  .brand p, .group h2, .hint, .status, label.field span { font-family: var(--mono); }
+  .brand p { font-size: 11px; letter-spacing: .06em; }
+  .group h2 { letter-spacing: .22em; font-size: 10.5px; color: var(--accent); opacity: .85; }
+  .group h2::before { content: "▸ "; opacity: .7; }
+  input[type=text], input[type=email], textarea, select { background: rgba(4,8,18,.55); border-color: var(--line); }
+  input[type=text]:focus, input[type=email]:focus, textarea:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(110,240,255,.14), 0 0 22px -8px var(--glow); }
+  .tabs { background: rgba(4,8,18,.6); border: 1px solid var(--line); box-shadow: 0 -22px 0 rgba(11,15,28,.96); }
+  .tabs button { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+  .tabs button[aria-selected=true] { background: rgba(110,240,255,.1); color: var(--accent); box-shadow: inset 0 0 0 1px rgba(110,240,255,.35), 0 0 18px -6px var(--glow); }
+  .btn { background: var(--panel-2); border-color: var(--line); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); transition: border-color .2s, box-shadow .2s, transform .2s; }
+  .btn:hover { border-color: rgba(110,240,255,.55); box-shadow: 0 0 0 1px rgba(110,240,255,.2), 0 0 26px -8px var(--glow); }
+  .btn.primary { background: var(--holo); color: #050816; border-color: transparent; animation: spinA 5s linear infinite; box-shadow: 0 0 34px -8px rgba(157,140,255,.85); }
+  .btn.primary:hover { transform: translateY(-1px); filter: none; }
+  .btn.primary:disabled { animation: none; background: var(--panel-2); color: var(--muted); box-shadow: none; border-color: var(--line); }
+  .switch input:checked { background: var(--accent); box-shadow: 0 0 14px -2px var(--glow); }
+  .sec-row, .chip-toggle { background: rgba(26,33,56,.45); }
+  .chip-toggle[aria-pressed=true] { box-shadow: 0 0 18px -6px var(--glow); }
+  .slider input { accent-color: var(--accent); }
+
+  .gen { font-family: var(--mono); font-weight: 600; font-size: 24px; letter-spacing: .04em; text-transform: uppercase; }
+  .gen b { background: var(--holo); -webkit-background-clip: text; background-clip: text; color: transparent; animation: spinA 6s linear infinite; }
+  .gen small { font-family: var(--mono); text-transform: none; letter-spacing: 0; }
+  .helix { width: 230px; height: 58px; display: block; flex: none; }
+  .lineage { background: linear-gradient(var(--line), var(--line)) 0 21px / 100% 1px no-repeat; }
+  .lineage .label { font-family: var(--mono); text-transform: uppercase; letter-spacing: .14em; font-size: 10.5px; background: var(--bg); padding-right: 6px; }
+  .ancestor { border-radius: 50%; width: 30px; height: 30px; box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px var(--line); }
+  .ancestor:hover { box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px var(--accent), 0 0 18px var(--glow); }
+  .ancestor span { font-family: var(--mono); }
+
+  .card { background: var(--panel); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-radius: 18px; transition: transform .25s, box-shadow .25s, border-color .25s; overflow: visible; }
+  .card:hover { transform: translateY(-3px); border-color: rgba(110,240,255,.3); box-shadow: 0 22px 50px -26px var(--glow); }
+  .card.selected { border-color: transparent; box-shadow: 0 0 46px -12px rgba(157,140,255,.75); }
+  .card.selected::before { content: ""; position: absolute; inset: -1px; border-radius: inherit; padding: 2px; background: var(--holo);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+    animation: spinA 3.5s linear infinite; pointer-events: none; z-index: 4; }
+  .card.elite::after { top: 44px; font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; background: rgba(4,8,18,.8); border: 1px solid var(--line); }
+  .probe { display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); padding: 9px 12px; border-bottom: 1px solid var(--line); }
+  .probe b { color: var(--accent); font-weight: 600; }
+  .probe .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; margin-right: 7px; box-shadow: 0 0 8px var(--accent); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .25; } }
+  .frame .num { font-family: var(--mono); background: rgba(4,8,18,.8); box-shadow: 0 0 0 1px var(--line); }
+  .card.selected .frame .num { background: var(--holo); animation: spinA 3s linear infinite; color: #050816; }
+  .dna { display: flex; align-items: flex-end; gap: 2px; height: 28px; padding: 0 12px; margin-top: 10px; }
+  .dna i { flex: 1; height: calc(14% + var(--v) * 86%); border-radius: 2px 2px 0 0; background: hsl(var(--h) 92% 68%); opacity: .55; transition: height .6s cubic-bezier(.2,.7,.2,1), opacity .3s; }
+  .dna i.mut { opacity: 1; box-shadow: 0 0 10px hsl(var(--h) 92% 68%); }
+  .card:hover .dna i { opacity: .9; }
+  .delta { font-family: var(--mono); font-size: 10.5px; letter-spacing: .04em; color: var(--muted); padding: 6px 12px 0; display: flex; gap: 10px; align-items: center; }
+  .delta .m { flex: 1; height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; }
+  .delta .m i { display: block; height: 100%; width: var(--w); background: var(--holo); animation: spinA 4s linear infinite; }
+  .tag { background: rgba(140,168,255,.07); font-family: var(--mono); font-size: 10.5px; border: 1px solid transparent; }
+  .tag.diff { color: var(--accent); background: rgba(110,240,255,.08); border-color: rgba(110,240,255,.3); }
+  .icon-btn { background: rgba(26,33,56,.55); }
+  .icon-btn[aria-pressed=true] { background: var(--holo); color: #050816; border-color: transparent; animation: spinA 4s linear infinite; }
+  .card.scan .frame::after { content: ""; position: absolute; left: 0; right: 0; height: 45%; top: -45%; z-index: 2; pointer-events: none;
+    background: linear-gradient(180deg, transparent, rgba(110,240,255,.16) 70%, rgba(190,250,255,.95) 97%, transparent);
+    animation: scanline 1.15s cubic-bezier(.55,0,.3,1) both; animation-delay: var(--d, 0s); }
+  .card.scan .frame iframe { animation: materialize 1.15s ease both; animation-delay: var(--d, 0s); }
+  @keyframes scanline { to { top: 100%; } }
+  @keyframes materialize { from { filter: blur(10px) saturate(0) brightness(1.8) hue-rotate(60deg); opacity: .15; } }
+  dialog::backdrop { background: rgba(2,4,10,.82); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+  .modal-bar .title { font-family: var(--mono); text-transform: uppercase; letter-spacing: .1em; font-size: 12.5px; }
+  .stage iframe { box-shadow: 0 0 0 1px var(--line), 0 40px 120px -30px rgba(157,140,255,.55); }
+  .legal-status.ok, #check li.ok > span { background: rgba(110,240,255,.1); color: var(--accent); }
+  .legal-status.warn, #check li.bad > span { background: rgba(255,107,139,.12); color: var(--danger); }
+  .score b { font-family: var(--mono); }
+  .score .bar i { background: var(--holo); animation: spinA 4s linear infinite; }
+  .toast { background: rgba(10,14,26,.92); color: var(--text); border: 1px solid rgba(110,240,255,.35); box-shadow: 0 0 30px -8px var(--glow); font-family: var(--mono); font-size: 12.5px; font-weight: 500; }
+  kbd { font-family: var(--mono); }
+  @media (max-width: 900px) { .helix { display: none; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; } }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
 </head>
 <body>
+<canvas id="field" aria-hidden="true"></canvas>
 <div class="app">
   <aside>
     <div class="brand">
       <svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true">
-        <rect width="38" height="38" rx="10" fill="#7cf29c"/>
-        <path d="M12 8c14 6 0 16 14 22M26 8c-14 6 0 16-14 22" stroke="#0b1a10" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-        <path d="M14 13h10M13.5 19h11M14 25h10" stroke="#0b1a10" stroke-width="1.6" stroke-linecap="round"/>
+        <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6ef0ff"/><stop offset=".5" stop-color="#9d8cff"/><stop offset="1" stop-color="#ff7ad9"/></linearGradient></defs>
+        <rect width="38" height="38" rx="10" fill="#070b16" stroke="url(#lg)" stroke-width="1.5"/>
+        <path d="M12 8c14 6 0 16 14 22M26 8c-14 6 0 16-14 22" stroke="url(#lg)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+        <path d="M14 13h10M13.5 19h11M14 25h10" stroke="#e9eeff" stroke-opacity=".6" stroke-width="1.4" stroke-linecap="round"/>
       </svg>
       <div><h1>Genom</h1><p>Websites nicht bauen – züchten.</p></div>
     </div>
@@ -252,6 +345,7 @@
   <main>
     <div class="toolbar">
       <div class="gen" id="gen-label">Generation 1</div>
+      <canvas class="helix" id="helix" width="460" height="116" aria-hidden="true"></canvas>
       <button class="btn primary" id="evolve">Evolvieren <kbd>↵</kbd></button>
       <button class="btn" id="reroll">Neu würfeln <kbd>R</kbd></button>
       <button class="btn" id="undo">Zurück <kbd>Z</kbd></button>
@@ -373,7 +467,7 @@ const FONTS = [
    5. Dekodierung: Genom → Phänotyp (konkrete Design-Entscheidungen)
    ========================================================================= */
 const HARMONIES = [["Monochrom", 0], ["Komplementär", 180], ["Analog", 38], ["Triade", 120], ["Split-Komplementär", 150]];
-const HEROES = ["Zentriert", "Geteilt", "Riesentitel", "Farbband", "Magazin", "Bento", "Poster", "Laufband", "Typo-Stapel"];
+const HEROES = ["Zentriert", "Geteilt", "Riesentitel", "Farbband", "Magazin", "Bento", "Poster", "Laufband", "Typo-Stapel", "Hologramm"];
 const FEATS = ["Karten", "Liste", "Zickzack", "Bento", "Tabs"];
 const DIVIDERS = ["Linie", "Welle", "Diagonale", "Zickzack", "Bogen"];
 const HEADLINES = ["Schlicht", "Textmarker", "Kursiv", "Kontur", "Kringel", "Verlauf"];
@@ -867,6 +961,11 @@ function renderSite(g, content, opts = {}) {
 <div class="marquee" aria-hidden="true"><div class="track">${marqueeItems.repeat(4)}</div></div>`,
     `<section class="hero h8"><div class="wrap">${eyebrow}<h1 class="stack">${stack.map((l, i) => `<span class="s${i % 4}">${esc(l)}</span>`).join("")}</h1>
 <div class="row">${leadP || "<span></span>"}${actions}<div class="mini-art">${artwork(g, d, 0, 300, 300)}</div></div></div></section>`,
+    `<section class="hero h9"><div class="aurora" aria-hidden="true"></div><div class="floor" aria-hidden="true"></div><div class="wrap">
+<div class="hud" aria-hidden="true"><span>System online</span><span>${name}</span><span>ID ${toCode(g).slice(0, 6).toUpperCase()} · ${year}</span></div>
+<div class="glass">${eyebrow}${h1}${leadP}${actions}</div>
+<div class="orbit" aria-hidden="true"><div class="ring"></div><div class="ring r2"><i class="sat"></i></div><div class="core">${artwork(g, d, 0, 500, 500)}</div></div>
+</div></section>`,
   ][d.hero];
   const heroEnd = [3, 6, 7].includes(d.hero) ? c.accent : c.bg;
 
@@ -989,6 +1088,20 @@ p{margin:0 0 1em}.lead{font-size:1.2rem;color:var(--muted);max-width:38em}
 .h8 .row{display:grid;grid-template-columns:1.2fr auto 150px;gap:32px;align-items:center;border-top:1px solid var(--line);padding-top:28px}.h8 .actions{margin-top:0}
 .h8 .mini-art{width:150px;height:150px;border-radius:50%;overflow:hidden;animation:spin 40s linear infinite}.h8 .mini-art svg{width:100%;height:100%;display:block}
 @keyframes spin{to{transform:rotate(360deg)}}
+.h9{overflow:hidden;isolation:isolate}
+.h9 .aurora{position:absolute;inset:-35%;z-index:-2;background:conic-gradient(from 0deg,${c.accent},${c.tint},${c.bg},${c.accent},${c.tint},${c.accent});filter:blur(90px);opacity:.5;animation:spin 26s linear infinite}
+.h9 .floor{position:absolute;left:-50%;right:-50%;bottom:-6%;height:52%;z-index:-1;background-image:linear-gradient(color-mix(in srgb,var(--fg) 24%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--fg) 24%,transparent) 1px,transparent 1px);background-size:64px 64px;transform:perspective(520px) rotateX(64deg);transform-origin:50% 100%;-webkit-mask-image:linear-gradient(to top,#000 5%,transparent 80%);mask-image:linear-gradient(to top,#000 5%,transparent 80%);animation:floor 3.5s linear infinite}
+@keyframes floor{to{background-position:0 64px}}
+.h9 .wrap{display:grid;grid-template-columns:1.25fr 1fr;gap:48px;align-items:center}
+.h9 .hud{grid-column:1/-1;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);border-bottom:1px dashed color-mix(in srgb,var(--fg) 30%,transparent);padding-bottom:12px}
+.h9 .hud span:first-child::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:${c.accent};margin-right:9px;box-shadow:0 0 10px ${c.accent};animation:blink 1.6s steps(2) infinite}
+@keyframes blink{50%{opacity:.2}}
+.h9 .glass{background:color-mix(in srgb,var(--bg) 84%,transparent);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border:1px solid color-mix(in srgb,var(--fg) 16%,transparent);border-radius:${Math.max(R, 14)}px;padding:clamp(26px,4vw,52px);box-shadow:0 30px 90px -30px ${c.accent}99,inset 0 1px 0 color-mix(in srgb,var(--fg) 12%,transparent)}
+.h9 .orbit{position:relative;aspect-ratio:1;max-width:400px;width:100%;justify-self:center}
+.h9 .orbit .core{position:absolute;inset:16%;border-radius:50%;overflow:hidden;box-shadow:0 0 70px -10px ${c.accent}}.h9 .orbit .core svg{width:100%;height:100%;display:block}
+.h9 .orbit .ring{position:absolute;inset:4%;border-radius:50%;border:1.5px dashed color-mix(in srgb,var(--fg) 40%,transparent);animation:spin 34s linear infinite}
+.h9 .orbit .r2{inset:-3%;border:2px solid transparent;border-top-color:${c.accent};border-right-color:${c.accent};animation-duration:9s;animation-direction:reverse}
+.h9 .sat{position:absolute;top:-8px;left:calc(50% - 7px);width:14px;height:14px;border-radius:50%;background:${c.accent};box-shadow:0 0 18px ${c.accent}}
 
 /* Bereiche */
 section{padding:${d.pad}px 0;background:var(--bg);color:var(--fg)}
@@ -1092,7 +1205,7 @@ ${headline}
 
 @media (max-width:860px){
   .nav nav{gap:16px;font-size:.95rem}.n0 .wrap{flex-direction:column;align-items:flex-start;gap:12px}
-  .h1 .wrap,.h2 .row,.h7 .row,.h6 .wrap,.fzig,.frow,.ftabs{grid-template-columns:1fr;gap:20px}.fzig.rev .art{order:0}
+  .h1 .wrap,.h2 .row,.h7 .row,.h6 .wrap,.h9 .wrap,.fzig,.frow,.ftabs{grid-template-columns:1fr;gap:20px}.h9 .orbit{max-width:240px}.fzig.rev .art{order:0}
   .h2 .actions,.h7 .actions{justify-content:flex-start}
   .h4 .mag-grid{grid-template-columns:1fr}.h4 .mag-side{writing-mode:horizontal-tb;transform:none}.h4 .mag-art{margin-top:0}
   .h5 .bento{grid-template-columns:1fr 1fr}.h5 .ta,.h5 .tb{grid-column:1/-1;grid-row:auto}
@@ -1204,7 +1317,10 @@ function cardTemplate(i) {
   const card = document.createElement("article");
   card.className = "card";
   card.innerHTML = `
+    <div class="probe"><span><i class="live-dot"></i>Probe <b>${String(i + 1).padStart(2, "0")}</b></span><span class="pg"></span></div>
     <div class="frame" role="button" tabindex="0" aria-label="Entwurf ${i + 1} als Favorit markieren"><iframe tabindex="-1" title="Entwurf ${i + 1}" loading="lazy"></iframe><span class="num">${i + 1}</span></div>
+    <div class="dna" aria-hidden="true"></div>
+    <div class="delta"></div>
     <div class="meta"><div class="tags"></div>
       <div class="card-actions">
         <button class="icon-btn fav" aria-pressed="false" title="Favorit (${i + 1})" aria-label="Favorit"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2.3 4 6.4 4c2.3 0 3.9 1.3 5.6 3.3C13.7 5.3 15.3 4 17.6 4 21.7 4 23.6 8.4 22 11.7 19.5 16.4 12 21 12 21z"/></svg></button>
@@ -1244,10 +1360,21 @@ function renderCards() {
     card.querySelector(".tags").innerHTML = Object.entries(desc).map(([k, v]) =>
       `<span class="tag${prevDesc && prevDesc[k] !== v ? " diff" : ""}" title="${k}">${esc(v)}</span>`).join("");
     card.classList.toggle("elite", parentCodes.has(toCode(g)));
+    const parent = state.history.length ? state.history[state.history.length - 1].parents[0] : null;
+    card.querySelector(".pg").textContent = `Gen ${String(state.gen).padStart(3, "0")} · ${toCode(g).slice(0, 6)}`;
+    card.querySelector(".dna").innerHTML = g.map((v, k) =>
+      `<i style="--v:${(v / 255).toFixed(3)};--h:${Math.round(k * 360 / g.length)}"${parent && Math.abs(v - parent[k]) > 6 ? ' class="mut"' : ""} title="${GENE_LABELS[k]}: ${v}"></i>`).join("");
+    const dist = parent ? geneDistance(g, parent) : null;
+    card.querySelector(".delta").innerHTML = parent
+      ? `<span>Δ ${String(Math.round(dist * 100)).padStart(2, "0")} %</span><span class="m"><i style="--w:${Math.max(2, Math.round(dist * 100))}%"></i></span><span>${dist < 0.005 ? "Elter" : dist < 0.12 ? "Feinschliff" : dist < 0.3 ? "Variante" : "Mutant"}</span>`
+      : `<span>Δ -- %</span><span class="m"><i style="--w:0%"></i></span><span>Urform</span>`;
+    if (state.justEvolved) { card.style.setProperty("--d", `${i * 0.09}s`); card.classList.remove("scan"); void card.offsetWidth; card.classList.add("scan"); }
     fitFrame(card);
   });
+  if (state.justEvolved) { state.justEvolved = false; clearTimeout(renderCards.t); renderCards.t = setTimeout(() => cards.forEach(c => c.classList.remove("scan")), 1900); }
+  drawHelix.genome = state.selected.length ? state.pop[state.selected[0]] : state.pop[0];
   updateSelection();
-  $("gen-label").innerHTML = `Generation ${state.gen}<small>${state.lineage.length ? state.lineage.length + " Vorfahren" : "Urzustand"}</small>`;
+  $("gen-label").innerHTML = `Gen <b>${String(state.gen).padStart(3, "0")}</b><small>${state.lineage.length ? state.lineage.length + " Vorfahren" : "Urzustand"}</small>`;
   $("undo").disabled = !state.history.length;
   renderLineage();
 }
@@ -1262,7 +1389,7 @@ function updateSelection() {
   const n = state.selected.length;
   $("evolve").disabled = n === 0;
   $("status").innerHTML = n === 0
-    ? "Wähle einen oder mehrere Entwürfe, die dir gefallen. Grün markierte Merkmale haben sich gegenüber dem Elter verändert."
+    ? "Wähle einen oder mehrere Entwürfe, die dir gefallen. Leuchtend markierte Merkmale und Gen-Balken haben sich gegenüber dem Elter verändert."
     : n === 1 ? `<b>1 Favorit</b> – die nächste Generation besteht aus Mutationen dieses Entwurfs.`
     : `<b>${n} Favoriten</b> – ihre Gene werden gekreuzt. Der zuerst gewählte gibt gesperrte Gene weiter.`;
   const lead = n ? state.pop[state.selected[0]] : state.pop[0];
@@ -1306,6 +1433,7 @@ function evolve() {
   state.pop = nextGeneration(parents, state.rate, state.locked);
   state.selected = [];
   state.gen++;
+  state.justEvolved = true;
   renderCards(); syncHash();
 }
 function reroll() {
@@ -1317,12 +1445,72 @@ function reroll() {
     return g;
   });
   state.selected = []; state.gen++;
-  renderCards(); syncHash();
+  state.justEvolved = true; renderCards(); syncHash();
 }
 function undo() {
   const h = state.history.pop(); if (!h) return;
   state.gen = h.gen; state.pop = h.pop; state.selected = h.selected; state.lineage.length = h.lineageLen;
   renderCards(); syncHash();
+}
+
+/* ---- Gen-Labor: Helix, Partikelfeld, Genetik-Anzeigen ---- */
+const GENE_LABELS = ["Farbton", "Harmonie", "Sättigung", "Hell/Dunkel", "Schriftpaar", "Typo-Skala", "Radius", "Dichte",
+  "Hero-Layout", "Leistungen", "Buttons", "Deko", "Navigation", "Gewicht", "Farbverschiebung", "Breite",
+  "Übergänge", "Überschriften", "Rhythmus", "Animation"];
+/** Mittlerer Gen-Abstand zweier Genome (0 = identisch, 1 = maximal verschieden). */
+function geneDistance(a, b) {
+  let sum = 0;
+  for (let k = 0; k < a.length; k++) { let dd = Math.abs(a[k] - b[k]); if (CIRCULAR.has(k)) dd = Math.min(dd, 256 - dd); sum += dd / 255; }
+  return sum / a.length;
+}
+const reduceMotion = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+/** Doppelhelix: jede Sprosse ist ein Gen des Favoriten – Farbe = Position, Deckkraft = Wert. */
+function drawHelix(t) {
+  const cv = $("helix"); if (!cv) return;
+  const ctx = cv.getContext("2d"), W = cv.width, H = cv.height, g = drawHelix.genome || [], n = g.length || 20, mid = H / 2, amp = H * 0.36;
+  ctx.clearRect(0, 0, W, H);
+  const pts = [];
+  for (let k = 0; k < n; k++) {
+    const x = 14 + k * (W - 28) / (n - 1), a = t / 1100 + k * 0.52, s1 = Math.sin(a);
+    pts.push({ x, y1: mid + s1 * amp, y2: mid - s1 * amp, depth: Math.cos(a), k });
+  }
+  for (const p of pts) {
+    const v = (g[p.k] ?? 128) / 255;
+    ctx.strokeStyle = `hsla(${Math.round(p.k * 360 / n)},92%,68%,${0.25 + v * 0.7})`;
+    ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(p.x, p.y1); ctx.lineTo(p.x, p.y2); ctx.stroke();
+  }
+  for (const strand of ["y1", "y2"]) {
+    ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p.x, p[strand]) : ctx.moveTo(p.x, p[strand]));
+    ctx.strokeStyle = strand === "y1" ? "rgba(110,240,255,.85)" : "rgba(255,122,217,.75)"; ctx.lineWidth = 2; ctx.stroke();
+    for (const p of pts) {
+      const front = strand === "y1" ? p.depth : -p.depth;
+      ctx.fillStyle = strand === "y1" ? "#6ef0ff" : "#ff7ad9"; ctx.globalAlpha = 0.45 + 0.55 * (front + 1) / 2;
+      ctx.beginPath(); ctx.arc(p.x, p[strand], 2.5 + 2.5 * (front + 1) / 2, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1;
+    }
+  }
+}
+/** Schwebendes Partikelnetz im Hintergrund. */
+function startField() {
+  const cv = $("field"), ctx = cv.getContext("2d"); let W, H, dots = [];
+  const size = () => {
+    const dpr = Math.min(2, window.devicePixelRatio || 1); W = innerWidth; H = innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    dots = Array.from({ length: Math.round(Math.min(90, W * H / 16000)) }, () => ({ x: Math.random() * W, y: Math.random() * H,
+      vx: (Math.random() - .5) * .18, vy: (Math.random() - .5) * .18, c: Math.random() < .5 ? "110,240,255" : "157,140,255" }));
+  };
+  const frame = () => {
+    ctx.clearRect(0, 0, W, H);
+    for (const p of dots) { p.x = (p.x + p.vx + W) % W; p.y = (p.y + p.vy + H) % H; }
+    for (let a = 0; a < dots.length; a++) for (let b = a + 1; b < dots.length; b++) {
+      const dx = dots[a].x - dots[b].x, dy = dots[a].y - dots[b].y, d2 = dx * dx + dy * dy;
+      if (d2 < 13000) { ctx.strokeStyle = `rgba(${dots[a].c},${0.13 * (1 - d2 / 13000)})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(dots[a].x, dots[a].y); ctx.lineTo(dots[b].x, dots[b].y); ctx.stroke(); }
+    }
+    for (const p of dots) { ctx.fillStyle = `rgba(${p.c},.55)`; ctx.beginPath(); ctx.arc(p.x, p.y, 1.3, 0, Math.PI * 2); ctx.fill(); }
+  };
+  size(); addEventListener("resize", () => { size(); frame(); });
+  if (reduceMotion) { frame(); drawHelix(0); setInterval(() => drawHelix(0), 1000); return; }
+  const loop = t => { if (!document.hidden) { frame(); drawHelix(t); } requestAnimationFrame(loop); };
+  requestAnimationFrame(loop);
 }
 
 /* ---- Modal ---- */
@@ -1748,6 +1936,7 @@ function bindContent() {
   else if (!restored) state.pop = Array.from({ length: POP }, randomGenome);
   renderCards();
   syncHash();
+  try { startField(); } catch { /* Animation ist optional */ }
   if (shared) toast("Geteiltes Genom geladen");
   else if (restored) toast(`Willkommen zurück – Generation ${state.gen}`);
 })();

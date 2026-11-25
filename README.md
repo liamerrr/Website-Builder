@@ -29,6 +29,14 @@ genom/
 3. **Evolvieren** (`Enter`) – die Gene der Favoriten werden gekreuzt und mutiert.
 4. Wiederholen, bis es passt → Vorschau (Desktop/Mobil) → als fertige HTML-Datei herunterladen.
 
+## Das Gen-Labor (Oberfläche)
+
+- Rotierende **DNA-Helix**: jede Sprosse ist ein Gen deines Favoriten (Farbe = Position, Deckkraft = Wert).
+- Jeder Entwurf ist eine **Probe** mit Gen-Barcode (20 Balken); mutierte Gene leuchten auf.
+- **Δ-Anzeige**: wie weit eine Probe genetisch vom Elter entfernt ist (Elter, Feinschliff, Variante, Mutant).
+- **Scan-Effekt** beim Evolvieren, holografische Ränder für Favoriten, Partikelnetz im Hintergrund.
+- Alle Animationen ruhen bei „Bewegung reduzieren“.
+
 ## Neun Bereiche – jeder kann etwas anderes
 
 Im Tab **Bereiche** schaltest du Bereiche ein und aus, änderst die Reihenfolge und bearbeitest ihre Inhalte.
@@ -59,8 +67,9 @@ Mit dem Schalter **Privates Projekt** entfallen Impressum und Datenschutz für �
 - **20-Gen-Genom** pro Design: Farbton, Farbharmonie, Sättigung, Hell/Dunkel, Schriftpaar,
   Typo-Skala, Schriftgewicht, Eckenradius, Dichte, Breite, Hero-Layout, Leistungs-Layout,
   Button-Stil, Navigation, Dekoration, Übergänge, Überschriften-Effekt, Farbrhythmus und Animation.
-- **9 Hero-Layouts**: Zentriert, Geteilt (Bogen- oder Versatzrahmen), Riesentitel, Farbband,
-  Magazin, Bento, Poster (mit Kontur-Schriftzug), Laufband, Typo-Stapel.
+- **10 Hero-Layouts**: Zentriert, Geteilt (Bogen- oder Versatzrahmen), Riesentitel, Farbband,
+  Magazin, Bento, Poster (mit Kontur-Schriftzug), Laufband, Typo-Stapel und Hologramm
+  (Aurora-Licht, Glas-Karte, Perspektiv-Raster, Orbit mit Satellit, HUD-Zeile).
 - **5 Leistungs-Layouts**: Karten, Liste, Zickzack, Bento, interaktive Tabs.
 - **Farbrhythmus & Übergänge**: Bereiche wechseln zwischen Hintergrund, Fläche und invertierten
   Kontrast-Bändern; dazwischen Welle, Diagonale, Zickzack oder Bogen.
