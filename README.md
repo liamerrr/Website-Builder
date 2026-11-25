@@ -16,6 +16,31 @@ und die nächste Generation entsteht durch **Kreuzung und Mutation** der Favorit
 3. **Evolvieren** (`Enter`) – die Gene der Favoriten werden gekreuzt und mutiert.
 4. Wiederholen, bis es passt → Vorschau (Desktop/Mobil) → als fertige HTML-Datei herunterladen.
 
+## Neun Bereiche – jeder kann etwas anderes
+
+Im Tab **Bereiche** schaltest du Bereiche ein und aus, änderst die Reihenfolge und bearbeitest ihre Inhalte.
+
+| Bereich | Was er kann |
+|---|---|
+| Leistungen | Karten, Liste oder Zickzack mit generierten Illustrationen – das Genom entscheidet |
+| Zahlen & Fakten | Zahlen zählen beim Hinscrollen hoch (deutsches Zahlenformat, z. B. „1.200+", „99,9 %") |
+| Galerie | Eigene Bilder (werden verkleinert und eingebettet), Großansicht mit Pfeiltasten |
+| Über uns | Beschreibung als großes Zitat |
+| Preise | „Anfragen" füllt das Kontaktformular automatisch mit dem gewählten Paket |
+| Kundenstimmen | Karussell zum Wischen und Blättern |
+| FAQ | Aufklappbare Fragen – funktioniert auch ohne JavaScript |
+| Öffnungszeiten | Zeigt Besuchern live „Jetzt geöffnet" oder wann wieder offen ist, markiert den heutigen Tag |
+| Kontakt | Formular öffnet das E-Mail-Programm mit fertiger Nachricht – ohne Server |
+
+Dazu: Einblende-Animationen beim Scrollen (abgeschaltet bei „Bewegung reduzieren"), automatisch
+erzeugte Navigation und Google-Beschreibung.
+
+## Website-Check
+
+Der Tab **Check** bewertet den gewählten Entwurf mit Punktzahl: Kontrast, Impressum, Seitentitel,
+Google-Beschreibung, E-Mail, Bildbeschreibungen, Umfang, Datenschutz und Ladegröße.
+Mit dem Schalter **Privates Projekt** entfallen Impressum und Datenschutz für Übungs- und Privatseiten.
+
 ## Was es besonders macht
 
 - **16-Gen-Genom** pro Design: Farbton, Farbharmonie, Sättigung, Hell/Dunkel, Schriftpaar,
