@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Genom – Websites züchten</title>
+<title>Genom Website-Builder</title>
 <meta name="description" content="Ein evolutionärer Website-Builder: Wähle aus, was dir gefällt – die nächste Generation entsteht durch Kreuzung und Mutation.">
 <style>
   :root {
     --bg: #0e0f12; --panel: #16181d; --panel-2: #1d2027; --line: #2a2e37;
     --text: #eceef2; --muted: #9aa1ad; --accent: #7cf29c; --accent-ink: #0b1a10;
-    --danger: #ff7b7b; --radius: 14px;
+    --danger: #ff7b7b; --radius: 14px; color-scheme: dark;
     font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   }
   * { box-sizing: border-box; }
@@ -97,6 +97,7 @@
   .btn:disabled { opacity: .45; cursor: not-allowed; }
   .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 650; }
   .btn.primary:hover { filter: brightness(1.06); }
+  .btn.danger { background: var(--danger); border-color: var(--danger); color: #2a0b0b; font-weight: 650; }
   kbd { font-family: ui-monospace, monospace; font-size: 10.5px; border: 1px solid currentColor; border-radius: 4px; padding: 0 4px; opacity: .6; }
 
   .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 14px; }
@@ -1173,17 +1174,32 @@ function legalWarning() {
   const miss = missingLegal(state.content);
   return miss.length ? ` – Achtung: Im Impressum fehlt noch ${miss.join(" und ")}` : "";
 }
+// In einer veröffentlichten claude.ai-Seite laufen Downloads über die „downloads"-Funktion des Viewers.
+const inViewer = !!(window.claude && typeof window.claude.use === "function");
+let downloadsApi = null;
+if (inViewer) window.claude.use("downloads").then(api => { downloadsApi = api; }).catch(() => {});
+async function saveFile(filename, html) {
+  if (downloadsApi) {
+    try { await downloadsApi.save({ filename, data: html }); return "saved"; }
+    catch (e) { return e && e.code === "declined" ? "declined" : "failed"; }
+  }
+  if (inViewer) return "failed";
+  const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(new Blob([html], { type: "text/html" })), download: filename });
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  return "saved";
+}
 let busy = false;
 async function download(g) {
   if (busy) return; busy = true;
   const btn = $("m-export"), label = btn.textContent;
   btn.textContent = "Wird erstellt …"; btn.disabled = true;
   try {
-    const blob = new Blob([await exportHtml(g)], { type: "text/html" });
-    const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(blob), download: `${(state.content.name || "website").toLowerCase().replace(/[^a-z0-9äöüß]+/g, "-").replace(/^-|-$/g, "") || "website"}.html` });
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-    toast("Website heruntergeladen" + legalWarning());
+    const filename = `${(state.content.name || "website").toLowerCase().replace(/[^a-z0-9äöüß]+/g, "-").replace(/^-|-$/g, "") || "website"}.html`;
+    const res = await saveFile(filename, await exportHtml(g));
+    if (res === "saved") toast("Website heruntergeladen" + legalWarning());
+    else if (res === "declined") toast("Download abgebrochen");
+    else toast("Download hier nicht möglich – nutze „HTML kopieren\"");
   } finally { btn.textContent = label; btn.disabled = false; busy = false; }
 }
 async function copyText(t, msg) {
@@ -1428,7 +1444,7 @@ function syncHash() {
   const lead = state.selected.length ? state.pop[state.selected[0]] : state.pop[0];
   const changed = JSON.stringify(state.content) !== JSON.stringify(DEFAULT_CONTENT);
   const h = `g=${toCode(lead)}` + (changed ? `&c=${encodeURIComponent(JSON.stringify(state.content))}` : "");
-  history.replaceState(null, "", "#" + h);
+  try { history.replaceState(null, "", "#" + h); } catch { /* in eingebetteten Ansichten nicht erlaubt */ }
 }
 function readHash() {
   const p = new URLSearchParams(location.hash.slice(1));
@@ -1471,15 +1487,27 @@ function bindContent() {
   const showRate = () => { $("rate").value = state.rate; $("rate-out").textContent = Math.round(state.rate * 100) + "%"; };
   showRate();
   $("rate").addEventListener("input", e => { state.rate = +e.target.value; showRate(); save(); });
+  let resetArmed = null;
   $("reset").addEventListener("click", () => {
-    if (!confirm("Alles zurücksetzen? Deine Ahnenreihe und Inhalte gehen verloren.")) return;
-    try { localStorage.removeItem(STORE_KEY); } catch { /* egal */ }
-    location.hash = ""; location.reload();
+    const b = $("reset");
+    if (!resetArmed) {
+      b.textContent = "Wirklich alles löschen?"; b.classList.add("danger");
+      resetArmed = setTimeout(() => { resetArmed = null; b.textContent = "Neu starten"; b.classList.remove("danger"); }, 4000);
+      return;
+    }
+    clearTimeout(resetArmed);
+    try { localStorage.removeItem(STORE_KEY); localStorage.removeItem(IMG_KEY); } catch { /* egal */ }
+    try { history.replaceState(null, "", location.pathname + location.search); } catch { /* egal */ }
+    location.reload();
   });
   $("evolve").addEventListener("click", evolve);
   $("reroll").addEventListener("click", reroll);
   $("undo").addEventListener("click", undo);
-  $("share").addEventListener("click", () => { syncHash(); copyText(location.href, "Link kopiert"); });
+  $("share").addEventListener("click", () => {
+    syncHash();
+    if (inViewer) { const lead = state.selected.length ? state.pop[state.selected[0]] : state.pop[0]; copyText(toCode(lead), "Genom-Code kopiert – andere fügen ihn unter Evolution → Genom-Code ein"); }
+    else copyText(location.href, "Link kopiert");
+  });
   $("code-load").addEventListener("click", () => {
     const g = fromCode($("code-in").value);
     if (!g) { toast("Ungültiger Code – erwartet werden 32 Hex-Zeichen"); return; }
