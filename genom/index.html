@@ -249,6 +249,7 @@
   .pro-btn.free { border-color: rgba(255,122,217,.5); color: #ffc1ee; }
   .pro-btn.free:hover { box-shadow: 0 0 26px -6px rgba(255,122,217,.8); }
   .pro-btn.active { background: var(--holo); color: #050816; border-color: transparent; animation: spinA 6s linear infinite; font-weight: 600; }
+  .quota[hidden] { display: none; }
   .quota { font-family: var(--mono); font-size: 11.5px; color: var(--muted); display: inline-flex; align-items: center; gap: 8px; margin-left: 10px; }
   .quota .q { display: inline-flex; gap: 3px; }
   .quota .q i { width: 14px; height: 6px; border-radius: 2px; background: var(--line); }
@@ -282,6 +283,33 @@
   .pw-active { border-top: 1px solid var(--line); padding-top: 18px; }
   .pw-active p { font-family: var(--mono); color: var(--accent); margin: 0 0 12px; }
   .paywall.unlocked .pw-orb { animation: spinA 1.2s linear infinite; opacity: .7; }
+
+  /* ===== Herbarium, Gen-Editor, Vergleich ===== */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; }
+  .herb { display: grid; gap: 6px; margin-top: 10px; }
+  .hitem { display: grid; grid-template-columns: 30px 1fr auto auto; gap: 8px; align-items: center; background: rgba(26,33,56,.45); border: 1px solid var(--line); border-radius: 10px; padding: 6px 8px; }
+  .hsw { width: 30px; height: 30px; border-radius: 50%; position: relative; box-shadow: 0 0 0 1px var(--line); }
+  .hsw i { position: absolute; right: 2px; bottom: 2px; width: 12px; height: 12px; border-radius: 50%; }
+  .hname { min-width: 0; }
+  .hname b { display: block; font-style: italic; font-weight: 600; font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hname small { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+  .hitem .mini { width: auto; padding: 0 8px; font-size: 11px; font-family: var(--mono); }
+  .ge-lock { border: 1px dashed rgba(255,122,217,.45); border-radius: 12px; padding: 14px; font-size: 12.5px; color: var(--muted); display: grid; gap: 10px; }
+  .ge-head { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+  .ge-head b { color: var(--text); font-family: "Space Grotesk", sans-serif; font-style: italic; }
+  .ge-grp { font-family: var(--mono); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); margin: 12px 0 4px; }
+  .gene { display: grid; grid-template-columns: 92px 1fr 88px; gap: 8px; align-items: center; font-size: 12px; margin: 3px 0; }
+  .gene input { accent-color: hsl(var(--h) 92% 68%); width: 100%; }
+  .gene output { font-family: var(--mono); font-size: 10.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: right; }
+  #compare .modal { gap: 12px; }
+  .cmp-stage { position: relative; flex: 1; min-height: 0; border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 0 0 1px var(--line), 0 40px 120px -30px rgba(157,140,255,.55); }
+  .cmp-stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #fff; }
+  #cmp-a { clip-path: inset(0 calc(100% - var(--x, 50%)) 0 0); }
+  .cmp-handle { position: absolute; top: 0; bottom: 0; left: var(--x, 50%); width: 3px; margin-left: -1.5px; background: var(--holo); animation: spinA 4s linear infinite; cursor: ew-resize; touch-action: none; z-index: 3; }
+  .cmp-handle span { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: rgba(4,8,18,.88); color: var(--accent); border: 1px solid rgba(110,240,255,.5); box-shadow: 0 0 24px -4px var(--glow); font-size: 18px; }
+  .cmp-handle:focus-visible span { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .cmp-tag { position: absolute; top: 12px; z-index: 2; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; background: rgba(4,8,18,.85); color: var(--text); border: 1px solid var(--line); padding: 4px 10px; border-radius: 999px; pointer-events: none; }
+  .cmp-tag.l { left: 12px; } .cmp-tag.r { right: 12px; }
   /* ===== Proben ===== */
   .probe { gap: 10px; }
   .probe .sp { display: flex; align-items: center; min-width: 0; }
@@ -348,6 +376,18 @@
         <label class="field"><span>Kontakt-E-Mail</span><input type="email" id="c-email"></label>
         <p class="hint">Die Inhalte der einzelnen Bereiche (Leistungen, Preise, FAQ …) bearbeitest du im Tab „Bereiche".</p>
       </div>
+      <div class="group">
+        <h2>Kontakt &amp; Social</h2>
+        <label class="field"><span>Adresse (mit „Route planen“-Link)</span><textarea id="c-address" rows="2" placeholder="Straße Nr.&#10;PLZ Ort"></textarea></label>
+        <label class="field"><span>Telefon</span><input type="text" id="c-phone" placeholder="z. B. 089 123456"></label>
+        <label class="field"><span>WhatsApp-Nummer (schwebender Chat-Button)</span><input type="text" id="c-wa" placeholder="z. B. +49 170 1234567"></label>
+        <div class="two-col">
+          <label class="field"><span>Instagram</span><input type="text" id="c-ig" placeholder="@name"></label>
+          <label class="field"><span>Facebook</span><input type="text" id="c-fb" placeholder="name"></label>
+          <label class="field"><span>TikTok</span><input type="text" id="c-tt" placeholder="@name"></label>
+          <label class="field"><span>LinkedIn</span><input type="text" id="c-li" placeholder="name"></label>
+        </div>
+      </div>
       <div class="group help">
         <h2>So funktioniert's</h2>
         <ol>
@@ -364,6 +404,16 @@
     </section>
 
     <section class="panel" role="tabpanel" id="panel-evolution" aria-labelledby="tab-evolution" hidden>
+      <div class="group">
+        <h2>Herbarium</h2>
+        <button class="btn" id="herb-add" type="button">＋ Favorit sammeln <kbd>S</kbd></button>
+        <div class="herb" id="herb"></div>
+        <p class="hint">Deine Lieblingsdesigns bleiben hier über alle Generationen erhalten.</p>
+      </div>
+      <div class="group">
+        <h2>Gen-Editor <span class="locked-badge">PRO</span></h2>
+        <div id="geneditor"></div>
+      </div>
       <div class="group">
         <h2>Gene sperren</h2>
         <div class="locks" id="locks"></div>
@@ -415,6 +465,7 @@
       <button class="btn primary" id="evolve">Evolvieren <kbd>↵</kbd></button>
       <button class="btn" id="reroll">Neu würfeln <kbd>R</kbd></button>
       <button class="btn" id="undo">Zurück <kbd>Z</kbd></button>
+      <button class="btn" id="compare-btn" type="button" title="Wähle genau zwei Proben aus">Vergleichen <kbd>V</kbd></button>
       <span class="spacer"></span>
       <button class="btn" id="reset" title="Alles zurücksetzen und bei Generation 1 beginnen">Neu starten</button>
       <button class="btn" id="share">Link teilen</button>
@@ -437,6 +488,7 @@
       <li><b>Unbegrenzt evolvieren</b><span>So viele Generationen, Kreuzungen und Mutationen, wie du willst.</span></li>
       <li><b>Fertige Websites herunterladen</b><span>Eine Datei, sofort online stellbar, Schriften eingebettet, ohne Google-Verbindung.</span></li>
       <li><b>HTML kopieren</b><span>Den kompletten Code einer Website mit einem Klick.</span></li>
+      <li><b>Gen-Editor</b><span>Alle 20 Gene direkt mit Reglern einstellen – Gentechnik für Websites.</span></li>
       <li><b>Alle 10 Layouts, 9 Bereiche, eigene Bilder</b><span>Inklusive Hologramm, Poster, Magazin, Live-Öffnungszeiten und Kontaktformular.</span></li>
     </ul>
     <a class="btn primary pw-buy" id="pw-buy" target="_blank" rel="noopener">Jetzt freischalten</a>
@@ -453,6 +505,23 @@
   </div>
 </dialog>
 
+<dialog id="compare" aria-label="Vergleich zweier Proben">
+  <div class="modal">
+    <div class="modal-bar">
+      <div class="title">Vergleich <code id="cmp-names"></code></div>
+      <button class="btn" id="cmp-left" type="button">Linke behalten</button>
+      <button class="btn" id="cmp-right" type="button">Rechte behalten</button>
+      <button class="btn" id="cmp-close" type="button" aria-label="Schließen">✕</button>
+    </div>
+    <div class="cmp-stage" id="cmp-stage">
+      <iframe id="cmp-b" title="Rechte Probe"></iframe>
+      <iframe id="cmp-a" title="Linke Probe"></iframe>
+      <div class="cmp-handle" id="cmp-handle" role="slider" tabindex="0" aria-label="Trennlinie verschieben" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><span>⟷</span></div>
+      <span class="cmp-tag l" id="cmp-tag-l"></span><span class="cmp-tag r" id="cmp-tag-r"></span>
+    </div>
+  </div>
+</dialog>
+
 <dialog id="modal" aria-label="Vorschau">
   <div class="modal">
     <div class="modal-bar">
@@ -462,6 +531,7 @@
         <button id="m-mobile" aria-pressed="false">Mobil</button>
       </div>
       <button class="btn" id="m-select">Als Favorit wählen</button>
+      <button class="btn" id="m-herb">Ins Herbarium</button>
       <button class="btn" id="m-copy">HTML kopieren</button>
       <button class="btn primary" id="m-export">Herunterladen</button>
       <button class="btn" id="m-close" aria-label="Schließen">✕</button>
@@ -709,6 +779,7 @@ ${opt("legalVat", "Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG: ")}
 <p>Diese Website wird ${host ? `bei ${esc(host)}` : "bei einem externen Dienstleister"} gehostet. Beim Aufruf der Seite werden technisch notwendige Daten in Server-Logfiles erfasst, insbesondere IP-Adresse, Datum und Uhrzeit des Zugriffs, aufgerufene Seite sowie Browser und Betriebssystem. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO; unser berechtigtes Interesse liegt im sicheren und stabilen Betrieb der Website.</p>
 <h3>3. Keine Cookies, kein Tracking, keine Drittanbieter</h3>
 <p>Diese Website setzt keine Cookies, verwendet keine Analyse- oder Tracking-Werkzeuge und lädt keine Inhalte von Drittanbietern. Die verwendeten Schriftarten sind direkt in die Seite eingebettet; beim Aufruf wird keine Verbindung zu Servern Dritter (z. B. Google) hergestellt.</p>
+${socialLinks(content).length || whatsappUrl(content.whatsapp) || String(content.address || "").trim() ? "<p>Links zu sozialen Netzwerken, WhatsApp oder Kartendiensten sind einfache Verweise. Erst wenn Sie einen solchen Link anklicken, verlassen Sie diese Website; dann gelten die Datenschutzbestimmungen des jeweiligen Anbieters.</p>" : ""}
 <h3>4. Kontakt per E-Mail${hasForm ? " und Kontaktformular" : ""}</h3>
 ${hasForm ? "<p>Das Kontaktformular sendet keine Daten an unseren Server. Es öffnet lediglich Ihr eigenes E-Mail-Programm mit einer vorausgefüllten Nachricht, die Sie selbst absenden.</p>" : ""}
 <p>Wenn Sie uns per E-Mail kontaktieren, verarbeiten wir Ihre Angaben zur Bearbeitung Ihrer Anfrage. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, sofern Ihre Anfrage mit einem Vertrag zusammenhängt, ansonsten Art. 6 Abs. 1 lit. f DSGVO. Wir löschen die Daten, sobald sie nicht mehr erforderlich sind und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</p>
@@ -859,7 +930,7 @@ ${tabs || `<div class="${["fgrid", "flist", "fzigs", "fbento"][d.feats]}">${item
   },
   kontakt({ content, email, btnClass }) {
     return `<section class="cta rv" id="kontakt"><div class="wrap"><div class="box">
-<div><h2>${hl("Lass uns sprechen.")}</h2><p>Schreib uns – wir melden uns innerhalb eines Werktags.</p><a class="mail" href="mailto:${email}">${email}</a></div>
+<div><h2>${hl("Lass uns sprechen.")}</h2><p>Schreib uns – wir melden uns innerhalb eines Werktags.</p><a class="mail" href="mailto:${email}">${email}</a>${contactExtras(content)}</div>
 <form class="cf" data-mail="${email}">
 <div class="two"><label>Name<input name="cf-name" autocomplete="name" required></label><label>E-Mail<input name="cf-from" type="email" autocomplete="email"></label></div>
 <label>Betreff<input name="cf-subject" placeholder="Worum geht es?"></label>
@@ -962,6 +1033,16 @@ function siteScript() {
     addEventListener("scroll", onScroll, { passive: true }); onScroll();
   }
 
+  var tbtns = d.querySelectorAll(".theme-t"), setFlip = function (on) {
+    d.documentElement.classList.toggle("flip", on);
+    tbtns.forEach(function (b) { b.setAttribute("aria-pressed", on); });
+  };
+  try { if (localStorage.getItem("theme-flip") === "1") setFlip(true); } catch (e) { /* ohne Speicher */ }
+  tbtns.forEach(function (b) { b.addEventListener("click", function () {
+    var on = !d.documentElement.classList.contains("flip"); setFlip(on);
+    try { localStorage.setItem("theme-flip", on ? "1" : "0"); } catch (e) { /* ohne Speicher */ }
+  }); });
+
   var form = d.querySelector("form.cf");
   if (form) {
     var F = function (n) { return form.querySelector("[name=" + n + "]"); };
@@ -988,13 +1069,57 @@ function hl(text) {
 
 /** Übergang zwischen zwei Bereichen unterschiedlicher Farbe. */
 function separator(style, from, to, flip) {
-  if (!style || from === to) return "";
+  if (!style || from === to) return "";  // from/to sind Ton-Namen: base, surface, ink, band
   let path;
   if (style === 1) path = "M0 46 C240 86 480 6 720 40 C960 74 1200 8 1440 34 V80 H0Z";
   else if (style === 2) path = "M0 80 L1440 0 V80Z";
   else if (style === 3) { path = "M0 80 L0 56"; for (let x = 0, i = 0; x <= 1440; x += 40, i++) path += ` L${x} ${i % 2 ? 26 : 56}`; path += " L1440 80Z"; }
   else path = "M0 80 Q720 -36 1440 80Z";
-  return `<div class="sep" aria-hidden="true" style="background:${from}"><svg viewBox="0 0 1440 80" preserveAspectRatio="none"${flip ? ' style="transform:scaleX(-1)"' : ""}><path d="${path}" fill="${to}"/></svg></div>`;
+  return `<div class="sep" aria-hidden="true" style="background:var(--t-${from})"><svg viewBox="0 0 1440 80" preserveAspectRatio="none"${flip ? ' style="transform:scaleX(-1)"' : ""}><path d="${path}" style="fill:var(--t-${to})"/></svg></div>`;
+}
+
+/* ---- Kontakt, Social, SEO ---- */
+const SOCIAL = [
+  ["instagram", "Instagram", h => `https://www.instagram.com/${h}/`],
+  ["facebook", "Facebook", h => `https://www.facebook.com/${h}`],
+  ["tiktok", "TikTok", h => `https://www.tiktok.com/@${h}`],
+  ["linkedin", "LinkedIn", h => `https://www.linkedin.com/in/${h}`],
+];
+function socialLinks(content) {
+  return SOCIAL.map(([k, label, mk]) => {
+    const v = String(content[k] || "").trim();
+    if (!v) return null;
+    if (/^https:\/\//i.test(v)) return { label, url: v };
+    const h = v.replace(/^@/, "").replace(/[^\w.\-]/g, "");
+    return h ? { label, url: mk(encodeURIComponent(h)) } : null;
+  }).filter(Boolean);
+}
+function whatsappUrl(raw) {
+  let n = String(raw || "").replace(/[^\d+]/g, "");
+  if (!n) return "";
+  n = n.replace(/^\+/, "").replace(/^00/, "");
+  if (n.startsWith("0")) n = "49" + n.slice(1);   // deutsche Nummer ohne Ländervorwahl
+  return n.length >= 8 ? `https://wa.me/${n}` : "";
+}
+function contactExtras(content) {
+  const addr = String(content.address || "").trim(), tel = String(content.phone || "").trim();
+  if (!addr && !tel) return "";
+  return `<p class="addr">${addr ? esc(addr).replace(/\n/g, "<br>") : ""}${addr && tel ? "<br>" : ""}${tel ? `Tel. <a href="tel:${esc(tel.replace(/[^\d+]/g, ""))}">${esc(tel)}</a>` : ""}</p>${addr ? `<a class="route" href="https://www.openstreetmap.org/search?query=${encodeURIComponent(addr.replace(/\n/g, ", "))}" target="_blank" rel="noopener">Route planen →</a>` : ""}`;
+}
+/** schema.org-Daten, damit Suchmaschinen Name, Kontakt und Öffnungszeiten verstehen. */
+function structuredData(content, socials) {
+  const ld = { "@context": "https://schema.org", "@type": "LocalBusiness", name: content.name || "", description: metaDescription(content) };
+  if (content.email) ld.email = content.email.trim();
+  if (String(content.phone || "").trim()) ld.telephone = content.phone.trim();
+  if (String(content.address || "").trim()) ld.address = content.address.trim().replace(/\n/g, ", ");
+  const codes = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"], hours = [];
+  for (const row of parseHours(content.hours).rows) {
+    const times = [...row.times.matchAll(/(\d{1,2})[:.](\d{2})\s*(?:[–\-—]|bis)\s*(\d{1,2})[:.](\d{2})/g)];
+    for (const t of times) if (row.days.length) hours.push(`${row.days.map(i => codes[i]).join(",")} ${t[1].padStart(2, "0")}:${t[2]}-${t[3].padStart(2, "0")}:${t[4]}`);
+  }
+  if (hours.length && getSections(content).some(x => x.id === "zeiten" && x.on)) ld.openingHours = hours;
+  if (socials.length) ld.sameAs = socials.map(x => x.url);
+  return JSON.stringify(ld).replace(/</g, "\\u003c");
 }
 
 function renderSite(g, content, opts = {}) {
@@ -1014,11 +1139,13 @@ function renderSite(g, content, opts = {}) {
   const firstSection = order.find(s => s.on);
   const logo = `<a class="logo" href="#"><span class="mark">${initial}</span>${name}</a>`;
   const cta = `<a class="btn ${btnClass}" href="${contactHref}">Kontakt aufnehmen</a>`;
+  const themeBtn = `<button class="theme-t" type="button" aria-pressed="false" aria-label="Hell- oder Dunkelmodus umschalten" title="Hell / Dunkel"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>`;
   const nav = [
-    `<header class="nav n0"><div class="wrap">${logo}<nav>${navLinks}</nav></div></header>`,
-    `<header class="nav n1"><div class="wrap">${logo}<nav>${navLinks}</nav></div></header>`,
-    `<header class="nav n2"><div class="wrap">${logo}<a class="btn ${btnClass} sm" href="${contactHref}">Kontakt</a></div></header>`,
+    `<header class="nav n0"><div class="wrap">${logo}<div class="nav-r"><nav>${navLinks}</nav>${themeBtn}</div></div></header>`,
+    `<header class="nav n1"><div class="wrap">${logo}<div class="nav-r"><nav>${navLinks}</nav>${themeBtn}</div></div></header>`,
+    `<header class="nav n2"><div class="wrap">${logo}<div class="nav-r"><a class="btn ${btnClass} sm" href="${contactHref}">Kontakt</a>${themeBtn}</div></div></header>`,
   ][d.nav];
+  const socials = socialLinks(content), wa = whatsappUrl(content.whatsapp);
 
   /* ---------- Hero: neun Layouts ---------- */
   const tagline = content.tagline || content.name || "";
@@ -1061,12 +1188,11 @@ function renderSite(g, content, opts = {}) {
 <div class="orbit" aria-hidden="true"><div class="ring"></div><div class="ring r2"><i class="sat"></i></div><div class="core">${artwork(g, d, 0, 500, 500)}</div></div>
 </div></section>`,
   ][d.hero];
-  const heroEnd = [3, 6, 7].includes(d.hero) ? c.accent : c.bg;
+  const heroEnd = [3, 6, 7].includes(d.hero) ? "band" : "base";
 
   /* ---------- Bereiche mit Farbrhythmus und Übergängen ---------- */
   const ctx = { g, d, c, f, content, email, btnClass, on, contactHref, images: opts.images || [] };
   const rendered = order.filter(s => s.on).map(s => ({ id: s.id, html: SECTION_RENDER[s.id](ctx) })).filter(s => s.html);
-  const toneColor = { base: c.bg, surface: c.surface, ink: c.text, band: c.accent };
   let prev = heroEnd, sectionsHtml = "";
   rendered.forEach((s, i) => {
     let tone = "base";
@@ -1075,10 +1201,10 @@ function renderSite(g, content, opts = {}) {
     else if (d.rhythm === 2) tone = i % 3 === 2 ? "ink" : "base";
     else tone = i % 2 ? "ink" : "base";
     if (s.id === "zahlen" && (g[G.shift] & 1)) tone = "band";
-    sectionsHtml += separator(d.divider, prev, toneColor[tone], i % 2) + "\n" + s.html.replace('<section class="', `<section class="tone-${tone} `) + "\n";
-    prev = toneColor[tone];
+    sectionsHtml += separator(d.divider, prev, tone, i % 2) + "\n" + s.html.replace('<section class="', `<section class="tone-${tone} `) + "\n";
+    prev = tone;
   });
-  sectionsHtml += separator(d.divider, prev, c.bg, rendered.length % 2);
+  sectionsHtml += separator(d.divider, prev, "base", rendered.length % 2);
   const galleryDialog = on.has("galerie") ? `<dialog class="lb" id="lb" aria-label="Bildansicht"><div class="lb-stage"></div><div class="lb-bar"><button data-prev aria-label="Vorheriges Bild">←</button><span class="lb-cap"></span><span><button data-next aria-label="Nächstes Bild">→</button> <button data-close aria-label="Schließen">✕</button></span></div></dialog>` : "";
 
   /* ---------- Gen-gesteuerte Stile ---------- */
@@ -1086,7 +1212,7 @@ function renderSite(g, content, opts = {}) {
     "",
     `.hero{position:relative;overflow:hidden}.hero::before,.hero::after{content:"";position:absolute;border-radius:50%;filter:blur(60px);z-index:0;pointer-events:none}.hero::before{width:420px;height:420px;background:${c.accent};top:-140px;right:-80px;opacity:.32}.hero::after{width:320px;height:320px;background:${c.tint};bottom:-120px;left:-60px;opacity:.55}.hero .wrap{position:relative;z-index:1}`,
     `.hero:not(.h3):not(.h6){background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:48px 48px;background-position:-1px -1px}`,
-    `.hero:not(.h3):not(.h6){background:linear-gradient(160deg,${c.bg} 30%,${c.tint})}`,
+    `.hero:not(.h3):not(.h6){background:linear-gradient(160deg,var(--bg) 30%,var(--tint))}`,
     `.hero:not(.h3):not(.h6){background-image:radial-gradient(var(--line) 1.6px,transparent 1.6px);background-size:22px 22px}`,
   ][d.deco];
   const squiggle = `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 10'><path d='M0 6 Q10 0 20 6 T40 6' fill='none' stroke='${c.accent}' stroke-width='2.6' stroke-linecap='round'/></svg>`)}")`;
@@ -1108,7 +1234,11 @@ function renderSite(g, content, opts = {}) {
 
   const css = `
 *{box-sizing:border-box}html{scroll-behavior:smooth}
-:root{--bg:${c.bg};--fg:${c.text};--surface:${c.surface};--muted:${c.muted};--line:${c.line};--at:${c.accentText};--tint:${c.tint}}
+:root{--bg:${c.bg};--fg:${c.text};--surface:${c.surface};--muted:${c.muted};--line:${c.line};--at:${c.accentText};--tint:${c.tint};--t-base:${c.bg};--t-surface:${c.surface};--t-ink:${c.text};--t-band:${c.accent};color-scheme:${d.dark ? "dark" : "light"}}
+html.flip{--bg:${c.text};--fg:${c.bg};--surface:${inv.surface};--muted:${inv.muted};--line:${inv.line};--at:${inv.at};--tint:${inv.tint};--t-base:${c.text};--t-surface:${inv.surface};--t-ink:${c.bg};color-scheme:${d.dark ? "light" : "dark"}}
+html.flip .tone-surface{--bg:${inv.surface};--surface:${c.text}}
+html.flip .tone-ink{--bg:${c.bg};--fg:${c.text};--surface:${c.surface};--muted:${c.muted};--line:${c.line};--at:${c.accentText};--tint:${c.tint}}
+body{transition:background-color .4s,color .4s}
 .tone-surface{--bg:${c.surface};--surface:${c.bg}}
 .tone-ink{--bg:${c.text};--fg:${c.bg};--surface:${inv.surface};--muted:${inv.muted};--line:${inv.line};--at:${inv.at};--tint:${inv.tint}}
 .tone-band{--bg:${c.accent};--fg:${c.onAccent};--muted:${c.onAccent};--at:${c.onAccent}}
@@ -1183,7 +1313,7 @@ p{margin:0 0 1em}.lead{font-size:1.2rem;color:var(--muted);max-width:38em}
 .h8 .mini-art{width:150px;height:150px;border-radius:50%;overflow:hidden;animation:spin 40s linear infinite}.h8 .mini-art svg{width:100%;height:100%;display:block}
 @keyframes spin{to{transform:rotate(360deg)}}
 .h9{overflow:hidden;isolation:isolate}
-.h9 .aurora{position:absolute;inset:-35%;z-index:-2;background:conic-gradient(from 0deg,${c.accent},${c.tint},${c.bg},${c.accent},${c.tint},${c.accent});filter:blur(90px);opacity:.5;animation:spin 26s linear infinite}
+.h9 .aurora{position:absolute;inset:-35%;z-index:-2;background:conic-gradient(from 0deg,${c.accent},var(--tint),var(--bg),${c.accent},var(--tint),${c.accent});filter:blur(90px);opacity:.5;animation:spin 26s linear infinite}
 .h9 .floor{position:absolute;left:-50%;right:-50%;bottom:-6%;height:52%;z-index:-1;background-image:linear-gradient(color-mix(in srgb,var(--fg) 24%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--fg) 24%,transparent) 1px,transparent 1px);background-size:64px 64px;transform:perspective(520px) rotateX(64deg);transform-origin:50% 100%;-webkit-mask-image:linear-gradient(to top,#000 5%,transparent 80%);mask-image:linear-gradient(to top,#000 5%,transparent 80%);animation:floor 3.5s linear infinite}
 @keyframes floor{to{background-position:0 64px}}
 .h9 .wrap{display:grid;grid-template-columns:1.25fr 1fr;gap:48px;align-items:center}
@@ -1278,6 +1408,16 @@ dialog.lb::backdrop{background:rgba(0,0,0,.88)}
 .faq details[open] summary::after{transform:rotate(45deg)}
 .faq details p{color:var(--muted);margin:0 0 22px;max-width:46em}
 .hours .split{grid-template-columns:1fr 1fr;align-items:center}
+.nav-r{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.theme-t{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line);background:transparent;color:var(--fg);cursor:pointer;display:grid;place-items:center;flex:none;transition:transform .4s}
+.theme-t:hover{border-color:var(--fg)}.theme-t[aria-pressed=true]{transform:rotate(180deg)}
+.addr{margin-top:28px;font-size:.98rem;opacity:.9}.addr a{color:inherit}
+.route{display:inline-block;margin-top:6px;font-weight:600;color:var(--bg);text-decoration:underline;text-decoration-color:${c.accent};text-underline-offset:4px}
+.socials{display:flex;gap:8px;flex-wrap:wrap}
+.socials a{text-decoration:none;font-size:.85rem;font-weight:600;padding:.35em .9em;border:1.5px solid var(--line);border-radius:999px;color:var(--fg)}
+.socials a:hover{border-color:var(--fg)}
+.wa{position:fixed;right:20px;bottom:20px;z-index:40;width:58px;height:58px;border-radius:50%;background:#128C7E;color:#fff;display:grid;place-items:center;box-shadow:0 12px 30px -8px rgba(0,0,0,.45);transition:transform .2s}
+.wa:hover{transform:scale(1.08)}
 .hours table{width:100%;border-collapse:collapse}.hours td{padding:14px 0;border-bottom:1px solid var(--line)}
 .hours td:last-child{text-align:right;color:var(--muted)}.hours tr.today td{font-weight:700;color:var(--fg)}
 .live{display:none;align-items:center;gap:10px;font-weight:600;padding:10px 18px;border-radius:999px;background:var(--surface);border:1px solid var(--line);margin-bottom:22px}
@@ -1330,6 +1470,12 @@ ${deco}`;
 <title>${name}</title>
 <meta name="description" content="${esc(metaDescription(content))}">
 <meta name="generator" content="Genom – evolutionärer Website-Builder · Genom ${toCode(g)}">
+<meta name="theme-color" content="${c.bg}">
+<meta property="og:type" content="website"><meta property="og:locale" content="de_DE">
+<meta property="og:title" content="${name}"><meta property="og:description" content="${esc(metaDescription(content))}">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='${Math.min(R * 1.6, 32)}' fill='${c.accent}'/><text x='50%' y='54%' text-anchor='middle' dominant-baseline='middle' font-family='Arial,sans-serif' font-weight='700' font-size='36' fill='${c.onAccent}'>${initial}</text></svg>`)}">
+<script type="application/ld+json">${structuredData(content, socials)}<\/script>
 ${fontTags}
 <style>${css}</style>
 </head>
@@ -1341,7 +1487,8 @@ ${hero}
 ${sectionsHtml}
 ${content.private ? "" : legalHtml(content, on.has("kontakt"))}
 </main>
-<footer><div class="wrap"><span>© ${year} ${name}</span>${content.private ? "" : `<span><a href="#impressum">Impressum</a> · <a href="#datenschutz">Datenschutz</a></span>`}</div></footer>
+<footer><div class="wrap"><span>© ${year} ${name}</span>${socials.length ? `<span class="socials">${socials.map(x => `<a href="${esc(x.url)}" target="_blank" rel="noopener">${x.label}</a>`).join("")}</span>` : ""}${content.private ? "" : `<span><a href="#impressum">Impressum</a> · <a href="#datenschutz">Datenschutz</a></span>`}</div></footer>
+${wa ? `<a class="wa" href="${esc(wa)}" target="_blank" rel="noopener" aria-label="Per WhatsApp schreiben"><svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.4.8 3.2.6a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg></a>` : ""}
 ${galleryDialog}
 <script>(${siteScript.toString()})();<\/script>
 </body>
@@ -1400,6 +1547,7 @@ const DEFAULT_CONTENT = {
   faq: "Arbeitet ihr auch mit kleinen Budgets? Ja – oft machen schon Licht und Farbe den größten Unterschied.\nWie lange dauert ein Projekt? Ein Raumkonzept steht in zwei bis drei Wochen, die Umsetzung hängt vom Umfang ab.\nKommt ihr auch außerhalb der Stadt? Ja, deutschlandweit – Anfahrt nach Aufwand.",
   hours: "Mo–Fr: 09:00–18:00\nSa: nach Vereinbarung\nSo: geschlossen",
   legalName: "", legalAddress: "", legalRep: "", legalPhone: "", legalRegister: "", legalVat: "", host: "",
+  address: "", phone: "", whatsapp: "", instagram: "", facebook: "", tiktok: "", linkedin: "",
   private: false,
   sections: SECTIONS.map(s => ({ id: s.id, on: s.on })),
 };
@@ -1548,6 +1696,8 @@ function updateSelection() {
     : `<b>${n} Favoriten</b> – ihre Gene werden gekreuzt. Der zuerst gewählte gibt gesperrte Gene weiter.`;
   const lead = n ? state.pop[state.selected[0]] : state.pop[0];
   if (lead) $("code-in").value = toCode(lead);
+  $("compare-btn").disabled = n !== 2;
+  if (!(document.activeElement && document.activeElement.dataset && document.activeElement.dataset.gene !== undefined)) renderGeneEditor();
   renderCheck();
 }
 
@@ -1703,15 +1853,152 @@ function bindPaywall() {
     Object.assign(pro, { active: true, email: r.payload.e, until: r.payload.x });
     msg.textContent = `Freigeschaltet bis ${new Date(pro.until).toLocaleDateString("de-DE")}. Viel Spaß!`;
     $("paywall").classList.add("unlocked"); $("pw-input").value = "";
-    renderPro(); toast("✦ Genom Pro ist aktiv");
+    renderPro(); renderGeneEditor(); toast("✦ Genom Pro ist aktiv");
     setTimeout(() => { $("paywall").classList.remove("unlocked"); $("paywall").close(); }, 1600);
   };
   $("pw-activate").addEventListener("click", activate);
   $("pw-input").addEventListener("keydown", e => { if (e.key === "Enter") activate(); });
   $("pw-logout").addEventListener("click", () => {
     try { localStorage.removeItem(LIC_KEY); } catch { /* egal */ }
-    Object.assign(pro, { active: false, email: "", until: 0 }); renderPro(); $("paywall").close(); toast("Lizenz von diesem Gerät entfernt");
+    Object.assign(pro, { active: false, email: "", until: 0 }); renderPro(); renderGeneEditor(); $("paywall").close(); toast("Lizenz von diesem Gerät entfernt");
   });
+}
+
+
+/* ---- Herbarium: Sammlung von Lieblingsdesigns ---- */
+const HERB_KEY = "genom-herbarium";
+let herbarium = [];
+function loadHerb() {
+  try { const a = JSON.parse(localStorage.getItem(HERB_KEY) || "[]"); if (Array.isArray(a)) herbarium = a.filter(x => x && Array.isArray(x.g) && x.g.every(v => Number.isInteger(v) && v >= 0 && v < 256)).map(x => ({ g: padGenome(x.g), gen: +x.gen || 1, t: +x.t || Date.now() })).slice(0, 60); } catch { /* leer */ }
+}
+function saveHerb() { try { localStorage.setItem(HERB_KEY, JSON.stringify(herbarium)); } catch { toast("Sammlung konnte nicht gespeichert werden"); } }
+function addToHerb(g) {
+  if (!g) return;
+  if (herbarium.some(x => toCode(x.g) === toCode(g))) { toast("Diese Probe ist schon im Herbarium"); return; }
+  herbarium.unshift({ g: g.slice(), gen: state.gen, t: Date.now() });
+  herbarium = herbarium.slice(0, 60); saveHerb(); renderHerb();
+  const sp = speciesName(g); toast(`✦ ${sp.genus} ${sp.epithet} gesammelt`);
+}
+function renderHerb() {
+  const el = $("herb");
+  if (!herbarium.length) { el.innerHTML = '<p class="hint">Noch leer. Wähle eine Probe und klicke „Favorit sammeln“.</p>'; return; }
+  el.innerHTML = herbarium.map((x, i) => {
+    const d = decode(x.g), sp = speciesName(x.g);
+    return `<div class="hitem"><span class="hsw" style="background:${d.c.bg}"><i style="background:${d.c.accent}"></i></span>
+      <span class="hname"><b>${sp.genus} ${sp.epithet}</b><small>Gen ${x.gen} · ${new Date(x.t).toLocaleDateString("de-DE")}</small></span>
+      <button class="mini" data-hload="${i}" type="button" title="Neue Generation aus dieser Probe züchten">Züchten</button>
+      <button class="mini" data-hrm="${i}" type="button" aria-label="Aus dem Herbarium entfernen">✕</button></div>`;
+  }).join("");
+}
+function bindHerb() {
+  loadHerb(); renderHerb();
+  $("herb-add").addEventListener("click", () => addToHerb(state.pop[state.selected.length ? state.selected[0] : 0]));
+  $("m-herb").addEventListener("click", () => addToHerb(state.pop[state.modalIdx]));
+  $("herb").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.hrm !== undefined) { herbarium.splice(+b.dataset.hrm, 1); saveHerb(); renderHerb(); return; }
+    const g = herbarium[+b.dataset.hload].g;
+    if (!canBreed()) return;
+    countUse(); renderPro();
+    pushHistory([g]);
+    state.pop = nextGeneration([g], state.rate, state.locked); state.selected = [0]; state.gen++; state.justEvolved = true;
+    renderCards(); syncHash(); toast("Neue Generation aus dem Herbarium");
+  });
+}
+
+/* ---- Gen-Editor (Pro): alle Gene direkt einstellen ---- */
+function geneValueName(k, v) {
+  const n = GENES[k], at = list => list[idx(list, v)];
+  if (n === "hue") return `${Math.round(v / 255 * 360)}°`;
+  if (n === "harmony") return pick(HARMONIES, v)[0];
+  if (n === "mode") return v > 168 ? "Dunkel" : "Hell";
+  if (n === "fonts") return pick(FONTS, v).d;
+  if (n === "hero") return at(HEROES);
+  if (n === "features") return at(FEATS);
+  if (n === "button") return BUTTONS[v >> 6];
+  if (n === "deco") return at(DECOS);
+  if (n === "nav") return at(NAVS);
+  if (n === "divider") return at(DIVIDERS);
+  if (n === "headline") return at(HEADLINES);
+  if (n === "rhythm") return at(RHYTHMS);
+  if (n === "motion") return at(MOTIONS);
+  if (n === "radius") return `${Math.round(Math.pow(v / 255, 1.4) * 30)} px`;
+  if (n === "width") return `${Math.round(940 + v / 255 * 300)} px`;
+  return String(v);
+}
+function renderGeneEditor() {
+  const el = $("geneditor");
+  if (!pro.active) {
+    el.innerHTML = `<div class="ge-lock"><span>Stelle jedes der 20 Gene deines Favoriten direkt ein – Layout, Schrift, Farben, Übergänge, Animation.</span><button class="btn" id="ge-unlock" type="button">Mit Pro freischalten</button></div>`;
+    $("ge-unlock").addEventListener("click", () => openPaywall("Der Gen-Editor ist in Genom Pro enthalten."));
+    renderGeneEditor.lead = -1; return;
+  }
+  const lead = state.selected.length ? state.selected[0] : 0, g = state.pop[lead], sp = speciesName(g);
+  renderGeneEditor.lead = lead;
+  el.innerHTML = `<p class="ge-head">Bearbeitet: Probe ${String(lead + 1).padStart(2, "0")} · <b>${sp.genus} ${sp.epithet}</b></p>` +
+    GROUPS.map(grp => `<p class="ge-grp">${grp.label}</p>` + grp.genes.map(n => {
+      const k = G[n];
+      return `<label class="gene" style="--h:${Math.round(k * 360 / GENES.length)}"><span>${GENE_LABELS[k]}</span><input type="range" min="0" max="255" value="${g[k]}" data-gene="${k}"><output>${esc(geneValueName(k, g[k]))}</output></label>`;
+    }).join("")).join("");
+}
+function bindGeneEditor() {
+  let t;
+  $("geneditor").addEventListener("input", e => {
+    const k = e.target.dataset && e.target.dataset.gene; if (k === undefined || !pro.active) return;
+    const lead = renderGeneEditor.lead < 0 ? 0 : renderGeneEditor.lead, v = +e.target.value;
+    state.pop[lead][+k] = v;
+    e.target.nextElementSibling.textContent = geneValueName(+k, v);
+    clearTimeout(t); t = setTimeout(() => { renderCards(); syncHash(); }, 140);
+  });
+}
+
+/* ---- Vergleich: zwei Proben mit Schieberegler ---- */
+const cmp = { a: -1, b: -1 };
+function openCompare() {
+  if (state.selected.length !== 2) { toast("Wähle genau zwei Proben zum Vergleichen"); return; }
+  [cmp.a, cmp.b] = state.selected;
+  const [ga, gb] = [state.pop[cmp.a], state.pop[cmp.b]], na = speciesName(ga), nb = speciesName(gb);
+  $("cmp-tag-l").textContent = `${String(cmp.a + 1).padStart(2, "0")} · ${na.genus} ${na.epithet}`;
+  $("cmp-tag-r").textContent = `${String(cmp.b + 1).padStart(2, "0")} · ${nb.genus} ${nb.epithet}`;
+  $("cmp-names").textContent = `Probe ${cmp.a + 1} ↔ Probe ${cmp.b + 1}`;
+  setSplit(50);
+  for (const [id, g] of [["cmp-a", ga], ["cmp-b", gb]]) $(id).srcdoc = renderSite(g, state.content, { images: state.images });
+  $("compare").showModal();
+}
+function setSplit(x) {
+  x = Math.max(0, Math.min(100, x));
+  $("cmp-stage").style.setProperty("--x", x + "%");
+  $("cmp-handle").setAttribute("aria-valuenow", Math.round(x));
+}
+function bindCompare() {
+  $("compare-btn").addEventListener("click", openCompare);
+  $("cmp-close").addEventListener("click", () => $("compare").close());
+  const keep = i => { state.selected = [i]; updateSelection(); syncHash(); $("compare").close(); toast(`Probe ${i + 1} behalten`); };
+  $("cmp-left").addEventListener("click", () => keep(cmp.a));
+  $("cmp-right").addEventListener("click", () => keep(cmp.b));
+  const h = $("cmp-handle"), stage = $("cmp-stage");
+  const move = e => { const r = stage.getBoundingClientRect(); setSplit((e.clientX - r.left) / r.width * 100); };
+  h.addEventListener("pointerdown", e => { h.setPointerCapture(e.pointerId); move(e); });
+  h.addEventListener("pointermove", e => { if (h.hasPointerCapture(e.pointerId)) move(e); });
+  h.addEventListener("keydown", e => {
+    const now = +h.getAttribute("aria-valuenow");
+    if (e.key === "ArrowLeft") { setSplit(now - 4); e.preventDefault(); }
+    if (e.key === "ArrowRight") { setSplit(now + 4); e.preventDefault(); }
+  });
+  // Gekoppeltes Scrollen: beide Seiten bleiben an derselben relativen Stelle
+  let syncing = false;
+  const link = (from, to) => $(from).addEventListener("load", () => {
+    try {
+      $(from).contentWindow.addEventListener("scroll", () => {
+        if (syncing) return; syncing = true;
+        const fw = $(from).contentWindow, tw = $(to).contentWindow;
+        const fh = fw.document.documentElement.scrollHeight - fw.innerHeight, th = tw.document.documentElement.scrollHeight - tw.innerHeight;
+        tw.scrollTo(0, fh > 0 ? fw.scrollY / fh * th : 0);
+        requestAnimationFrame(() => { syncing = false; });
+      }, { passive: true });
+    } catch { /* ohne Kopplung */ }
+  });
+  link("cmp-a", "cmp-b"); link("cmp-b", "cmp-a");
 }
 
 /* ---- Gen-Labor: Helix, Partikelfeld, Genetik-Anzeigen ---- */
@@ -1959,7 +2246,8 @@ const PRESETS = {
     hours: "Mo–Fr: 09:00–18:00\nSa–So: geschlossen",
     on: ["leistungen", "zahlen", "preise", "stimmen", "faq", "kontakt"] },
 };
-const CONTENT_FIELDS = { name: "c-name", tagline: "c-tagline", about: "c-about", email: "c-email" };
+const CONTENT_FIELDS = { name: "c-name", tagline: "c-tagline", about: "c-about", email: "c-email",
+  address: "c-address", phone: "c-phone", whatsapp: "c-wa", instagram: "c-ig", facebook: "c-fb", tiktok: "c-tt", linkedin: "c-li" };
 const LEGAL_FIELDS = { legalName: "l-name", legalAddress: "l-address", legalRep: "l-rep", legalPhone: "l-phone", legalRegister: "l-register", legalVat: "l-vat", host: "l-host" };
 function updateLegalStatus() {
   const miss = missingLegal(state.content), el = $("legal-status"), priv = state.content.private;
@@ -2180,11 +2468,13 @@ function bindContent() {
   $("modal").addEventListener("click", e => { if (e.target === $("modal")) $("modal").close(); });
 
   document.addEventListener("keydown", e => {
-    if (e.target.closest("input, textarea, select") || e.metaKey || e.ctrlKey || e.altKey || $("modal").open || $("paywall").open) return;
+    if (e.target.closest("input, textarea, select") || e.metaKey || e.ctrlKey || e.altKey || $("modal").open || $("paywall").open || $("compare").open) return;
     if (/^[1-6]$/.test(e.key)) toggleSelect(+e.key - 1);
     else if (e.key === "Enter" && !e.target.closest("button, [role=button]")) evolve();
     else if (e.key.toLowerCase() === "r") reroll();
     else if (e.key.toLowerCase() === "z") undo();
+    else if (e.key.toLowerCase() === "s") addToHerb(state.pop[state.selected.length ? state.selected[0] : 0]);
+    else if (e.key.toLowerCase() === "v") openCompare();
   });
 }
 
@@ -2200,7 +2490,7 @@ function bindContent() {
   renderCards();
   syncHash();
   try { startField(); } catch { /* Animation ist optional */ }
-  bindPaywall(); renderPro(); loadLicense();
+  bindPaywall(); bindHerb(); bindGeneEditor(); bindCompare(); renderPro(); renderGeneEditor(); loadLicense().then(renderGeneEditor);
   if (shared) toast("Geteiltes Genom geladen");
   else if (restored) toast(`Willkommen zurück – Generation ${state.gen}`);
 })();

@@ -42,6 +42,22 @@ genom/
 - **Scan-Effekt** beim Evolvieren, holografische Ränder für Favoriten, Partikelnetz im Hintergrund.
 - Alle Animationen ruhen bei „Bewegung reduzieren“.
 
+## Werkzeuge im Labor
+
+- **Herbarium** (Tab Evolution, Taste `S`): Lieblingsdesigns sammeln – sie bleiben über alle
+  Generationen erhalten und lassen sich jederzeit weiterzüchten.
+- **Vergleich** (Taste `V`, genau zwei Proben wählen): beide Websites übereinander, Trennlinie
+  ziehen, beide scrollen gekoppelt mit; danach „Linke“ oder „Rechte behalten“.
+- **Gen-Editor** (Pro): alle 20 Gene mit Reglern direkt einstellen, die Probe ändert sich live.
+
+## Extras in jeder Website
+
+- **Hell/Dunkel-Schalter** für Besucher (Wahl wird gemerkt, Kontraste geprüft).
+- **WhatsApp-Chat-Button**, **Social-Links** (Instagram, Facebook, TikTok, LinkedIn),
+  **Adresse und Telefon** mit „Route planen“ (OpenStreetMap).
+- **SEO-Paket**: Vorschau beim Teilen (Open Graph), Favicon aus dem Logo und Firmendaten für
+  Google (schema.org LocalBusiness inkl. Öffnungszeiten).
+
 ## Neun Bereiche – jeder kann etwas anderes
 
 Im Tab **Bereiche** schaltest du Bereiche ein und aus, änderst die Reihenfolge und bearbeitest ihre Inhalte.
