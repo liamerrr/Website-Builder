@@ -98,3 +98,54 @@ Mit dem Schalter **Privates Projekt** entfallen Impressum und Datenschutz für �
   ohne Internet fällt sie auf Systemschriften zurück.
 - **WYSIWYG-Export**: Vorschau und Download nutzen denselben Renderer; die exportierte Seite ist
   eigenständig, responsiv und enthält ihren Genom-Code im `<meta name="generator">`.
+
+## Genom Pro – 10 € im Monat
+
+| Kostenlos | Genom Pro (10 € / Monat) |
+|---|---|
+| Inhalte, Vorlagen, alle Layouts ansehen | alles aus „Kostenlos“ |
+| Proben durchleuchten, groß ansehen | **unbegrenzt** evolvieren |
+| bis Generation 5 züchten | fertige Websites **herunterladen** |
+| Genom-Code teilen | **HTML kopieren** |
+
+Die Freischaltung funktioniert ohne eigenen Server: Jeder Kunde bekommt einen **signierten
+Lizenzschlüssel** (`GENOM-…`). Der Builder prüft die Signatur (ECDSA P-256) und das Ablaufdatum
+direkt im Browser. Schlüssel können nicht gefälscht oder verlängert werden, ohne den privaten
+Schlüssel zu kennen.
+
+### Einrichten (einmalig, braucht Node.js)
+
+```bash
+node tools/lizenz.mjs einrichten --neu   # eigenes Schlüsselpaar erzeugen
+```
+
+Das legt `tools/lizenz-privat.jwk` an (steht in `.gitignore` – **niemals veröffentlichen, Backup
+machen**) und trägt den öffentlichen Schlüssel in `genom/index.html` ein.
+
+Dann in `genom/index.html` bei `const SHOP` den Zahlungslink eintragen:
+
+```js
+checkoutUrl: "https://buy.stripe.com/…",   // oder ein Lemon-Squeezy-Checkout
+```
+
+Ein Abo-Produkt über 10 € pro Monat legst du bei **Stripe** (Payment Link) oder **Lemon Squeezy**
+an. Lemon Squeezy tritt als Verkäufer auf und kümmert sich um die Umsatzsteuer in der EU.
+
+### Verkaufen
+
+Nach jeder Zahlung bzw. Verlängerung:
+
+```bash
+node tools/lizenz.mjs neu kunde@mail.de 31   # Schlüssel für 31 Tage
+node tools/lizenz.mjs pruefen GENOM-…         # zeigt, für wen und bis wann er gilt
+```
+
+Den Schlüssel schickst du dem Kunden per E-Mail. Er fügt ihn im Pro-Fenster ein.
+
+### Gut zu wissen
+
+- Die Prüfung läuft im Browser. Wer den Quellcode selbst verändert, kann die Sperre umgehen –
+  für die allermeisten Kunden ist das keine Option, eine absolute Sperre gibt es aber nur mit Server.
+- Lizenzprüfung braucht `https` oder das Öffnen als lokale Datei.
+- Wer verkauft, braucht in Deutschland u. a. Gewerbeanmeldung, Impressum, AGB, Widerrufsbelehrung
+  und Datenschutzerklärung. Zahlungsanbieter verlangen Volljährigkeit (oder ein Konto der Eltern).

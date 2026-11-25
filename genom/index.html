@@ -244,6 +244,44 @@
   .toast { background: rgba(10,14,26,.92); color: var(--text); border: 1px solid rgba(110,240,255,.35); box-shadow: 0 0 30px -8px var(--glow); font-family: var(--mono); font-size: 12.5px; font-weight: 500; }
   kbd { font-family: var(--mono); }
 
+  /* ===== Genom Pro ===== */
+  .pro-btn { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; }
+  .pro-btn.free { border-color: rgba(255,122,217,.5); color: #ffc1ee; }
+  .pro-btn.free:hover { box-shadow: 0 0 26px -6px rgba(255,122,217,.8); }
+  .pro-btn.active { background: var(--holo); color: #050816; border-color: transparent; animation: spinA 6s linear infinite; font-weight: 600; }
+  .quota { font-family: var(--mono); font-size: 11.5px; color: var(--muted); display: inline-flex; align-items: center; gap: 8px; margin-left: 10px; }
+  .quota .q { display: inline-flex; gap: 3px; }
+  .quota .q i { width: 14px; height: 6px; border-radius: 2px; background: var(--line); }
+  .quota .q i.used { background: var(--holo); animation: spinA 4s linear infinite; }
+  .quota button { all: unset; cursor: pointer; color: #ffc1ee; text-decoration: underline; text-underline-offset: 3px; }
+  .locked-badge { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; margin-left: 6px; padding: 1px 6px; border-radius: 999px; border: 1px solid rgba(255,122,217,.5); color: #ffc1ee; }
+  dialog.paywall { width: min(520px, calc(100vw - 32px)); height: fit-content; max-height: calc(100vh - 32px); margin: auto; border-radius: 22px; overflow: auto; padding: 0;
+    background: rgba(9,12,24,.92); border: 1px solid var(--line); box-shadow: 0 0 0 1px rgba(157,140,255,.25), 0 40px 120px -30px rgba(157,140,255,.7); }
+  .pw { position: relative; padding: 34px 30px 28px; overflow: hidden; }
+  .pw-orb { position: absolute; width: 360px; height: 360px; right: -140px; top: -170px; border-radius: 50%; background: var(--holo); filter: blur(70px); opacity: .35; animation: spinA 10s linear infinite; pointer-events: none; }
+  .pw > *:not(.pw-orb):not(.pw-close) { position: relative; }
+  .pw-close { position: absolute; right: 14px; top: 14px; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: var(--panel-2); z-index: 2; }
+  .pw-reason { font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; color: #ffc1ee; margin: 0 0 10px; min-height: 1em; }
+  .pw h2 { font-size: 34px; margin: 0; letter-spacing: -.01em; }
+  .pw h2 span { background: var(--holo); -webkit-background-clip: text; background-clip: text; color: transparent; animation: spinA 6s linear infinite; }
+  .pw-price { margin: 6px 0 18px; display: flex; align-items: baseline; gap: 8px; }
+  .pw-price b { font-size: 44px; font-family: var(--mono); letter-spacing: -.03em; }
+  .pw-price span { color: var(--muted); font-family: var(--mono); }
+  .pw-list { list-style: none; padding: 0; margin: 0 0 22px; display: grid; gap: 12px; }
+  .pw-list li { display: grid; grid-template-columns: 22px 1fr; column-gap: 10px; }
+  .pw-list li::before { content: "✦"; grid-row: span 2; color: var(--accent); text-shadow: 0 0 10px var(--glow); }
+  .pw-list b { font-weight: 600; }
+  .pw-list span { color: var(--muted); font-size: 12.5px; }
+  .pw-buy { width: 100%; justify-content: center; padding: 13px; font-size: 15px; text-decoration: none; }
+  .pw-buy[aria-disabled=true] { animation: none; background: var(--panel-2); color: var(--muted); box-shadow: none; pointer-events: none; }
+  .pw-note { font-size: 12px; color: var(--muted); text-align: center; margin: 10px 0 20px; }
+  .pw-key { border-top: 1px solid var(--line); padding-top: 18px; }
+  .pw-key label { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .pw-msg { font-family: var(--mono); font-size: 12px; min-height: 1.2em; margin: 8px 0 0; }
+  .pw-msg.ok { color: var(--accent); } .pw-msg.bad { color: var(--danger); }
+  .pw-active { border-top: 1px solid var(--line); padding-top: 18px; }
+  .pw-active p { font-family: var(--mono); color: var(--accent); margin: 0 0 12px; }
+  .paywall.unlocked .pw-orb { animation: spinA 1.2s linear infinite; opacity: .7; }
   /* ===== Proben ===== */
   .probe { gap: 10px; }
   .probe .sp { display: flex; align-items: center; min-width: 0; }
@@ -380,12 +418,40 @@
       <span class="spacer"></span>
       <button class="btn" id="reset" title="Alles zurücksetzen und bei Generation 1 beginnen">Neu starten</button>
       <button class="btn" id="share">Link teilen</button>
+      <button class="btn pro-btn" id="pro-btn" type="button"></button>
     </div>
     <div class="status" id="status"></div>
     <div class="lineage" id="lineage" aria-label="Ahnenreihe"></div>
     <div class="grid" id="grid"></div>
   </main>
 </div>
+
+<dialog id="paywall" class="paywall" aria-labelledby="pw-title">
+  <div class="pw">
+    <button class="pw-close" id="pw-close" type="button" aria-label="Schließen">✕</button>
+    <div class="pw-orb" aria-hidden="true"></div>
+    <p class="pw-reason" id="pw-reason"></p>
+    <h2 id="pw-title">Genom <span>Pro</span></h2>
+    <p class="pw-price"><b id="pw-price"></b><span id="pw-period"></span></p>
+    <ul class="pw-list">
+      <li><b>Unbegrenzt evolvieren</b><span>So viele Generationen, Kreuzungen und Mutationen, wie du willst.</span></li>
+      <li><b>Fertige Websites herunterladen</b><span>Eine Datei, sofort online stellbar, Schriften eingebettet, ohne Google-Verbindung.</span></li>
+      <li><b>HTML kopieren</b><span>Den kompletten Code einer Website mit einem Klick.</span></li>
+      <li><b>Alle 10 Layouts, 9 Bereiche, eigene Bilder</b><span>Inklusive Hologramm, Poster, Magazin, Live-Öffnungszeiten und Kontaktformular.</span></li>
+    </ul>
+    <a class="btn primary pw-buy" id="pw-buy" target="_blank" rel="noopener">Jetzt freischalten</a>
+    <p class="pw-note" id="pw-note">Monatlich kündbar. Nach dem Kauf bekommst du deinen Lizenzschlüssel per E-Mail.</p>
+    <div class="pw-key">
+      <label for="pw-input">Schon gekauft? Lizenzschlüssel eingeben</label>
+      <div class="codebox"><input type="text" id="pw-input" placeholder="GENOM-…" spellcheck="false" autocomplete="off"><button class="btn" id="pw-activate" type="button">Aktivieren</button></div>
+      <p class="pw-msg" id="pw-msg" role="status"></p>
+    </div>
+    <div class="pw-active" id="pw-active" hidden>
+      <p id="pw-active-text"></p>
+      <button class="btn" id="pw-logout" type="button">Lizenz von diesem Gerät entfernen</button>
+    </div>
+  </div>
+</dialog>
 
 <dialog id="modal" aria-label="Vorschau">
   <div class="modal">
@@ -1494,6 +1560,8 @@ function renderLineage() {
   }).join("");
   el.querySelectorAll(".ancestor").forEach(b => b.addEventListener("click", () => {
     const g = state.lineage[+b.dataset.i];
+    if (!canBreed()) return;
+    countUse(); renderPro();
     pushHistory([g]);
     state.pop = nextGeneration([g], 0.25, state.locked);
     state.selected = [0]; state.gen++;
@@ -1515,6 +1583,8 @@ function pushHistory(parents) {
 
 function evolve() {
   if (!state.selected.length) { toast("Wähle zuerst mindestens einen Favoriten"); return; }
+  if (!canBreed()) return;
+  countUse(); renderPro();
   const parents = state.selected.map(i => state.pop[i]);
   pushHistory(parents);
   state.lineage.push(parents[0].slice());
@@ -1525,6 +1595,8 @@ function evolve() {
   renderCards(); syncHash();
 }
 function reroll() {
+  if (!canBreed()) return;
+  countUse(); renderPro();
   pushHistory([]);
   const lead = state.selected.length ? state.pop[state.selected[0]] : state.pop[0];
   state.pop = Array.from({ length: POP }, () => {
@@ -1539,6 +1611,107 @@ function undo() {
   const h = state.history.pop(); if (!h) return;
   state.gen = h.gen; state.pop = h.pop; state.selected = h.selected; state.lineage.length = h.lineageLen;
   renderCards(); syncHash();
+}
+
+/* ---- Genom Pro: Abo, Lizenz, Paywall ---- */
+// ▼ HIER EINSTELLEN ▼  checkoutUrl = dein Zahlungslink (Stripe Payment Link oder Lemon Squeezy Checkout).
+const SHOP = {
+  price: "10 €",
+  period: "/ Monat",
+  checkoutUrl: "",
+  freeGenerations: 5,
+  publicKey: /*PUBKEY*/{"kty":"EC","crv":"P-256","x":"izGgHk6B8pGRodqSTDWY-diN7g-LLadGzHQSJ5JOmWo","y":"UQduHTmaeSIAdtm7vO_Ay2pAw6sk-jUzyIAO7qvPnlw"}/*/PUBKEY*/,
+};
+const LIC_KEY = "genom-lizenz", USE_KEY = "genom-nutzung";
+const fromB64u = str => Uint8Array.from(atob(str.replace(/-/g, "+").replace(/_/g, "/") + "===".slice((str.length + 3) % 4)), ch => ch.charCodeAt(0));
+/** Prüft einen Lizenzschlüssel offline: ECDSA-P-256-Signatur + Ablaufdatum. */
+async function verifyLicense(key) {
+  const m = String(key || "").trim().match(/^GENOM-([A-Za-z0-9_-]+)\.([A-Za-z0-9_-]+)$/);
+  if (!m) return { ok: false, reason: "Das ist kein Genom-Lizenzschlüssel. Er beginnt mit „GENOM-“." };
+  if (!SHOP.publicKey) return { ok: false, reason: "Lizenzen sind in dieser Version noch nicht eingerichtet." };
+  if (!(window.crypto && crypto.subtle)) return { ok: false, reason: "Lizenzen lassen sich nur über eine sichere Verbindung (https) oder als lokale Datei prüfen." };
+  try {
+    const data = fromB64u(m[1]);
+    const pub = await crypto.subtle.importKey("jwk", SHOP.publicKey, { name: "ECDSA", namedCurve: "P-256" }, false, ["verify"]);
+    if (!await crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, pub, fromB64u(m[2]), data))
+      return { ok: false, reason: "Dieser Schlüssel ist ungültig. Prüfe, ob du ihn vollständig kopiert hast." };
+    const p = JSON.parse(new TextDecoder().decode(data));
+    if (!p.x || Date.now() > p.x) return { ok: false, reason: `Dieser Schlüssel ist am ${new Date(p.x).toLocaleDateString("de-DE")} abgelaufen. Verlängere dein Abo für einen neuen.`, payload: p };
+    return { ok: true, payload: p };
+  } catch { return { ok: false, reason: "Dieser Schlüssel konnte nicht gelesen werden." }; }
+}
+const pro = { active: false, email: "", until: 0 };
+function freeUsed() { try { return +localStorage.getItem(USE_KEY) || 0; } catch { return 0; } }
+function countUse() { try { localStorage.setItem(USE_KEY, String(freeUsed() + 1)); } catch { /* egal */ } }
+async function loadLicense() {
+  let key = null; try { key = localStorage.getItem(LIC_KEY); } catch { /* egal */ }
+  if (!key) return;
+  const r = await verifyLicense(key);
+  if (r.ok) Object.assign(pro, { active: true, email: r.payload.e, until: r.payload.x });
+  else if (r.payload) toast("Dein Genom-Pro-Zugang ist abgelaufen");
+  renderPro();
+}
+/** Darf gezüchtet werden? Kostenlos bis SHOP.freeGenerations, danach Pro. */
+function canBreed() {
+  if (pro.active || freeUsed() < SHOP.freeGenerations - 1) return true;
+  openPaywall(`Du hast deine ${SHOP.freeGenerations} kostenlosen Generationen genutzt.`);
+  return false;
+}
+function canExport() {
+  if (pro.active) return true;
+  openPaywall("Herunterladen und HTML-Export sind in Genom Pro enthalten.");
+  return false;
+}
+function renderPro() {
+  const b = $("pro-btn"), left = Math.max(0, SHOP.freeGenerations - 1 - freeUsed());
+  b.className = "btn pro-btn " + (pro.active ? "active" : "free");
+  b.textContent = pro.active ? `PRO · bis ${new Date(pro.until).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit" })}` : `Pro freischalten · ${SHOP.price} ${SHOP.period}`;
+  let q = $("quota");
+  if (!q) { q = Object.assign(document.createElement("span"), { id: "quota", className: "quota" }); $("gen-label").after(q); }
+  q.hidden = pro.active;
+  if (!pro.active) {
+    const total = SHOP.freeGenerations - 1;
+    q.innerHTML = `<span class="q" aria-hidden="true">${Array.from({ length: total }, (_, k) => `<i class="${k < total - left ? "used" : ""}"></i>`).join("")}</span>${left ? `noch ${left} gratis` : `<button type="button" id="quota-open">Limit erreicht – Pro holen</button>`}`;
+    $("quota-open")?.addEventListener("click", () => openPaywall(""));
+  }
+  for (const id of ["m-export", "m-copy"]) {
+    const btn = $(id); btn.querySelector(".locked-badge")?.remove();
+    if (!pro.active) btn.insertAdjacentHTML("beforeend", '<span class="locked-badge">PRO</span>');
+  }
+}
+function openPaywall(reason) {
+  $("pw-reason").textContent = reason || "";
+  $("pw-price").textContent = SHOP.price; $("pw-period").textContent = SHOP.period;
+  const buy = $("pw-buy");
+  if (SHOP.checkoutUrl && /^https:\/\//.test(SHOP.checkoutUrl)) { buy.href = SHOP.checkoutUrl; buy.removeAttribute("aria-disabled"); buy.textContent = `Jetzt für ${SHOP.price} ${SHOP.period} freischalten`; }
+  else { buy.removeAttribute("href"); buy.setAttribute("aria-disabled", "true"); buy.textContent = "Kauf bald verfügbar"; }
+  $("pw-active").hidden = !pro.active;
+  $("pw-active-text").textContent = pro.active ? `✦ Pro aktiv für ${pro.email} bis ${new Date(pro.until).toLocaleDateString("de-DE")}` : "";
+  $("pw-msg").textContent = ""; $("pw-msg").className = "pw-msg";
+  if ($("modal").open) $("modal").close();
+  $("paywall").showModal();
+}
+function bindPaywall() {
+  $("pro-btn").addEventListener("click", () => openPaywall(""));
+  $("pw-close").addEventListener("click", () => $("paywall").close());
+  $("paywall").addEventListener("click", e => { if (e.target === $("paywall")) $("paywall").close(); });
+  const activate = async () => {
+    const msg = $("pw-msg"), r = await verifyLicense($("pw-input").value);
+    msg.className = "pw-msg " + (r.ok ? "ok" : "bad");
+    if (!r.ok) { msg.textContent = r.reason; return; }
+    try { localStorage.setItem(LIC_KEY, $("pw-input").value.trim()); } catch { /* gilt dann nur bis zum Neuladen */ }
+    Object.assign(pro, { active: true, email: r.payload.e, until: r.payload.x });
+    msg.textContent = `Freigeschaltet bis ${new Date(pro.until).toLocaleDateString("de-DE")}. Viel Spaß!`;
+    $("paywall").classList.add("unlocked"); $("pw-input").value = "";
+    renderPro(); toast("✦ Genom Pro ist aktiv");
+    setTimeout(() => { $("paywall").classList.remove("unlocked"); $("paywall").close(); }, 1600);
+  };
+  $("pw-activate").addEventListener("click", activate);
+  $("pw-input").addEventListener("keydown", e => { if (e.key === "Enter") activate(); });
+  $("pw-logout").addEventListener("click", () => {
+    try { localStorage.removeItem(LIC_KEY); } catch { /* egal */ }
+    Object.assign(pro, { active: false, email: "", until: 0 }); renderPro(); $("paywall").close(); toast("Lizenz von diesem Gerät entfernt");
+  });
 }
 
 /* ---- Gen-Labor: Helix, Partikelfeld, Genetik-Anzeigen ---- */
@@ -1992,6 +2165,8 @@ function bindContent() {
   $("code-load").addEventListener("click", () => {
     const g = fromCode($("code-in").value);
     if (!g) { toast("Ungültiger Code – erwartet werden 40 (oder ältere 32) Hex-Zeichen"); return; }
+    if (!canBreed()) return;
+    countUse(); renderPro();
     pushHistory([g]);
     state.pop = nextGeneration([g], state.rate, state.locked); state.selected = [0]; state.gen++;
     renderCards(); syncHash(); toast("Genom geladen");
@@ -1999,13 +2174,13 @@ function bindContent() {
   $("m-close").addEventListener("click", () => $("modal").close());
   $("m-desktop").addEventListener("click", () => setDevice(false));
   $("m-mobile").addEventListener("click", () => setDevice(true));
-  $("m-export").addEventListener("click", () => download(state.pop[state.modalIdx]));
-  $("m-copy").addEventListener("click", async () => copyText(await exportHtml(state.pop[state.modalIdx]), "HTML kopiert" + legalWarning()));
+  $("m-export").addEventListener("click", () => { if (canExport()) download(state.pop[state.modalIdx]); });
+  $("m-copy").addEventListener("click", async () => { if (canExport()) copyText(await exportHtml(state.pop[state.modalIdx]), "HTML kopiert" + legalWarning()); });
   $("m-select").addEventListener("click", () => { toggleSelect(state.modalIdx); $("modal").close(); });
   $("modal").addEventListener("click", e => { if (e.target === $("modal")) $("modal").close(); });
 
   document.addEventListener("keydown", e => {
-    if (e.target.closest("input, textarea, select") || e.metaKey || e.ctrlKey || e.altKey || $("modal").open) return;
+    if (e.target.closest("input, textarea, select") || e.metaKey || e.ctrlKey || e.altKey || $("modal").open || $("paywall").open) return;
     if (/^[1-6]$/.test(e.key)) toggleSelect(+e.key - 1);
     else if (e.key === "Enter" && !e.target.closest("button, [role=button]")) evolve();
     else if (e.key.toLowerCase() === "r") reroll();
@@ -2025,6 +2200,7 @@ function bindContent() {
   renderCards();
   syncHash();
   try { startField(); } catch { /* Animation ist optional */ }
+  bindPaywall(); renderPro(); loadLicense();
   if (shared) toast("Geteiltes Genom geladen");
   else if (restored) toast(`Willkommen zurück – Generation ${state.gen}`);
 })();
