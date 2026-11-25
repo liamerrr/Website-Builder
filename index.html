@@ -31,7 +31,7 @@
   .group h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin: 0 0 10px; font-weight: 600; }
   label.field { display: block; margin-bottom: 10px; }
   label.field span { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
-  input[type=text], input[type=email], textarea {
+  input[type=text], input[type=email], textarea, select {
     width: 100%; background: var(--panel-2); border: 1px solid var(--line); border-radius: 9px; padding: 8px 10px; outline: none;
   }
   input[type=text]:focus, input[type=email]:focus, textarea:focus { border-color: var(--accent); }
@@ -131,6 +131,7 @@
 
     <div class="group">
       <h2>Inhalt</h2>
+      <label class="field"><span>Branchen-Vorlage</span><select id="preset"><option value="">– Vorlage wählen –</option></select></label>
       <label class="field"><span>Name</span><input type="text" id="c-name"></label>
       <label class="field"><span>Slogan</span><input type="text" id="c-tagline"></label>
       <label class="field"><span>Beschreibung</span><textarea id="c-about" rows="3"></textarea></label>
@@ -176,6 +177,7 @@
       <button class="btn" id="reroll">Neu würfeln <kbd>R</kbd></button>
       <button class="btn" id="undo">Zurück <kbd>Z</kbd></button>
       <span class="spacer"></span>
+      <button class="btn" id="reset" title="Alles zurücksetzen und bei Generation 1 beginnen">Neu starten</button>
       <button class="btn" id="share">Link teilen</button>
     </div>
     <div class="status" id="status"></div>
@@ -658,7 +660,7 @@ function renderLineage() {
     pushHistory([g]);
     state.pop = nextGeneration([g], 0.25, state.locked);
     state.selected = [0]; state.gen++;
-    renderCards(); toast(`Zurück zum Vorfahren aus Generation ${+b.dataset.i + 1}`);
+    renderCards(); syncHash(); toast(`Zurück zum Vorfahren aus Generation ${+b.dataset.i + 1}`);
   }));
   el.scrollLeft = el.scrollWidth;
 }
@@ -666,7 +668,7 @@ function renderLineage() {
 function toggleSelect(i) {
   const k = state.selected.indexOf(i);
   k >= 0 ? state.selected.splice(k, 1) : state.selected.push(i);
-  updateSelection();
+  updateSelection(); syncHash();
 }
 
 function pushHistory(parents) {
@@ -727,8 +729,66 @@ async function copyText(t, msg) {
   catch { const ta = Object.assign(document.createElement("textarea"), { value: t }); document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); toast(msg); }
 }
 
+/* ---- Automatisch speichern (nur in diesem Browser) ---- */
+const STORE_KEY = "genom-v1";
+function save() {
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify({
+      gen: state.gen, pop: state.pop, selected: state.selected, lineage: state.lineage,
+      content: state.content, rate: state.rate, locked: [...state.locked],
+    }));
+  } catch { /* Speicher nicht verfügbar – App funktioniert trotzdem */ }
+}
+function load() {
+  try {
+    const s = JSON.parse(localStorage.getItem(STORE_KEY) || "null");
+    const valid = g => Array.isArray(g) && g.length === GENES.length && g.every(x => Number.isInteger(x) && x >= 0 && x < 256);
+    if (!s || !Array.isArray(s.pop) || s.pop.length !== POP || !s.pop.every(valid)) return false;
+    state.pop = s.pop;
+    state.gen = Number.isInteger(s.gen) && s.gen > 0 ? s.gen : 1;
+    state.selected = (s.selected || []).filter(i => Number.isInteger(i) && i >= 0 && i < POP);
+    state.lineage = (s.lineage || []).filter(valid).slice(-100);
+    if (s.content && typeof s.content === "object") for (const k of Object.keys(DEFAULT_CONTENT)) if (typeof s.content[k] === "string") state.content[k] = s.content[k];
+    if (typeof s.rate === "number") state.rate = Math.min(0.9, Math.max(0.05, s.rate));
+    state.locked = new Set((s.locked || []).filter(id => GROUPS.some(g => g.id === id)));
+    return true;
+  } catch { return false; }
+}
+
+/* ---- Branchen-Vorlagen ---- */
+const PRESETS = {
+  atelier: { label: "Innenarchitektur", ...DEFAULT_CONTENT },
+  cafe: { label: "Café & Bäckerei", name: "Morgenrot Café", tagline: "Guter Kaffee braucht Zeit. Wir nehmen sie uns.",
+    about: "Wir rösten unsere Bohnen selbst und backen jeden Morgen frisch. Ein Ort zum Ankommen, Lesen und Bleiben – mitten im Viertel.",
+    features: "Eigene Röstung: Kleine Chargen, fair gehandelt, jede Woche frisch.\nHausgebackenes: Sauerteigbrot, Zimtschnecken und saisonale Kuchen.\nCatering: Frühstück und Kaffeebar für Büros und Feiern.",
+    email: "hallo@morgenrot-cafe.de" },
+  foto: { label: "Fotografie", name: "Studio Nordlicht", tagline: "Bilder, die bleiben, wenn der Moment vorbei ist.",
+    about: "Ich fotografiere Menschen, Marken und Momente – ehrlich, natürlich und ohne steife Posen. Jedes Shooting beginnt mit einem Gespräch.",
+    features: "Porträts: Natürliche Bilder für Bewerbung, Website und Social Media.\nHochzeiten: Ganztägige Begleitung mit Blick fürs Unauffällige.\nBusiness: Team-, Produkt- und Reportagefotografie für Unternehmen.",
+    email: "kontakt@studio-nordlicht.de" },
+  handwerk: { label: "Handwerk", name: "Holzwerk Berger", tagline: "Möbel, die Generationen überdauern.",
+    about: "Seit drei Generationen bauen wir Möbel aus heimischem Massivholz – maßgefertigt, reparierbar und mit ehrlichem Handwerk.",
+    features: "Maßmöbel: Tische, Regale und Schränke exakt für deinen Raum.\nInnenausbau: Treppen, Türen und Einbauten aus einer Hand.\nRestaurierung: Wir geben alten Lieblingsstücken neues Leben.",
+    email: "werkstatt@holzwerk-berger.de" },
+  praxis: { label: "Praxis & Gesundheit", name: "Physio Balance", tagline: "Bewegung ist die beste Medizin.",
+    about: "Unser Team begleitet dich auf dem Weg zurück zu schmerzfreier Bewegung – mit Zeit, Fachwissen und einem individuellen Plan.",
+    features: "Physiotherapie: Gezielte Behandlung nach Verletzung oder Operation.\nManuelle Therapie: Sanfte Techniken bei Rücken- und Gelenkschmerzen.\nPrävention: Kurse und Training, damit es gar nicht erst wehtut.",
+    email: "termin@physio-balance.de" },
+  tech: { label: "Software & Agentur", name: "Kodex Labs", tagline: "Software, die einfach funktioniert.",
+    about: "Wir entwickeln Web-Apps und digitale Produkte für Unternehmen, die mehr wollen als eine Vorlage. Schnell, sicher und durchdacht.",
+    features: "Web-Apps: Individuelle Anwendungen von der Idee bis zum Launch.\nUX-Design: Oberflächen, die Menschen gerne benutzen.\nBetreuung: Wartung, Hosting und Weiterentwicklung aus einer Hand.",
+    email: "hello@kodex-labs.de" },
+};
+const CONTENT_FIELDS = { name: "c-name", tagline: "c-tagline", about: "c-about", features: "c-features", email: "c-email" };
+function applyPreset(key) {
+  const p = PRESETS[key]; if (!p) return;
+  for (const [k, id] of Object.entries(CONTENT_FIELDS)) { state.content[k] = p[k]; $(id).value = p[k]; }
+  renderCards(); syncHash(); toast(`Vorlage „${p.label}" geladen`);
+}
+
 /* ---- Teilen über URL ---- */
 function syncHash() {
+  save();
   const lead = state.selected.length ? state.pop[state.selected[0]] : state.pop[0];
   const changed = JSON.stringify(state.content) !== JSON.stringify(DEFAULT_CONTENT);
   const h = `g=${toCode(lead)}` + (changed ? `&c=${encodeURIComponent(JSON.stringify(state.content))}` : "");
@@ -742,9 +802,11 @@ function readHash() {
 
 /* ---- Inhalt & Steuerung ---- */
 function bindContent() {
-  const fields = { name: "c-name", tagline: "c-tagline", about: "c-about", features: "c-features", email: "c-email" };
   let t;
-  for (const [k, id] of Object.entries(fields)) {
+  const sel = $("preset");
+  for (const [k, p] of Object.entries(PRESETS)) sel.appendChild(Object.assign(document.createElement("option"), { value: k, textContent: p.label }));
+  sel.addEventListener("change", () => { applyPreset(sel.value); sel.value = ""; });
+  for (const [k, id] of Object.entries(CONTENT_FIELDS)) {
     $(id).value = state.content[k];
     $(id).addEventListener("input", e => {
       state.content[k] = e.target.value;
@@ -753,16 +815,23 @@ function bindContent() {
   }
   const locks = $("locks");
   GROUPS.forEach(grp => {
-    const b = Object.assign(document.createElement("button"), { className: "chip-toggle", textContent: grp.label });
-    b.setAttribute("aria-pressed", "false");
+    const b = Object.assign(document.createElement("button"), { className: "chip-toggle" });
+    const paint = () => { const on = state.locked.has(grp.id); b.setAttribute("aria-pressed", on); b.textContent = (on ? "🔒 " : "") + grp.label; };
     b.addEventListener("click", () => {
       state.locked.has(grp.id) ? state.locked.delete(grp.id) : state.locked.add(grp.id);
-      b.setAttribute("aria-pressed", state.locked.has(grp.id));
-      b.textContent = (state.locked.has(grp.id) ? "🔒 " : "") + grp.label;
+      paint(); save();
     });
+    paint();
     locks.appendChild(b);
   });
-  $("rate").addEventListener("input", e => { state.rate = +e.target.value; $("rate-out").textContent = Math.round(state.rate * 100) + "%"; });
+  const showRate = () => { $("rate").value = state.rate; $("rate-out").textContent = Math.round(state.rate * 100) + "%"; };
+  showRate();
+  $("rate").addEventListener("input", e => { state.rate = +e.target.value; showRate(); save(); });
+  $("reset").addEventListener("click", () => {
+    if (!confirm("Alles zurücksetzen? Deine Ahnenreihe und Inhalte gehen verloren.")) return;
+    try { localStorage.removeItem(STORE_KEY); } catch { /* egal */ }
+    location.hash = ""; location.reload();
+  });
   $("evolve").addEventListener("click", evolve);
   $("reroll").addEventListener("click", reroll);
   $("undo").addEventListener("click", undo);
@@ -783,7 +852,7 @@ function bindContent() {
   $("modal").addEventListener("click", e => { if (e.target === $("modal")) $("modal").close(); });
 
   document.addEventListener("keydown", e => {
-    if (e.target.closest("input, textarea") || e.metaKey || e.ctrlKey || e.altKey || $("modal").open) return;
+    if (e.target.closest("input, textarea, select") || e.metaKey || e.ctrlKey || e.altKey || $("modal").open) return;
     if (/^[1-6]$/.test(e.key)) toggleSelect(+e.key - 1);
     else if (e.key === "Enter" && !e.target.closest("button, [role=button]")) evolve();
     else if (e.key.toLowerCase() === "r") reroll();
@@ -794,12 +863,15 @@ function bindContent() {
 /* ---- Start ---- */
 (function init() {
   const shared = readHash();
+  const restored = !shared && load();
   bindContent();
   buildGrid();
-  state.pop = shared ? nextGeneration([shared], 0.3, state.locked) : Array.from({ length: POP }, randomGenome);
-  if (shared) state.selected = [0];
+  if (shared) { state.pop = nextGeneration([shared], 0.3, state.locked); state.selected = [0]; }
+  else if (!restored) state.pop = Array.from({ length: POP }, randomGenome);
   renderCards();
+  syncHash();
   if (shared) toast("Geteiltes Genom geladen");
+  else if (restored) toast(`Willkommen zurück – Generation ${state.gen}`);
 })();
 </script>
 </body>

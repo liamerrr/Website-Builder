@@ -10,7 +10,8 @@ und die nächste Generation entsteht durch **Kreuzung und Mutation** der Favorit
 
 ## So funktioniert's
 
-1. Inhalt eintragen (Name, Slogan, Beschreibung, Leistungen, E-Mail).
+1. Inhalt eintragen (Name, Slogan, Beschreibung, Leistungen, E-Mail) – oder eine **Branchen-Vorlage**
+   wählen (Café, Fotografie, Handwerk, Praxis, Software, Innenarchitektur).
 2. Favoriten anklicken (Tasten `1`–`6`).
 3. **Evolvieren** (`Enter`) – die Gene der Favoriten werden gekreuzt und mutiert.
 4. Wiederholen, bis es passt → Vorschau (Desktop/Mobil) → als fertige HTML-Datei herunterladen.
@@ -29,5 +30,7 @@ und die nächste Generation entsteht durch **Kreuzung und Mutation** der Favorit
 - **Genom-Code**: Jedes Design ist ein 32-stelliger Hex-Code. Teilen per Code oder Link –
   andere züchten von dort weiter.
 - **Ahnenreihe** mit Rücksprung zu jedem Vorfahren, `Z` für Rückgängig, `R` für komplett neu.
+- **Automatisches Speichern**: Generation, Ahnenreihe, Inhalte und Sperren bleiben nach dem
+  Neuladen erhalten (lokal im Browser). „Neu starten" setzt alles zurück.
 - **WYSIWYG-Export**: Vorschau und Download nutzen denselben Renderer; die exportierte Seite ist
   eigenständig, responsiv und enthält ihren Genom-Code im `<meta name="generator">`.
