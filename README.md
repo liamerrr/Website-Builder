@@ -1,5 +1,7 @@
 # Genom – Websites nicht bauen, sondern züchten
 
+> 📋 **Was als Nächstes dran ist:** [AUFGABEN.md](AUFGABEN.md) · 📝 [NOTIZEN.md](NOTIZEN.md) · 🕘 [CHANGELOG.md](CHANGELOG.md)
+
 Ein **evolutionärer Website-Builder**. Statt Vorlagen auszuwählen oder hunderte Regler zu bedienen,
 züchtest du deine Website wie ein Biologe: Du siehst sechs Entwürfe, markierst, was dir gefällt –
 und die nächste Generation entsteht durch **Kreuzung und Mutation** der Favoriten.
