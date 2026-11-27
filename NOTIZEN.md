@@ -79,11 +79,22 @@ Getestet wird mit Playwright (Chromium) gegen die lokale Datei: Laden ohne Fehle
 Export ohne Google-Verbindung, Lizenz gültig / gefälscht / abgelaufen, Bereiche (Zähler, Karussell,
 Lightbox, Formular, Live-Öffnungszeiten), Handy-Breite ohne seitliches Scrollen.
 
-## Zahlen (Stand 25.11.2026)
+## Zahlen (Stand 27.11.2026)
 
-- GitHub, letzte 14 Tage: **0 Seitenaufrufe**, 6 Klone von 5 Quellen (vermutlich automatisch), 1 Stern.
-- claude.ai-Link: privat, nur der Besitzer kann ihn öffnen.
+- GitHub, letzte 14 Tage: **18 Aufrufe von 1 Besucher** (am 25.11., sehr wahrscheinlich der Besitzer),
+  18 Klone von 10 Quellen (überwiegend automatisch), 1 Stern.
+- claude.ai-Link: privat; Besucherzählung eingebaut (siehe unten), bisher 0 Besucher.
 - Verkäufe: noch keine (Zahlungslink nicht eingerichtet).
+
+## Besucheranzeige (claude.ai-Seite)
+
+- Nur der Besitzer sieht oben den Knopf „x online · y Besucher“ und das Besucher-Fenster.
+- Jeder angemeldete Besucher schreibt ein eigenes Dokument `visits/<id>` (erster/letzter Besuch,
+  Anzahl); gespeichert werden nur anonyme IDs, Namen kommen live vom Profil.
+- „Gerade online“ über die Anwesenheit der Seite (`room`).
+- Grenzen: gezählt werden nur Personen ab „Contributor“ bzw. Mitglieder derselben Organisation;
+  reine „Viewer“ und Besucher von außerhalb per öffentlichem Link können nicht schreiben und
+  erscheinen höchstens als „online“. Die lokale Datei und eigene Domains zählen nichts.
 
 ## Links
 

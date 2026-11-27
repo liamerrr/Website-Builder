@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.11 – Besucher
+- Besucheranzeige für den Besitzer: gerade online, Besucher, Besuche, heute – mit Namen
+
 ## 0.10 – Werkzeuge & Website-Extras
 - Herbarium, Vergleich mit Trennlinie, Gen-Editor (Pro)
 - Websites: Hell/Dunkel-Schalter, WhatsApp-Button, Social-Links, Adresse mit Route, SEO-Paket

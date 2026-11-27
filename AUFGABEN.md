@@ -25,8 +25,9 @@ Legende: 🔴 blockiert den Verkauf · 🟠 wichtig · 🟢 Verbesserung · ✅ 
 
 ## 2. Als Nächstes – Produkt
 
-- [ ] 🟠 **Besucherzählung für den Builder** – Plausible oder GoatCounter (ohne Cookies), um zu sehen:
-      Besucher → Gratis-Limit erreicht → Kauf. Stand heute: 0 Aufrufe (siehe NOTIZEN.md).
+- [ ] 🟠 **Besucherzählung unter eigener Domain** – in der claude.ai-Seite gibt es sie schon (nur für
+      dich sichtbar). Für die öffentliche Version: Plausible oder GoatCounter (ohne Cookies), um
+      Besucher → Gratis-Limit → Kauf zu messen.
 - [ ] 🟠 **Lizenzen automatisch verschicken** – Webhook vom Zahlungsanbieter → kleine
       Serverless-Funktion (z. B. Netlify Functions) signiert den Schlüssel und mailt ihn.
       Heute: von Hand mit `node tools/lizenz.mjs neu kunde@mail.de 31`.
@@ -58,6 +59,7 @@ Legende: 🔴 blockiert den Verkauf · 🟠 wichtig · 🟢 Verbesserung · ✅ 
 ## ✅ Erledigt
 
 - ✅ Alle Arbeit auf `main` gebracht (25.11.2026)
+- ✅ Besucheranzeige in der claude.ai-Seite: online, Besucher, Besuche, heute, mit Namen (27.11.2026)
 - ✅ Evolutionärer Builder mit 20-Gen-Genom, Kreuzung, Mutation, Gen-Sperren, Genom-Codes
 - ✅ 10 Hero-Layouts, 5 Leistungs-Layouts, Farbrhythmus, Übergänge, Überschriften-Effekte, Animationen
 - ✅ 9 Bereiche mit eigenen Funktionen (Zähler, Galerie, Preise→Formular, Karussell, FAQ,
