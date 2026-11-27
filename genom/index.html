@@ -284,6 +284,45 @@
   .pw-active p { font-family: var(--mono); color: var(--accent); margin: 0 0 12px; }
   .paywall.unlocked .pw-orb { animation: spinA 1.2s linear infinite; opacity: .7; }
 
+  /* ===== Intro ===== */
+  dialog.intro { width: min(760px, calc(100vw - 32px)); height: fit-content; max-height: calc(100vh - 32px); margin: auto; padding: 0; overflow: auto; border-radius: 26px;
+    background: rgba(6,9,20,.94); border: 1px solid var(--line); box-shadow: 0 0 0 1px rgba(157,140,255,.25), 0 50px 140px -30px rgba(110,240,255,.45); }
+  dialog.intro::backdrop { background: rgba(2,4,10,.7); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+  .in-wrap { position: relative; padding: clamp(26px, 5vw, 48px); overflow: hidden; }
+  .in-wrap > *:not(.in-orb) { position: relative; }
+  .in-orb { position: absolute; width: 520px; height: 520px; left: -160px; top: -260px; border-radius: 50%; background: var(--holo); filter: blur(90px); opacity: .32; animation: spinA 9s linear infinite; pointer-events: none; }
+  .in-kicker { font-family: var(--mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; }
+  .intro h2 { font-size: clamp(34px, 6vw, 58px); line-height: 1.02; margin: 0 0 28px; letter-spacing: -.02em; }
+  .intro h2 span { background: var(--holo); -webkit-background-clip: text; background-clip: text; color: transparent; animation: spinA 5s linear infinite; }
+  .in-steps { list-style: none; padding: 0; margin: 0 0 28px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .in-steps li { background: rgba(26,33,56,.5); border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: grid; gap: 4px; animation: inUp .7s cubic-bezier(.2,.7,.2,1) backwards; }
+  .in-steps li:nth-child(2) { animation-delay: .12s; } .in-steps li:nth-child(3) { animation-delay: .24s; }
+  @keyframes inUp { from { opacity: 0; transform: translateY(16px); } }
+  .in-steps small { color: var(--muted); font-size: 12.5px; }
+  .in-ico { width: 44px; height: 44px; border-radius: 12px; background: rgba(4,8,18,.7); border: 1px solid var(--line); position: relative; margin-bottom: 8px; display: block; }
+  .in-ico i { position: absolute; border-radius: 50%; }
+  .i1 i { inset: 13px; background: #ff7ad9; animation: beat 1.4s ease-in-out infinite; box-shadow: 0 0 14px #ff7ad9; }
+  @keyframes beat { 30% { transform: scale(1.3); } 60% { transform: scale(.95); } }
+  .i2 i { width: 14px; height: 14px; top: 15px; background: #6ef0ff; animation: fuseL 2s ease-in-out infinite; left: 6px; box-shadow: 0 0 12px #6ef0ff; }
+  .i2 i + i { left: auto; right: 6px; background: #9d8cff; animation-name: fuseR; box-shadow: 0 0 12px #9d8cff; }
+  @keyframes fuseL { 50% { transform: translateX(8px); } } @keyframes fuseR { 50% { transform: translateX(-8px); } }
+  .i3 i { left: 15px; top: 10px; width: 14px; height: 20px; border-radius: 3px 3px 7px 7px; background: #ffd27a; animation: drop 1.6s ease-in infinite; box-shadow: 0 0 12px #ffd27a; }
+  @keyframes drop { 0% { transform: translateY(-6px); opacity: 0; } 40% { opacity: 1; } 100% { transform: translateY(8px); opacity: 0; } }
+  .in-q { font-family: var(--mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+  .in-presets { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+  .in-presets button { border: 1px solid var(--line); background: rgba(26,33,56,.55); border-radius: 999px; padding: 9px 15px; }
+  .in-presets button:hover { border-color: var(--accent); box-shadow: 0 0 20px -6px var(--glow); }
+  .in-skip { border: 0; background: var(--holo); color: #050816; font-weight: 700; padding: 13px 22px; border-radius: 12px; animation: spinA 5s linear infinite; }
+  /* ===== Evolutions-Film ===== */
+  .film-stage { position: relative; flex: 1; min-height: 0; border-radius: 12px; overflow: hidden; background: #000; box-shadow: 0 0 0 1px var(--line), 0 40px 120px -30px rgba(157,140,255,.55); }
+  .film-stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #fff; opacity: 0; transition: opacity .9s ease; pointer-events: none; }
+  .film-stage iframe.on { opacity: 1; }
+  .film-cap { position: absolute; left: 16px; bottom: 16px; right: 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; z-index: 2; pointer-events: none; }
+  .film-cap b { font-family: var(--mono); font-size: 13px; background: rgba(4,8,18,.88); border: 1px solid rgba(110,240,255,.4); color: var(--text); padding: 6px 12px; border-radius: 999px; }
+  .film-cap span { display: flex; flex-wrap: wrap; gap: 6px; }
+  .film-cap em { font-style: normal; font-family: var(--mono); font-size: 11px; background: rgba(4,8,18,.82); color: var(--accent); border: 1px solid rgba(110,240,255,.3); padding: 4px 9px; border-radius: 999px; animation: inUp .5s backwards; }
+  #film-range { width: 100%; accent-color: var(--accent); }
+  @media (max-width: 640px) { .in-steps { grid-template-columns: 1fr; } }
   /* ===== Besucher ===== */
   .viewers-btn { font-family: var(--mono); font-size: 12px; display: inline-flex; align-items: center; gap: 8px; }
   .viewers-btn[hidden] { display: none; }
@@ -485,6 +524,7 @@
       <button class="btn" id="reroll">Neu würfeln <kbd>R</kbd></button>
       <button class="btn" id="undo">Zurück <kbd>Z</kbd></button>
       <button class="btn" id="compare-btn" type="button" title="Wähle genau zwei Proben aus">Vergleichen <kbd>V</kbd></button>
+      <button class="btn" id="film-btn" type="button" title="Sieh dir an, wie deine Website entstanden ist">▶ Evolutions-Film</button>
       <span class="spacer"></span>
       <button class="btn" id="reset" title="Alles zurücksetzen und bei Generation 1 beginnen">Neu starten</button>
       <button class="btn" id="share">Link teilen</button>
@@ -509,7 +549,7 @@
       <li><b>Fertige Websites herunterladen</b><span>Eine Datei, sofort online stellbar, Schriften eingebettet, ohne Google-Verbindung.</span></li>
       <li><b>HTML kopieren</b><span>Den kompletten Code einer Website mit einem Klick.</span></li>
       <li><b>Gen-Editor</b><span>Alle 20 Gene direkt mit Reglern einstellen – Gentechnik für Websites.</span></li>
-      <li><b>Alle 10 Layouts, 9 Bereiche, eigene Bilder</b><span>Inklusive Hologramm, Poster, Magazin, Live-Öffnungszeiten und Kontaktformular.</span></li>
+      <li><b>Alle 13 Layouts, 10 Bereiche, eigene Bilder</b><span>Inklusive Hologramm, Kinetik, Collage, Terminal, Live-Öffnungszeiten und Kontaktformular.</span></li>
     </ul>
     <a class="btn primary pw-buy" id="pw-buy" target="_blank" rel="noopener">Jetzt freischalten</a>
     <p class="pw-note" id="pw-note">Monatlich kündbar. Nach dem Kauf bekommst du deinen Lizenzschlüssel per E-Mail.</p>
@@ -522,6 +562,38 @@
       <p id="pw-active-text"></p>
       <button class="btn" id="pw-logout" type="button">Lizenz von diesem Gerät entfernen</button>
     </div>
+  </div>
+</dialog>
+
+<dialog id="intro" class="intro" aria-labelledby="in-title">
+  <div class="in-wrap">
+    <div class="in-orb" aria-hidden="true"></div>
+    <p class="in-kicker">Genom · Gen-Labor für Websites</p>
+    <h2 id="in-title">Websites nicht bauen.<br><span>Züchten.</span></h2>
+    <ol class="in-steps">
+      <li><span class="in-ico i1" aria-hidden="true"><i></i></span><b>Auswählen</b><small>Sechs Proben erscheinen. Klick an, was dir gefällt.</small></li>
+      <li><span class="in-ico i2" aria-hidden="true"><i></i><i></i></span><b>Kreuzen</b><small>Die Gene deiner Favoriten mischen sich, ein paar mutieren.</small></li>
+      <li><span class="in-ico i3" aria-hidden="true"><i></i></span><b>Ernten</b><small>Wiederholen, bis es passt – dann als fertige Website mitnehmen.</small></li>
+    </ol>
+    <p class="in-q">Was baust du?</p>
+    <div class="in-presets" id="in-presets"></div>
+    <button class="in-skip" id="in-skip" type="button">Einfach loslegen →</button>
+  </div>
+</dialog>
+
+<dialog id="film" aria-label="Evolutions-Film">
+  <div class="modal">
+    <div class="modal-bar">
+      <div class="title">Evolutions-Film <code id="film-pos"></code></div>
+      <button class="btn" id="film-play" type="button">❚❚ Pause</button>
+      <button class="btn" id="film-close" type="button" aria-label="Schließen">✕</button>
+    </div>
+    <div class="film-stage" id="film-stage">
+      <iframe id="film-a" title="Generation"></iframe>
+      <iframe id="film-b" title="Generation"></iframe>
+      <div class="film-cap"><b id="film-name"></b><span id="film-diff"></span></div>
+    </div>
+    <input type="range" id="film-range" min="0" max="0" value="0" aria-label="Generation wählen">
   </div>
 </dialog>
 
@@ -580,6 +652,7 @@
 
 <script>
 "use strict";
+const INITIAL_HASH = location.hash;   // vor dem ersten syncHash() merken (z. B. #pro von der Verkaufsseite)
 
 /* =========================================================================
    1. Zufall – deterministisch & reproduzierbar
@@ -668,7 +741,7 @@ const FONTS = [
    5. Dekodierung: Genom → Phänotyp (konkrete Design-Entscheidungen)
    ========================================================================= */
 const HARMONIES = [["Monochrom", 0], ["Komplementär", 180], ["Analog", 38], ["Triade", 120], ["Split-Komplementär", 150]];
-const HEROES = ["Zentriert", "Geteilt", "Riesentitel", "Farbband", "Magazin", "Bento", "Poster", "Laufband", "Typo-Stapel", "Hologramm"];
+const HEROES = ["Zentriert", "Geteilt", "Riesentitel", "Farbband", "Magazin", "Bento", "Poster", "Laufband", "Typo-Stapel", "Hologramm", "Kinetik", "Collage", "Terminal"];
 const FEATS = ["Karten", "Liste", "Zickzack", "Bento", "Tabs"];
 const DIVIDERS = ["Linie", "Welle", "Diagonale", "Zickzack", "Bogen"];
 const HEADLINES = ["Schlicht", "Textmarker", "Kursiv", "Kontur", "Kringel", "Verlauf"];
@@ -832,6 +905,7 @@ ${hasForm ? "<p>Das Kontaktformular sendet keine Daten an unseren Server. Es öf
    ========================================================================= */
 const SECTIONS = [
   { id: "leistungen", label: "Leistungen", nav: "Leistungen", on: true, field: "features", fn: "Karten, Liste oder Zickzack mit Illustrationen – das Genom entscheidet.", hint: "Eine pro Zeile: „Titel: Text“" },
+  { id: "ablauf", label: "Ablauf", nav: "Ablauf", on: true, field: "steps", fn: "Zeitleiste, die sich beim Scrollen Schritt für Schritt füllt.", hint: "Ein Schritt pro Zeile: „Titel: Text“ (2–5 Schritte)" },
   { id: "zahlen", label: "Zahlen & Fakten", nav: null, on: true, field: "stats", fn: "Die Zahlen zählen hoch, sobald man hinscrollt.", hint: "Eine pro Zeile: „Zahl | Beschriftung“, z. B. „1.200+ | Kunden“" },
   { id: "galerie", label: "Galerie", nav: "Galerie", on: false, field: null, fn: "Eigene Bilder; ein Klick öffnet die Großansicht, Pfeiltasten blättern.", hint: "" },
   { id: "ueber", label: "Über uns", nav: "Über uns", on: true, field: null, fn: "Deine Beschreibung als großes Zitat (Text im Tab „Inhalt“).", hint: "" },
@@ -847,7 +921,13 @@ function getSections(content) {
   for (const s of Array.isArray(content.sections) ? content.sections : []) {
     if (s && SECTION_BY_ID[s.id] && !seen.has(s.id)) { seen.add(s.id); out.push({ id: s.id, on: !!s.on }); }
   }
-  for (const s of SECTIONS) if (!seen.has(s.id)) out.push({ id: s.id, on: s.on });
+  // Neue Bereiche an ihrer vorgesehenen Stelle einfügen, nicht ans Ende
+  SECTIONS.forEach((s, i) => {
+    if (seen.has(s.id)) return;
+    const before = SECTIONS.slice(0, i).reverse().find(x => out.some(o => o.id === x.id));
+    const at = before ? out.findIndex(o => o.id === before.id) + 1 : 0;
+    out.splice(at, 0, { id: s.id, on: s.on }); seen.add(s.id);
+  });
   return out;
 }
 const lines = txt => String(txt || "").split("\n").map(l => l.trim()).filter(Boolean);
@@ -903,6 +983,14 @@ const SECTION_RENDER = {
     return `<section class="features rv" id="leistungen"><div class="wrap">
 <div class="sec-head"><h2>${hl("Leistungen")}</h2><p>Was wir für dich tun – klar, ehrlich und mit Sorgfalt.</p></div>
 ${tabs || `<div class="${["fgrid", "flist", "fzigs", "fbento"][d.feats]}">${items}</div>`}</div></section>`;
+  },
+  ablauf({ content }) {
+    const st = parseFeatures(content.steps).slice(0, 5);
+    if (!content.steps || !st.length) return "";
+    return `<section class="process rv" id="ablauf"><div class="wrap">
+<div class="sec-head"><h2>${hl("So läuft es ab")}</h2><p>Schritt für Schritt – ohne Überraschungen.</p></div>
+<ol class="steps" style="--n:${st.length}">${st.map((x, i) => `<li><span class="num">${i + 1}</span><h3>${esc(x.t)}</h3><p>${esc(x.d)}</p></li>`).join("")}</ol>
+</div></section>`;
   },
   zahlen({ g, content }) {
     const stats = lines(content.stats).slice(0, 4).map(parseStat);
@@ -1070,6 +1158,53 @@ function siteScript() {
     addEventListener("scroll", onScroll, { passive: true }); onScroll();
   }
 
+  var fine = window.matchMedia && matchMedia("(hover: hover) and (pointer: fine)").matches;
+  // Kinetik: Buchstaben weichen der Maus aus, ein Lichtkegel folgt
+  var kin = d.querySelector(".h10");
+  if (kin && fine && !reduce) {
+    var ks = [].slice.call(kin.querySelectorAll(".k")), raf = 0, mx = 0, my = 0;
+    kin.addEventListener("pointermove", function (e) {
+      mx = e.clientX; my = e.clientY;
+      var r = kin.getBoundingClientRect();
+      kin.style.setProperty("--mx", (mx - r.left) + "px"); kin.style.setProperty("--my", (my - r.top) + "px");
+      if (raf) return;
+      raf = requestAnimationFrame(function () {
+        raf = 0;
+        ks.forEach(function (k) {
+          var b = k.getBoundingClientRect(), cx = b.left + b.width / 2, cy = b.top + b.height / 2, dx = cx - mx, dy = cy - my, dist = Math.sqrt(dx * dx + dy * dy), f = Math.max(0, 1 - dist / 170);
+          k.style.transform = f ? "translate(" + (dx / (dist || 1) * f * 16).toFixed(1) + "px," + (dy / (dist || 1) * f * 16).toFixed(1) + "px) scale(" + (1 + f * .22).toFixed(3) + ")" : "";
+          k.style.color = f > .45 ? "var(--at)" : "";
+        });
+      });
+    });
+    kin.addEventListener("pointerleave", function () { ks.forEach(function (k) { k.style.transform = ""; k.style.color = ""; }); });
+  }
+  // Terminal: Slogan tippt sich selbst
+  var typed = d.querySelector(".typed");
+  if (typed && !reduce) {
+    var full = typed.getAttribute("data-text") || typed.textContent, pos = 0;
+    typed.setAttribute("aria-label", full); typed.textContent = "";
+    var tick = function () { typed.textContent = full.slice(0, ++pos); if (pos < full.length) setTimeout(tick, 38 + Math.random() * 60); };
+    setTimeout(tick, 500);
+  }
+  // Ablauf: Zeitleiste füllt sich beim Scrollen
+  var steps = d.querySelector(".steps");
+  if (steps) {
+    var items = steps.querySelectorAll("li");
+    var upd = function () {
+      var r = steps.getBoundingClientRect(), p = Math.min(1, Math.max(0, (innerHeight * .75 - r.top) / (r.height + innerHeight * .3)));
+      if (reduce) p = 1;
+      steps.style.setProperty("--p", p.toFixed(3));
+      items.forEach(function (li, i) { li.classList.toggle("done", p >= (items.length > 1 ? i / (items.length - 1) : 0) - .001); });
+    };
+    addEventListener("scroll", upd, { passive: true }); addEventListener("resize", upd); upd();
+  }
+  // Magnetische Buttons
+  if (fine && !reduce) d.querySelectorAll(".btn, .theme-t").forEach(function (b) {
+    b.addEventListener("pointermove", function (e) { var r = b.getBoundingClientRect(); b.style.transform = "translate(" + ((e.clientX - r.left - r.width / 2) * .22).toFixed(1) + "px," + ((e.clientY - r.top - r.height / 2) * .32).toFixed(1) + "px)"; });
+    b.addEventListener("pointerleave", function () { b.style.transform = ""; });
+  });
+
   var tbtns = d.querySelectorAll(".theme-t"), setFlip = function (on) {
     d.documentElement.classList.toggle("flip", on);
     tbtns.forEach(function (b) { b.setAttribute("aria-pressed", on); });
@@ -1224,6 +1359,16 @@ function renderSite(g, content, opts = {}) {
 <div class="glass">${eyebrow}${h1}${leadP}${actions}</div>
 <div class="orbit" aria-hidden="true"><div class="ring"></div><div class="ring r2"><i class="sat"></i></div><div class="core">${artwork(g, d, 0, 500, 500)}</div></div>
 </div></section>`,
+    `<section class="hero h10"><div class="wrap">${eyebrow}<h1 aria-label="${esc(tagline)}"><span aria-hidden="true">${tagline.split(/\s+/).filter(Boolean).map(w => `<span class="w">${[...w].map(ch => `<span class="k">${esc(ch)}</span>`).join("")}</span>`).join(" ")}</span></h1>${leadP}${actions}</div></section>`,
+    `<section class="hero h11"><div class="wrap"><div>${eyebrow}${h1}${leadP}${actions}</div>
+<div class="board" aria-hidden="true">${feats.slice(0, 3).map((x, i) => `<figure class="pola p${i}"><div class="art">${artwork(g, d, 60 + i, 400, 340)}</div><figcaption>${esc(x.t)}</figcaption></figure>`).join("")}
+<span class="sticker"><b>${esc(stat.text)}</b>${esc(stat.label)}</span></div></div></section>`,
+    `<section class="hero h12"><div class="wrap"><div class="term" role="group" aria-label="Willkommen">
+<div class="term-bar" aria-hidden="true"><i></i><i></i><i></i><span>${name.toLowerCase().replace(/\s+/g, "-")} — zsh</span></div>
+<div class="term-body"><p class="cmd" aria-hidden="true"><span class="pr">~ $</span> start --willkommen</p>
+<h1 class="typed" data-text="${esc(tagline)}">${esc(tagline)}</h1>
+${feats.slice(0, 4).map(x => `<p class="out"><span class="ok">✓</span> ${esc(x.t)}</p>`).join("")}
+${leadP}${actions}</div></div></div></section>`,
   ][d.hero];
   const heroEnd = [3, 6, 7].includes(d.hero) ? "band" : "base";
 
@@ -1248,9 +1393,9 @@ function renderSite(g, content, opts = {}) {
   const deco = [
     "",
     `.hero{position:relative;overflow:hidden}.hero::before,.hero::after{content:"";position:absolute;border-radius:50%;filter:blur(60px);z-index:0;pointer-events:none}.hero::before{width:420px;height:420px;background:${c.accent};top:-140px;right:-80px;opacity:.32}.hero::after{width:320px;height:320px;background:${c.tint};bottom:-120px;left:-60px;opacity:.55}.hero .wrap{position:relative;z-index:1}`,
-    `.hero:not(.h3):not(.h6){background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:48px 48px;background-position:-1px -1px}`,
-    `.hero:not(.h3):not(.h6){background:linear-gradient(160deg,var(--bg) 30%,var(--tint))}`,
-    `.hero:not(.h3):not(.h6){background-image:radial-gradient(var(--line) 1.6px,transparent 1.6px);background-size:22px 22px}`,
+    `.hero:not(.h3):not(.h6):not(.h10){background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:48px 48px;background-position:-1px -1px}`,
+    `.hero:not(.h3):not(.h6):not(.h10){background:linear-gradient(160deg,var(--bg) 30%,var(--tint))}`,
+    `.hero:not(.h3):not(.h6):not(.h10){background-image:radial-gradient(var(--line) 1.6px,transparent 1.6px);background-size:22px 22px}`,
   ][d.deco];
   const squiggle = `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 10'><path d='M0 6 Q10 0 20 6 T40 6' fill='none' stroke='${c.accent}' stroke-width='2.6' stroke-linecap='round'/></svg>`)}")`;
   const headline = [
@@ -1362,6 +1507,35 @@ p{margin:0 0 1em}.lead{font-size:1.2rem;color:var(--muted);max-width:38em}
 .h9 .orbit .core{position:absolute;inset:16%;border-radius:50%;overflow:hidden;box-shadow:0 0 70px -10px ${c.accent}}.h9 .orbit .core svg{width:100%;height:100%;display:block}
 .h9 .orbit .ring{position:absolute;inset:4%;border-radius:50%;border:1.5px dashed color-mix(in srgb,var(--fg) 40%,transparent);animation:spin 34s linear infinite}
 .h9 .orbit .r2{inset:-3%;border:2px solid transparent;border-top-color:${c.accent};border-right-color:${c.accent};animation-duration:9s;animation-direction:reverse}
+.h10{text-align:center;overflow:hidden;--mx:50%;--my:40%;background:radial-gradient(520px circle at var(--mx) var(--my),color-mix(in srgb,${c.accent} 22%,transparent),transparent 70%)}
+.h10 h1{font-size:clamp(3rem,10vw,${(d.ratio ** 5.2).toFixed(2)}rem);line-height:1;margin:0 auto .35em;max-width:none}
+.h10 .w{display:inline-block;white-space:nowrap}
+.h10 .k{display:inline-block;transition:transform .35s cubic-bezier(.2,.7,.2,1),color .35s;animation:kwave 1.1s cubic-bezier(.2,.7,.2,1) backwards}
+.h10 .w:nth-child(2n) .k{animation-delay:.08s}.h10 .k:nth-child(3n){animation-delay:.14s}.h10 .k:nth-child(3n+1){animation-delay:.04s}
+@keyframes kwave{from{opacity:0;transform:translateY(.6em) rotate(8deg)}}
+.h10 .lead{margin:0 auto}.h10 .actions{justify-content:center}
+.h11 .wrap{display:grid;grid-template-columns:1fr 1.1fr;gap:40px;align-items:center}
+.h11 .board{position:relative;height:460px}
+.pola{position:absolute;margin:0;width:52%;background:#fff;padding:10px 10px 14px;box-shadow:0 18px 40px -18px rgba(0,0,0,.45);transition:transform .4s cubic-bezier(.2,.7,.2,1),z-index 0s;animation:rise .9s backwards}
+.pola .art{border-radius:2px}.pola .art svg{aspect-ratio:400/340}
+.pola figcaption{font-family:"${f.d}",serif;font-style:italic;font-size:1.05rem;color:#222;margin-top:8px;text-align:center}
+.pola::before{content:"";position:absolute;top:-12px;left:50%;width:84px;height:24px;margin-left:-42px;background:color-mix(in srgb,${c.tint} 75%,transparent);transform:rotate(-4deg);box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.pola.p0{left:0;top:30px;transform:rotate(-7deg);animation-delay:.1s}.pola.p1{right:2%;top:0;transform:rotate(5deg);animation-delay:.22s}.pola.p2{left:24%;bottom:0;transform:rotate(-2deg);animation-delay:.34s}
+.pola:hover{transform:rotate(0) scale(1.05);z-index:5}
+.sticker{position:absolute;right:4%;bottom:14%;z-index:6;width:118px;height:118px;border-radius:50%;background:${c.accent};color:${c.onAccent};display:grid;place-content:center;text-align:center;font-size:.78rem;font-weight:600;line-height:1.2;transform:rotate(12deg);box-shadow:0 10px 30px -10px ${c.accent};animation:wob 6s ease-in-out infinite}
+.sticker b{display:block;font-family:"${f.d}",sans-serif;font-size:1.7rem;font-weight:${d.weight}}
+@keyframes wob{50%{transform:rotate(4deg) scale(1.04)}}
+.h12 .term{max-width:860px;margin:0 auto;background:var(--fg);color:var(--bg);border-radius:${Math.max(10, Math.min(R, 18))}px;overflow:hidden;box-shadow:0 40px 80px -40px rgba(0,0,0,.6)}
+.term-bar{display:flex;align-items:center;gap:7px;padding:12px 16px;border-bottom:1px solid color-mix(in srgb,var(--bg) 18%,transparent);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.75rem;opacity:.85}
+.term-bar i{width:11px;height:11px;border-radius:50%;background:color-mix(in srgb,var(--bg) 35%,transparent)}.term-bar i:first-child{background:${c.accent}}
+.term-bar span{margin-left:auto}
+.term-body{padding:clamp(22px,4vw,44px);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.term-body .cmd,.term-body .out{margin:0 0 .4em;font-size:.95rem;opacity:.85}.term-body .pr{opacity:.7}
+.term-body .ok{color:${c.accent}}
+.term-body h1{font-family:"${f.d}",sans-serif;color:inherit;margin:.3em 0 .6em;min-height:1.1em}
+.term-body h1::after{content:"";display:inline-block;width:.5em;height:.9em;background:${c.accent};margin-left:.08em;vertical-align:-.08em;animation:blink 1s steps(2) infinite}
+.term-body .lead{color:inherit;opacity:.8;margin-top:1.2em}.term-body .more{color:inherit}
+.term-body .btn.outline{color:var(--bg);border-color:var(--bg)}.term-body .btn.link{color:var(--bg)}
 .h9 .sat{position:absolute;top:-8px;left:calc(50% - 7px);width:14px;height:14px;border-radius:50%;background:${c.accent};box-shadow:0 0 18px ${c.accent}}
 
 /* Bereiche */
@@ -1446,6 +1620,13 @@ dialog.lb::backdrop{background:rgba(0,0,0,.88)}
 .faq details p{color:var(--muted);margin:0 0 22px;max-width:46em}
 .hours .split{grid-template-columns:1fr 1fr;align-items:center}
 .nav-r{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(var(--n),1fr);gap:28px;position:relative}
+.steps::before,.steps::after{content:"";position:absolute;top:21px;left:calc(50% / var(--n));right:calc(50% / var(--n));height:3px;border-radius:2px;background:var(--line)}
+.steps::after{right:auto;width:calc((100% - 100% / var(--n)) * var(--p, 0));background:${c.accent};transition:width .25s linear}
+.steps li{position:relative;text-align:center}
+.steps .num{position:relative;z-index:1;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;margin:0 auto 18px;font-weight:700;background:var(--bg);border:3px solid var(--line);color:var(--muted);transition:background .4s,border-color .4s,color .4s,transform .4s}
+.steps li.done .num{background:${c.accent};border-color:${c.accent};color:${c.onAccent};transform:scale(1.08)}
+.steps p{color:var(--muted);margin:0}
 .theme-t{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line);background:transparent;color:var(--fg);cursor:pointer;display:grid;place-items:center;flex:none;transition:transform .4s}
 .theme-t:hover{border-color:var(--fg)}.theme-t[aria-pressed=true]{transform:rotate(180deg)}
 .addr{margin-top:28px;font-size:.98rem;opacity:.9}.addr a{color:inherit}
@@ -1476,7 +1657,8 @@ ${headline}
 
 @media (max-width:860px){
   .nav nav{gap:16px;font-size:.95rem}.n0 .wrap{flex-direction:column;align-items:flex-start;gap:12px}
-  .h1 .wrap,.h2 .row,.h7 .row,.h6 .wrap,.h9 .wrap,.fzig,.frow,.ftabs{grid-template-columns:1fr;gap:20px}.h9 .orbit{max-width:240px}.fzig.rev .art{order:0}
+  .h1 .wrap,.h2 .row,.h7 .row,.h6 .wrap,.h9 .wrap,.h11 .wrap,.fzig,.frow,.ftabs{grid-template-columns:1fr;gap:20px}.h11 .board{height:340px}.sticker{width:96px;height:96px}
+  .steps{grid-template-columns:1fr!important;gap:26px!important;padding-left:58px}.steps::before,.steps::after{left:21px!important;right:auto!important;top:0!important;bottom:0;width:3px!important;height:auto!important}.steps::after{height:calc(var(--p,0)*100%)!important}.steps li{text-align:left!important}.steps .num{position:absolute;left:-58px;margin:0!important}.h9 .orbit{max-width:240px}.fzig.rev .art{order:0}
   .h2 .actions,.h7 .actions{justify-content:flex-start}
   .h4 .mag-grid{grid-template-columns:1fr}.h4 .mag-side{writing-mode:horizontal-tb;transform:none}.h4 .mag-art{margin-top:0}
   .h5 .bento{grid-template-columns:1fr 1fr}.h5 .ta,.h5 .tb{grid-column:1/-1;grid-row:auto}
@@ -1583,6 +1765,7 @@ const DEFAULT_CONTENT = {
   testimonials: "Unsere Wohnung fühlt sich endlich wie ein Zuhause an – heller, ruhiger, einfach richtig. — Clara & Ben, Hamburg\nDas Team hat zugehört, statt seinen Stil durchzudrücken. Genau das hatten wir gesucht. — Dr. Feld, Praxisinhaber",
   faq: "Arbeitet ihr auch mit kleinen Budgets? Ja – oft machen schon Licht und Farbe den größten Unterschied.\nWie lange dauert ein Projekt? Ein Raumkonzept steht in zwei bis drei Wochen, die Umsetzung hängt vom Umfang ab.\nKommt ihr auch außerhalb der Stadt? Ja, deutschlandweit – Anfahrt nach Aufwand.",
   hours: "Mo–Fr: 09:00–18:00\nSa: nach Vereinbarung\nSo: geschlossen",
+  steps: "Kennenlernen: Wir sprechen über Räume, Wünsche und Budget.\nKonzept: Grundriss, Licht und Material als Moodboard.\nUmsetzung: Wir koordinieren Handwerk und Einkauf.\nÜbergabe: Einziehen, ankommen, wohlfühlen.",
   legalName: "", legalAddress: "", legalRep: "", legalPhone: "", legalRegister: "", legalVat: "", host: "",
   address: "", phone: "", whatsapp: "", instagram: "", facebook: "", tiktok: "", linkedin: "",
   private: false,
@@ -1593,7 +1776,7 @@ const state = { gen: 1, pop: [], selected: [], history: [], lineage: [], locked:
 function toast(msg) { const t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), Math.max(1800, msg.length * 55)); }
 
 /* ---- Proben: Artname, Chromosom-Streifen, Durchleuchten ---- */
-const GENERA = ["Centralis", "Bifida", "Gigantea", "Fasciata", "Periodica", "Tessellata", "Placardia", "Currens", "Litterata", "Holographica"];
+const GENERA = ["Centralis", "Bifida", "Gigantea", "Fasciata", "Periodica", "Tessellata", "Placardia", "Currens", "Litterata", "Holographica", "Kinetica", "Collagia", "Terminalis"];
 const EPITHETS = [[15, "rubra"], [45, "aurantia"], [70, "flava"], [160, "viridis"], [200, "cyanea"], [250, "caerulea"], [290, "violacea"], [335, "purpurea"], [361, "rosea"]];
 function speciesName(g) {
   const d = decode(g), hue = g[G.hue] / 255 * 360;
@@ -1734,6 +1917,7 @@ function updateSelection() {
   const lead = n ? state.pop[state.selected[0]] : state.pop[0];
   if (lead) $("code-in").value = toCode(lead);
   $("compare-btn").disabled = n !== 2;
+  $("film-btn").disabled = state.lineage.length < 1;
   if (!(document.activeElement && document.activeElement.dataset && document.activeElement.dataset.gene !== undefined)) renderGeneEditor();
   renderCheck();
 }
@@ -1902,6 +2086,66 @@ function bindPaywall() {
 }
 
 
+
+
+/* ---- Intro beim ersten Besuch ---- */
+const INTRO_KEY = "genom-intro";
+function bindIntro() {
+  const box = $("in-presets");
+  for (const [k, pr] of Object.entries(PRESETS)) {
+    const b = Object.assign(document.createElement("button"), { type: "button", textContent: pr.label });
+    b.addEventListener("click", () => { applyPreset(k); closeIntro(); });
+    box.append(b);
+  }
+  $("in-skip").addEventListener("click", closeIntro);
+  $("intro").addEventListener("close", () => { try { localStorage.setItem(INTRO_KEY, "1"); } catch { /* egal */ } });
+  let seen = false; try { seen = localStorage.getItem(INTRO_KEY) === "1"; } catch { /* zeigen */ }
+  if (!seen && !INITIAL_HASH.includes("g=") && INITIAL_HASH !== "#pro") setTimeout(() => $("intro").showModal(), 350);
+}
+function closeIntro() { $("intro").close(); }
+
+/* ---- Evolutions-Film: die Ahnenreihe als Zeitraffer ---- */
+const film = { frames: [], i: 0, timer: 0, playing: true, front: "film-a" };
+function openFilm() {
+  const lead = state.pop[state.selected.length ? state.selected[0] : 0];
+  film.frames = [...state.lineage.map(g => g.slice()), lead.slice()];
+  if (film.frames.length < 2) { toast("Züchte erst ein paar Generationen – dann gibt es einen Film"); return; }
+  $("film-range").max = film.frames.length - 1;
+  $("film-a").classList.remove("on"); $("film-b").classList.remove("on");
+  film.playing = true; $("film-play").textContent = "❚❚ Pause";
+  $("film").showModal();
+  showFrame(0);
+  scheduleFilm();
+}
+function showFrame(i) {
+  film.i = Math.max(0, Math.min(film.frames.length - 1, i));
+  const g = film.frames[film.i], sp = speciesName(g), back = film.front === "film-a" ? "film-b" : "film-a";
+  const el = $(back);
+  el.onload = () => { el.classList.add("on"); $(film.front).classList.remove("on"); film.front = back; };
+  el.srcdoc = renderSite(g, state.content, { images: state.images });
+  $("film-range").value = film.i;
+  $("film-pos").textContent = `${film.i + 1} / ${film.frames.length}`;
+  $("film-name").textContent = `${film.i === film.frames.length - 1 ? "Heute" : "Generation " + (film.i + 1)} · ${sp.genus} ${sp.epithet}`;
+  const diff = $("film-diff"); diff.textContent = "";
+  if (film.i > 0) {
+    const a = describe(film.frames[film.i - 1]), b = describe(g);
+    const changed = Object.keys(b).filter(k => a[k] !== b[k]).slice(0, 5);
+    const dist = Math.round(geneDistance(film.frames[film.i - 1], g) * 100);
+    for (const t of [`Δ ${dist} %`, ...changed.map(k => `${k}: ${b[k]}`)]) diff.append(Object.assign(document.createElement("em"), { textContent: t }));
+  }
+}
+function scheduleFilm() {
+  clearTimeout(film.timer);
+  if (!film.playing || !$("film").open) return;
+  film.timer = setTimeout(() => { showFrame(film.i + 1 >= film.frames.length ? 0 : film.i + 1); scheduleFilm(); }, reduceMotion ? 4000 : 2600);
+}
+function bindFilm() {
+  $("film-btn").addEventListener("click", openFilm);
+  $("film-close").addEventListener("click", () => $("film").close());
+  $("film").addEventListener("close", () => clearTimeout(film.timer));
+  $("film-play").addEventListener("click", () => { film.playing = !film.playing; $("film-play").textContent = film.playing ? "❚❚ Pause" : "▶ Abspielen"; scheduleFilm(); });
+  $("film-range").addEventListener("input", e => { film.playing = false; $("film-play").textContent = "▶ Abspielen"; clearTimeout(film.timer); showFrame(+e.target.value); });
+}
 
 /* ---- Besucher: nur in der veröffentlichten claude.ai-Seite, nur für den Besitzer sichtbar ---- */
 function agoText(t) {
@@ -2320,9 +2564,9 @@ function loadImages() {
 }
 
 /* ---- Branchen-Vorlagen ---- */
-const PRESET_KEYS = ["name", "tagline", "about", "features", "email", "stats", "prices", "testimonials", "faq", "hours"];
+const PRESET_KEYS = ["name", "tagline", "about", "features", "email", "stats", "prices", "testimonials", "faq", "hours", "steps"];
 const PRESETS = {
-  atelier: { label: "Innenarchitektur", ...DEFAULT_CONTENT, on: ["leistungen", "zahlen", "galerie", "ueber", "preise", "stimmen", "faq", "kontakt"] },
+  atelier: { label: "Innenarchitektur", ...DEFAULT_CONTENT, on: ["leistungen", "ablauf", "zahlen", "galerie", "ueber", "preise", "stimmen", "faq", "kontakt"] },
   cafe: { label: "Café & Bäckerei", name: "Morgenrot Café", tagline: "Guter Kaffee braucht Zeit. Wir nehmen sie uns.",
     about: "Wir rösten unsere Bohnen selbst und backen jeden Morgen frisch. Ein Ort zum Ankommen, Lesen und Bleiben – mitten im Viertel.",
     features: "Eigene Röstung: Kleine Chargen, fair gehandelt, jede Woche frisch.\nHausgebackenes: Sauerteigbrot, Zimtschnecken und saisonale Kuchen.\nCatering: Frühstück und Kaffeebar für Büros und Feiern.",
@@ -2332,7 +2576,8 @@ const PRESETS = {
     testimonials: "Der beste Flat White der Stadt – und die Zimtschnecken sind gefährlich gut. — Lea M., Stammgast\nUnser Team-Frühstück wurde pünktlich und liebevoll geliefert. — Jonas K., Büroleiter",
     faq: "Habt ihr vegane Optionen? Ja – Hafermilch ohne Aufpreis und täglich mindestens zwei vegane Kuchen.\nKann ich reservieren? Unter der Woche nicht nötig, am Wochenende gerne per E-Mail.\nGibt es WLAN? Ja, kostenlos – fragt einfach an der Theke nach dem Passwort.",
     hours: "Mo–Fr: 07:30–18:00\nSa: 08:30–17:00\nSo: 09:00–14:00",
-    on: ["zeiten", "leistungen", "preise", "galerie", "stimmen", "faq", "kontakt"] },
+    steps: "Bestellen: Am Tresen oder per E-Mail für Catering.\nFrisch zubereitet: Wir rösten, backen und brühen vor Ort.\nGenießen: Am Fenster, im Garten oder zum Mitnehmen.",
+    on: ["zeiten", "ablauf", "leistungen", "preise", "galerie", "stimmen", "faq", "kontakt"] },
   foto: { label: "Fotografie", name: "Studio Nordlicht", tagline: "Bilder, die bleiben, wenn der Moment vorbei ist.",
     about: "Ich fotografiere Menschen, Marken und Momente – ehrlich, natürlich und ohne steife Posen. Jedes Shooting beginnt mit einem Gespräch.",
     features: "Porträts: Natürliche Bilder für Bewerbung, Website und Social Media.\nHochzeiten: Ganztägige Begleitung mit Blick fürs Unauffällige.\nBusiness: Team-, Produkt- und Reportagefotografie für Unternehmen.",
@@ -2342,7 +2587,8 @@ const PRESETS = {
     testimonials: "Wir haben uns keine Sekunde wie vor einer Kamera gefühlt – und die Bilder sind magisch. — Sarah & Tim, Brautpaar\nEndlich Teamfotos, die nicht nach Stock-Foto aussehen. — Miriam H., Marketingleiterin",
     faq: "Wann bekomme ich die Bilder? Porträts innerhalb einer Woche, Hochzeiten innerhalb von vier Wochen.\nReist du auch? Ja, deutschlandweit – Anfahrt wird nach Kilometern berechnet.\nDarf ich die Bilder drucken? Natürlich, private Nutzungsrechte sind immer enthalten.",
     hours: "Mo–Fr: 10:00–18:00\nSa: nach Vereinbarung\nSo: geschlossen",
-    on: ["galerie", "leistungen", "preise", "stimmen", "faq", "kontakt"] },
+    steps: "Gespräch: Wir planen Stil, Ort und Ablauf.\nShooting: Entspannt, ohne steife Posen.\nAuswahl: Du wählst deine Favoriten in der Online-Galerie.\nLieferung: Bearbeitete Bilder in voller Auflösung.",
+    on: ["galerie", "ablauf", "leistungen", "preise", "stimmen", "faq", "kontakt"] },
   handwerk: { label: "Handwerk", name: "Holzwerk Berger", tagline: "Möbel, die Generationen überdauern.",
     about: "Seit drei Generationen bauen wir Möbel aus heimischem Massivholz – maßgefertigt, reparierbar und mit ehrlichem Handwerk.",
     features: "Maßmöbel: Tische, Regale und Schränke exakt für deinen Raum.\nInnenausbau: Treppen, Türen und Einbauten aus einer Hand.\nRestaurierung: Wir geben alten Lieblingsstücken neues Leben.",
@@ -2352,7 +2598,8 @@ const PRESETS = {
     testimonials: "Unser Esstisch ist das Herz der Wohnung geworden. Danke für die Geduld bei der Planung! — Familie Wagner\nPünktlich, sauber, perfekt eingepasst – so muss Handwerk sein. — Thomas R., Architekt",
     faq: "Wie lange dauert ein Maßmöbel? Je nach Umfang vier bis acht Wochen ab Freigabe der Planung.\nWelche Hölzer verwendet ihr? Eiche, Nussbaum, Kirsche, Esche und Ahorn – alle aus der Region.\nKommt ihr auch zu mir? Ja, Beratung und Aufmaß machen wir direkt bei dir vor Ort.",
     hours: "Mo–Fr: 07:00–12:00, 13:00–16:30\nSa: 09:00–12:00\nSo: geschlossen",
-    on: ["leistungen", "zahlen", "galerie", "ueber", "preise", "stimmen", "faq", "zeiten", "kontakt"] },
+    steps: "Beratung: Vor Ort, mit Aufmaß und Holzmustern.\nEntwurf: Skizze und Angebot mit Festpreis.\nFertigung: In unserer Werkstatt aus Massivholz.\nMontage: Lieferung und Einbau bei dir.",
+    on: ["leistungen", "ablauf", "zahlen", "galerie", "ueber", "preise", "stimmen", "faq", "zeiten", "kontakt"] },
   praxis: { label: "Praxis & Gesundheit", name: "Physio Balance", tagline: "Bewegung ist die beste Medizin.",
     about: "Unser Team begleitet dich auf dem Weg zurück zu schmerzfreier Bewegung – mit Zeit, Fachwissen und einem individuellen Plan.",
     features: "Physiotherapie: Gezielte Behandlung nach Verletzung oder Operation.\nManuelle Therapie: Sanfte Techniken bei Rücken- und Gelenkschmerzen.\nPrävention: Kurse und Training, damit es gar nicht erst wehtut.",
@@ -2362,7 +2609,8 @@ const PRESETS = {
     testimonials: "Nach drei Monaten wieder schmerzfrei laufen – ich bin unendlich dankbar. — Petra S., Patientin\nKompetent, herzlich und immer pünktlich. Klare Empfehlung! — Daniel F., Patient",
     faq: "Brauche ich ein Rezept? Für Kassenleistungen ja, als Selbstzahler kannst du direkt einen Termin buchen.\nWas soll ich mitbringen? Rezept, Befunde, bequeme Kleidung und ein großes Handtuch.\nGibt es Hausbesuche? Ja, für Patient:innen mit entsprechender Verordnung.",
     hours: "Mo–Do: 07:30–19:00\nFr: 07:30–15:00\nSa–So: geschlossen",
-    on: ["zeiten", "leistungen", "zahlen", "ueber", "preise", "stimmen", "faq", "kontakt"] },
+    steps: "Termin: Online oder telefonisch vereinbaren.\nBefund: Ausführliche Untersuchung und Gespräch.\nBehandlung: Individueller Plan mit Übungen.\nNachsorge: Damit es dauerhaft besser bleibt.",
+    on: ["zeiten", "leistungen", "ablauf", "zahlen", "ueber", "preise", "stimmen", "faq", "kontakt"] },
   tech: { label: "Software & Agentur", name: "Kodex Labs", tagline: "Software, die einfach funktioniert.",
     about: "Wir entwickeln Web-Apps und digitale Produkte für Unternehmen, die mehr wollen als eine Vorlage. Schnell, sicher und durchdacht.",
     features: "Web-Apps: Individuelle Anwendungen von der Idee bis zum Launch.\nUX-Design: Oberflächen, die Menschen gerne benutzen.\nBetreuung: Wartung, Hosting und Weiterentwicklung aus einer Hand.",
@@ -2372,7 +2620,8 @@ const PRESETS = {
     testimonials: "Kodex hat in sechs Wochen geliefert, wofür andere sechs Monate veranschlagt hatten. — Nina B., Gründerin\nKlare Kommunikation, sauberer Code, kein Bullshit. — Marco L., CTO",
     faq: "Mit welchen Technologien arbeitet ihr? Vor allem TypeScript, React, Node und Postgres – je nach Projekt.\nGehört mir der Code? Ja, vollständig und ab dem ersten Tag.\nArbeitet ihr remote? Ja, mit Workshops vor Ort, wenn es sinnvoll ist.",
     hours: "Mo–Fr: 09:00–18:00\nSa–So: geschlossen",
-    on: ["leistungen", "zahlen", "preise", "stimmen", "faq", "kontakt"] },
+    steps: "Workshop: Ziele, Nutzer und Umfang klären.\nPrototyp: Klickbares Design in zwei Wochen.\nEntwicklung: In kurzen Sprints mit regelmäßigen Demos.\nLaunch: Live gehen, messen, verbessern.",
+    on: ["leistungen", "ablauf", "zahlen", "preise", "stimmen", "faq", "kontakt"] },
 };
 const CONTENT_FIELDS = { name: "c-name", tagline: "c-tagline", about: "c-about", email: "c-email",
   address: "c-address", phone: "c-phone", whatsapp: "c-wa", instagram: "c-ig", facebook: "c-fb", tiktok: "c-tt", linkedin: "c-li" };
@@ -2596,7 +2845,7 @@ function bindContent() {
   $("modal").addEventListener("click", e => { if (e.target === $("modal")) $("modal").close(); });
 
   document.addEventListener("keydown", e => {
-    if (e.target.closest("input, textarea, select") || e.metaKey || e.ctrlKey || e.altKey || $("modal").open || $("paywall").open || $("compare").open || $("viewers").open) return;
+    if (e.target.closest("input, textarea, select") || e.metaKey || e.ctrlKey || e.altKey || $("modal").open || $("paywall").open || $("compare").open || $("viewers").open || $("film").open || $("intro").open) return;
     if (/^[1-6]$/.test(e.key)) toggleSelect(+e.key - 1);
     else if (e.key === "Enter" && !e.target.closest("button, [role=button]")) evolve();
     else if (e.key.toLowerCase() === "r") reroll();
@@ -2620,6 +2869,8 @@ function bindContent() {
   try { startField(); } catch { /* Animation ist optional */ }
   bindPaywall(); bindHerb(); bindGeneEditor(); bindCompare(); renderPro(); renderGeneEditor(); loadLicense().then(renderGeneEditor);
   startViewers().catch(() => { /* Besucheranzeige ist optional */ });
+  bindFilm(); bindIntro();
+  if (INITIAL_HASH === "#pro") { try { localStorage.setItem(INTRO_KEY, "1"); } catch { /* egal */ } setTimeout(() => openPaywall(""), 400); }
   if (shared) toast("Geteiltes Genom geladen");
   else if (restored) toast(`Willkommen zurück – Generation ${state.gen}`);
 })();

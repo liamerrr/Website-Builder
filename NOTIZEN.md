@@ -13,7 +13,9 @@ unbegrenztes Züchten, Download, HTML-Export und den Gen-Editor.
 
 ```
 genom/index.html        Der komplette Builder (eine Datei, keine Abhängigkeiten)
-genom/beispiele/        5 damit erzeugte Websites
+genom/landing.html      Verkaufsseite (Entwurf)
+genom/fonts/            Selbst gehostete Schriften (Space Grotesk, JetBrains Mono, OFL)
+genom/beispiele/        6 damit erzeugte Websites
 tools/lizenz.mjs        Lizenzschlüssel einrichten, erstellen, prüfen (Node.js)
 tools/lizenz-privat.jwk GEHEIM, nicht im Repo (.gitignore)
 README.md               Funktionsübersicht und Anleitung
@@ -99,3 +101,4 @@ Lightbox, Formular, Live-Öffnungszeiten), Handy-Breite ohne seitliches Scrollen
 ## Links
 
 - Builder (privat): https://claude.ai/artifact/AJUcmdXrVoci8AFhCTVX7c
+- Verkaufsseite (privat): https://claude.ai/artifact/WzRsMCaHYCJ3aja5uEVw3y

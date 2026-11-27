@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.12 – Kreativer & Verkaufsseite
+- Websites: Heroes Kinetik, Collage, Terminal; Bereich „Ablauf“ mit Zeitleiste; magnetische Buttons
+- Builder: Intro beim ersten Besuch, Evolutions-Film, `#pro` öffnet direkt das Pro-Fenster
+- Neue Verkaufsseite `genom/landing.html` mit sechs neu erzeugten Beispielen, selbst gehostete Schriften
+
 ## 0.11 – Besucher
 - Besucheranzeige für den Besitzer: gerade online, Besucher, Besuche, heute – mit Namen
 

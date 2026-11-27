@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Genom Website-Labor</title>
+<meta name="description" content="Genom züchtet deine Website: sechs Entwürfe, du wählst, die Evolution macht den Rest. Kostenlos ausprobieren, Genom Pro für 10 € im Monat.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="theme-color" content="#04060c">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+  /* Layout: dunkles Labor, ein holografischer Akzent; Inhalte in einer 1120px-Spalte, Proben als schwebende Kapseln. */
+  :root {
+    --bg: #04060c; --panel: rgba(13,18,33,.78); --panel-2: rgba(26,33,56,.55); --line: rgba(140,168,255,.16);
+    --text: #e9eeff; --muted: #96a0c2; --cyan: #6ef0ff; --violet: #9d8cff; --pink: #ff7ad9; --gold: #ffd27a;
+    --holo: conic-gradient(from var(--a), #6ef0ff, #9d8cff, #ff7ad9, #ffd27a, #6ef0ff);
+    --display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    color-scheme: dark;
+  }
+  @property --a { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+  @keyframes spinA { to { --a: 360deg; } }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: radial-gradient(1200px 800px at 85% -10%, rgba(157,140,255,.18), transparent 60%),
+         radial-gradient(1000px 700px at -10% 30%, rgba(110,240,255,.10), transparent 60%), var(--bg);
+         color: var(--text); font-family: var(--display); font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+  .mono { font-family: var(--mono); }
+  .kicker { font-family: var(--mono); font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: var(--cyan); margin: 0 0 14px; }
+  h1, h2, h3 { line-height: 1.05; letter-spacing: -.025em; margin: 0 0 .4em; text-wrap: balance; }
+  h2 { font-size: clamp(32px, 5vw, 52px); }
+  .holo-text { background: var(--holo); -webkit-background-clip: text; background-clip: text; color: transparent; animation: spinA 6s linear infinite; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 12px; font-weight: 600; text-decoration: none; border: 1px solid var(--line); background: var(--panel-2); transition: transform .2s, box-shadow .2s, border-color .2s; }
+  .btn:hover { transform: translateY(-2px); border-color: rgba(110,240,255,.5); box-shadow: 0 0 30px -8px rgba(110,240,255,.5); }
+  .btn.primary { background: var(--holo); color: #050816; border-color: transparent; animation: spinA 5s linear infinite; box-shadow: 0 0 40px -10px rgba(157,140,255,.9); }
+  section { padding-block: clamp(70px, 10vw, 130px); position: relative; }
+
+  /* Navigation */
+  header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(4,6,12,.72); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 21; background: rgba(4,6,12,.95); }
+  header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: .12em; text-decoration: none; }
+  .logo svg { flex: none; }
+  header nav { display: flex; gap: 26px; font-size: 14.5px; color: var(--muted); }
+  header nav a { text-decoration: none; } header nav a:hover { color: var(--text); }
+  header .btn { padding: 10px 16px; font-size: 14px; }
+
+  /* Hero */
+  .hero { padding-top: clamp(50px, 8vw, 100px); padding-bottom: clamp(60px, 9vw, 120px); overflow: hidden; }
+  .hero .wrap { display: grid; grid-template-columns: 1.05fr 1fr; gap: 40px; align-items: center; }
+  .hero h1 { font-size: clamp(46px, 7.4vw, 92px); line-height: .98; margin-bottom: 22px; }
+  .hero .lead { font-size: 19px; color: var(--muted); max-width: 32em; margin: 0 0 30px; }
+  .hero .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+  .hero .note { margin-top: 16px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .lab { position: relative; height: 540px; }
+  .pod { position: absolute; width: 62%; border-radius: 16px; overflow: hidden; background: var(--panel); border: 1px solid var(--line); box-shadow: 0 30px 80px -30px rgba(0,0,0,.8);
+         -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); animation: float 7s ease-in-out infinite; }
+  .pod.p1 { left: 0; top: 30px; animation-delay: -2s; }
+  .pod.p2 { right: 0; top: 0; z-index: 2; box-shadow: 0 0 0 1px rgba(157,140,255,.5), 0 30px 90px -20px rgba(157,140,255,.6); }
+  .pod.p3 { left: 16%; bottom: 0; z-index: 3; animation-delay: -4s; }
+  @keyframes float { 50% { transform: translateY(-12px); } }
+  .pod-head { display: flex; justify-content: space-between; gap: 8px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; padding: 8px 12px; border-bottom: 1px solid var(--line); color: var(--muted); }
+  .pod-head b { color: var(--text); font-family: var(--display); font-style: italic; font-weight: 600; letter-spacing: 0; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .shot { position: relative; aspect-ratio: 1280 / 820; overflow: hidden; background: #fff; }
+  .shot iframe { position: absolute; top: 0; left: 0; width: 1280px; height: 820px; border: 0; transform-origin: 0 0; pointer-events: none; }
+  .shot::after { content: ""; position: absolute; left: 0; right: 0; height: 40%; top: -40%; pointer-events: none;
+                 background: linear-gradient(180deg, transparent, rgba(110,240,255,.14) 70%, rgba(190,250,255,.85) 98%, transparent); animation: scan 5s cubic-bezier(.55,0,.3,1) infinite; }
+  .pod.p1 .shot::after { animation-delay: 1.6s; } .pod.p3 .shot::after { animation-delay: 3.2s; }
+  @keyframes scan { 0% { top: -40%; } 40%, 100% { top: 100%; } }
+  .dna { display: flex; gap: 2px; align-items: flex-end; height: 18px; padding: 6px 12px 8px; }
+  .dna i { flex: 1; border-radius: 2px 2px 0 0; opacity: .7; }
+
+  /* Ablauf */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; list-style: none; padding: 0; margin: 40px 0 0; counter-reset: s; }
+  .steps li { background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 28px; position: relative; overflow: hidden; }
+  .steps li::before { counter-increment: s; content: "0" counter(s); font-family: var(--mono); font-size: 12px; color: var(--cyan); letter-spacing: .14em; }
+  .steps h3 { font-size: 26px; margin: 14px 0 8px; }
+  .steps p { color: var(--muted); margin: 0; }
+  .steps li::after { content: ""; position: absolute; width: 180px; height: 180px; right: -60px; bottom: -80px; border-radius: 50%; filter: blur(50px); opacity: .35; }
+  .steps li:nth-child(1)::after { background: var(--pink); } .steps li:nth-child(2)::after { background: var(--cyan); } .steps li:nth-child(3)::after { background: var(--gold); }
+
+  /* Beispiele */
+  .head-row { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; }
+  .head-row p { color: var(--muted); max-width: 28em; margin: 0; }
+  .gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 40px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; text-decoration: none; display: block; transition: transform .25s, box-shadow .25s, border-color .25s; }
+  .card:hover { transform: translateY(-4px); border-color: rgba(110,240,255,.4); box-shadow: 0 24px 60px -28px rgba(110,240,255,.5); }
+  .card .meta { padding: 14px 16px 16px; display: grid; gap: 2px; }
+  .card .meta b { font-size: 17px; }
+  .card .meta i { color: var(--muted); font-size: 13.5px; }
+  .card .meta span { font-family: var(--mono); font-size: 11px; color: var(--cyan); letter-spacing: .08em; text-transform: uppercase; margin-top: 6px; }
+
+  /* Funktionen */
+  .features { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: 40px; }
+  .feat { background: var(--panel-2); border: 1px solid var(--line); border-radius: 18px; padding: 22px; }
+  .feat b { display: block; font-size: 30px; font-family: var(--mono); letter-spacing: -.03em; }
+  .feat h3 { font-size: 17px; margin: 6px 0 6px; letter-spacing: 0; }
+  .feat p { color: var(--muted); margin: 0; font-size: 14.5px; }
+  .feat.wide { grid-column: span 2; }
+
+  /* Preise */
+  .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 40px; max-width: 880px; }
+  .plan { background: var(--panel); border: 1px solid var(--line); border-radius: 22px; padding: 30px; display: flex; flex-direction: column; gap: 14px; position: relative; }
+  .plan.pro { border-color: transparent; box-shadow: 0 0 60px -20px rgba(157,140,255,.7); }
+  .plan.pro::before { content: ""; position: absolute; inset: -1px; border-radius: inherit; padding: 2px; background: var(--holo); animation: spinA 4s linear infinite;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
+  .plan .price { font-family: var(--mono); font-size: 48px; letter-spacing: -.04em; line-height: 1; }
+  .plan .price small { font-size: 15px; color: var(--muted); letter-spacing: 0; }
+  .plan ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; flex: 1; }
+  .plan li { display: grid; grid-template-columns: 22px 1fr; color: var(--muted); }
+  .plan li::before { content: "✦"; color: var(--cyan); }
+  .plan li.no::before { content: "–"; color: var(--muted); }
+  .plan .btn { justify-content: center; }
+
+  /* FAQ */
+  .faq { max-width: 820px; margin-top: 30px; }
+  .faq details { border-top: 1px solid var(--line); }
+  .faq details:last-child { border-bottom: 1px solid var(--line); }
+  .faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; padding: 20px 0; font-size: 18px; font-weight: 600; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; font-family: var(--mono); color: var(--cyan); font-size: 22px; transition: transform .25s; }
+  .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq p { color: var(--muted); margin: 0 0 20px; max-width: 46em; }
+
+  /* Schluss */
+  .final { text-align: center; }
+  .final .box { background: var(--panel); border: 1px solid var(--line); border-radius: 28px; padding: clamp(40px, 7vw, 80px) 24px; position: relative; overflow: hidden; }
+  .final .box::before { content: ""; position: absolute; width: 600px; height: 600px; left: 50%; top: -360px; margin-left: -300px; border-radius: 50%; background: var(--holo); filter: blur(100px); opacity: .3; animation: spinA 10s linear infinite; }
+  .final .box > * { position: relative; }
+  .final p { color: var(--muted); max-width: 34em; margin: 0 auto 28px; }
+  .final .ctas { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
+  footer { border-top: 1px solid var(--line); padding-block: 28px 40px; color: var(--muted); font-size: 14px; }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  footer a { text-decoration: none; } footer a:hover { color: var(--text); }
+
+  /* Einblenden – sichtbar ohne JavaScript, animiert nur mit */
+  html.js .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
+  html.js .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width: 960px) {
+    header nav { display: none; }
+    .hero .wrap { grid-template-columns: 1fr; }
+    .lab { height: 420px; }
+    .gallery, .features { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .steps { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .lab { height: 320px; } .pod { width: 74%; }
+    .gallery, .features, .plans { grid-template-columns: 1fr; }
+    .feat.wide { grid-column: auto; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    html { scroll-behavior: auto; }
+    html.js .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Genom – zum Anfang">
+      <svg width="32" height="32" viewBox="0 0 38 38" aria-hidden="true">
+        <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6ef0ff"/><stop offset=".5" stop-color="#9d8cff"/><stop offset="1" stop-color="#ff7ad9"/></linearGradient></defs>
+        <rect width="38" height="38" rx="10" fill="#070b16" stroke="url(#lg)" stroke-width="1.5"/>
+        <path d="M12 8c14 6 0 16 14 22M26 8c-14 6 0 16-14 22" stroke="url(#lg)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+        <path d="M14 13h10M13.5 19h11M14 25h10" stroke="#e9eeff" stroke-opacity=".6" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      GENOM
+    </a>
+    <nav aria-label="Seitenbereiche"><a href="#so-gehts">So geht's</a><a href="#beispiele">Beispiele</a><a href="#funktionen">Funktionen</a><a href="#preis">Preis</a><a href="#fragen">Fragen</a></nav>
+    <a class="btn" href="index.html" data-builder>Kostenlos starten</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="kicker">Das Gen-Labor für Websites</p>
+        <h1>Websites nicht bauen.<br><span class="holo-text">Züchten.</span></h1>
+        <p class="lead">Genom zeigt dir sechs Entwürfe. Du klickst an, was dir gefällt – die Gene deiner Favoriten werden gekreuzt, ein paar mutieren. Nach ein paar Runden steht deine Website. Ohne Vorlagen, ohne Design-Kenntnisse.</p>
+        <div class="ctas">
+          <a class="btn primary" href="index.html" data-builder>Kostenlos züchten →</a>
+          <a class="btn" href="index.html#pro" data-builder-pro>Genom Pro · 10 € / Monat</a>
+        </div>
+        <p class="note">Ohne Anmeldung · läuft im Browser · fertige Website als eine Datei</p>
+      </div>
+      <div class="lab" aria-label="Drei Beispiel-Websites, mit Genom gezüchtet">
+        <div class="pod p1"><div class="pod-head"><b data-species="1">Collagia aurantia</b><span>PROBE 02</span></div><div class="shot"><iframe title="Beispiel: Morgenrot Café" data-src="beispiele/morgenrot-cafe.html" tabindex="-1"></iframe></div><div class="dna" aria-hidden="true"></div></div>
+        <div class="pod p2"><div class="pod-head"><b>Kinetica caerulea</b><span>PROBE 05</span></div><div class="shot"><iframe title="Beispiel: Lumen Atelier" data-src="beispiele/lumen-atelier.html" tabindex="-1"></iframe></div><div class="dna" aria-hidden="true"></div></div>
+        <div class="pod p3"><div class="pod-head"><b>Terminalis flava var. nocturna</b><span>PROBE 01</span></div><div class="shot"><iframe title="Beispiel: Kodex Labs" data-src="beispiele/kodex-labs.html" tabindex="-1"></iframe></div><div class="dna" aria-hidden="true"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="so-gehts">
+    <div class="wrap reveal">
+      <p class="kicker">So geht's</p>
+      <h2>Drei Schritte. Beliebig viele Generationen.</h2>
+      <ol class="steps">
+        <li><h3>Auswählen</h3><p>Trag Namen und Text ein oder nimm eine Branchen-Vorlage. Genom zeigt sechs Proben – klick die an, die dir gefallen.</p></li>
+        <li><h3>Kreuzen</h3><p>Jede Website hat 20 Gene: Farben, Schrift, Layout, Übergänge, Animation. Die Gene deiner Favoriten werden gemischt, ein paar mutieren.</p></li>
+        <li><h3>Ernten</h3><p>Wiederholen, bis es passt. Dann lädst du deine Website als eine fertige Datei herunter und stellst sie online – zum Beispiel bei Netlify.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="beispiele">
+    <div class="wrap reveal">
+      <div class="head-row">
+        <div><p class="kicker">Beispiele</p><h2>Alle sechs mit Genom gezüchtet.</h2></div>
+        <p>Jede Probe bekommt einen Artnamen aus ihrem Erbgut. Klick auf eine Website, um sie in voller Größe auszuprobieren.</p>
+      </div>
+      <div class="gallery">
+        <a class="card" href="beispiele/holzwerk-berger.html" target="_blank" rel="noopener"><div class="shot"><iframe title="Holzwerk Berger" data-src="beispiele/holzwerk-berger.html" tabindex="-1"></iframe></div><div class="meta"><b>Holzwerk Berger</b><i>Periodica rosea</i><span>Magazin · Welle</span></div></a>
+        <a class="card" href="beispiele/morgenrot-cafe.html" target="_blank" rel="noopener"><div class="shot"><iframe title="Morgenrot Café" data-src="beispiele/morgenrot-cafe.html" tabindex="-1"></iframe></div><div class="meta"><b>Morgenrot Café</b><i>Collagia aurantia</i><span>Collage · Bogen</span></div></a>
+        <a class="card" href="beispiele/studio-nordlicht.html" target="_blank" rel="noopener"><div class="shot"><iframe title="Studio Nordlicht" data-src="beispiele/studio-nordlicht.html" tabindex="-1"></iframe></div><div class="meta"><b>Studio Nordlicht</b><i>Litterata rubra var. nocturna</i><span>Typo-Stapel · Diagonale</span></div></a>
+        <a class="card" href="beispiele/physio-balance.html" target="_blank" rel="noopener"><div class="shot"><iframe title="Physio Balance" data-src="beispiele/physio-balance.html" tabindex="-1"></iframe></div><div class="meta"><b>Physio Balance</b><i>Tessellata flava</i><span>Bento · Tabs</span></div></a>
+        <a class="card" href="beispiele/kodex-labs.html" target="_blank" rel="noopener"><div class="shot"><iframe title="Kodex Labs" data-src="beispiele/kodex-labs.html" tabindex="-1"></iframe></div><div class="meta"><b>Kodex Labs</b><i>Terminalis flava var. nocturna</i><span>Terminal · Zickzack</span></div></a>
+        <a class="card" href="beispiele/lumen-atelier.html" target="_blank" rel="noopener"><div class="shot"><iframe title="Lumen Atelier" data-src="beispiele/lumen-atelier.html" tabindex="-1"></iframe></div><div class="meta"><b>Lumen Atelier</b><i>Kinetica caerulea</i><span>Kinetik · Welle</span></div></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="funktionen">
+    <div class="wrap reveal">
+      <p class="kicker">Funktionen</p>
+      <h2>Mehr als hübsch. Jeder Bereich kann etwas.</h2>
+      <div class="features">
+        <div class="feat"><b>13</b><h3>Layouts für den Start</h3><p>Von Magazin über Poster bis Hologramm, Kinetik und Terminal.</p></div>
+        <div class="feat"><b>10</b><h3>Bereiche mit Funktion</h3><p>Live-Öffnungszeiten, Preise, die das Kontaktformular ausfüllen, Galerie, Zeitleiste …</p></div>
+        <div class="feat"><b>20</b><h3>Gene pro Website</h3><p>Farben, Schrift, Rhythmus, Übergänge, Animation – alles vererbbar.</p></div>
+        <div class="feat"><b>4,5:1</b><h3>Kontrast garantiert</h3><p>Jede Farbkombination erfüllt WCAG AA – auch im Dunkelmodus.</p></div>
+        <div class="feat wide"><b>0</b><h3>Cookies, Tracker, Google-Verbindungen</h3><p>Schriften sind eingebettet, Impressum und Datenschutzerklärung werden aus deinen Angaben erzeugt.</p></div>
+        <div class="feat"><b>◐</b><h3>Hell und Dunkel</h3><p>Besucher schalten selbst um. Dazu WhatsApp-Button, Social-Links, Route.</p></div>
+        <div class="feat"><b>▶</b><h3>Labor-Werkzeuge</h3><p>Herbarium für Favoriten, Vergleich mit Trennlinie, Evolutions-Film, Gen-Editor.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="preis">
+    <div class="wrap reveal">
+      <p class="kicker">Preis</p>
+      <h2>Kostenlos anfangen. Für 10 € alles.</h2>
+      <div class="plans">
+        <div class="plan">
+          <h3>Kostenlos</h3>
+          <div class="price">0 € <small>für immer</small></div>
+          <ul>
+            <li>Alle Layouts und Bereiche ansehen</li>
+            <li>Bis Generation 5 züchten</li>
+            <li>Proben durchleuchten und vergleichen</li>
+            <li>Herbarium und Genom-Codes</li>
+            <li class="no">Kein Download</li>
+          </ul>
+          <a class="btn" href="index.html" data-builder>Kostenlos starten</a>
+        </div>
+        <div class="plan pro">
+          <h3>Genom <span class="holo-text">Pro</span></h3>
+          <div class="price">10 € <small>/ Monat</small></div>
+          <ul>
+            <li>Unbegrenzt evolvieren</li>
+            <li>Fertige Websites herunterladen</li>
+            <li>HTML kopieren</li>
+            <li>Gen-Editor: alle 20 Gene per Regler</li>
+            <li>Monatlich kündbar</li>
+          </ul>
+          <a class="btn primary" href="index.html#pro" data-builder-pro>Pro freischalten</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="fragen">
+    <div class="wrap reveal">
+      <p class="kicker">Fragen</p>
+      <h2>Gut zu wissen.</h2>
+      <div class="faq">
+        <details><summary>Brauche ich Design- oder Programmierkenntnisse?</summary><p>Nein. Du entscheidest nur, was dir gefällt. Farben, Schriften und Abstände stellt Genom so ein, dass alles zusammenpasst und gut lesbar ist.</p></details>
+        <details><summary>Was bekomme ich beim Download?</summary><p>Eine einzige HTML-Datei mit deiner kompletten Website – Texte, Grafiken, eingebettete Schriften. Du kannst sie bei jedem Webhoster hochladen, zum Beispiel per Drag-and-drop bei Netlify.</p></details>
+        <details><summary>Gehören mir die Websites?</summary><p>Ja. Was du herunterlädst, kannst du nutzen, verändern und behalten – auch nach dem Ende deines Abos.</p></details>
+        <details><summary>Wie funktioniert die Freischaltung?</summary><p>Nach dem Kauf bekommst du einen Lizenzschlüssel per E-Mail. Du fügst ihn in Genom ein, und Pro ist für den bezahlten Zeitraum aktiv.</p></details>
+        <details><summary>Ist das datenschutzfreundlich?</summary><p>Die erzeugten Websites setzen keine Cookies, nutzen kein Tracking und laden nichts von Drittanbietern. Genom erstellt Impressum und Datenschutzerklärung aus deinen Angaben – als Vorlage, nicht als Rechtsberatung.</p></details>
+        <details><summary>Kann ich jederzeit kündigen?</summary><p>Ja, monatlich. Ohne Verlängerung läuft dein Lizenzschlüssel zum Ende des bezahlten Monats aus.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="wrap reveal">
+      <div class="box">
+        <p class="kicker">Generation 1 wartet</p>
+        <h2>Deine Website ist ein paar Klicks entfernt.</h2>
+        <p>Starte kostenlos, züchte fünf Generationen und schau, was entsteht.</p>
+        <div class="ctas"><a class="btn primary" href="index.html" data-builder>Jetzt züchten →</a><a class="btn" href="index.html#pro" data-builder-pro>Pro für 10 € / Monat</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Genom</span>
+    <!-- TODO vor der Veröffentlichung: Impressum und Datenschutzerklärung der Verkaufsseite ergänzen und hier verlinken. -->
+    <span><a href="index.html" data-builder>Zum Builder</a></span>
+  </div>
+</footer>
+
+<script>
+  "use strict";
+  document.documentElement.classList.add("js");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Vorschauen: iframes laden, sobald sie in die Nähe kommen, und auf die Kartenbreite skalieren
+  const shots = [...document.querySelectorAll(".shot")];
+  const fit = s => { const f = s.querySelector("iframe"); f.style.transform = `scale(${s.clientWidth / 1280})`; };
+  shots.forEach(s => new ResizeObserver(() => fit(s)).observe(s));
+  const load = s => { const f = s.querySelector("iframe"); if (!f.src && f.dataset.src) f.src = f.dataset.src; fit(s); };
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { load(e.target); io.unobserve(e.target); } }), { rootMargin: "300px" });
+  shots.forEach(s => io.observe(s));
+  // Gen-Barcodes unter den Proben
+  document.querySelectorAll(".dna").forEach((el, n) => {
+    el.innerHTML = Array.from({ length: 20 }, (_, k) => `<i style="height:${20 + ((k * 37 + n * 53) % 80)}%;background:hsl(${k * 18} 92% 68%)"></i>`).join("");
+  });
+  // Bereiche einblenden
+  const rv = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); rv.unobserve(e.target); } }), { threshold: .12 });
+  document.querySelectorAll(".reveal").forEach(el => rv.observe(el));
+</script>
+</body>
+</html>

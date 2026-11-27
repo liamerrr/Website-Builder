@@ -11,6 +11,8 @@ und die nächste Generation entsteht durch **Kreuzung und Mutation** der Favorit
 ```
 genom/
 ├── index.html          ← der Builder: im Browser öffnen, fertig
+├── landing.html        ← Verkaufsseite für Genom Pro
+├── fonts/              ← selbst gehostete Schriften der Verkaufsseite
 └── beispiele/          ← damit erzeugte Websites
     ├── holzwerk-berger.html   (Magazin-Layout, Wellen-Übergänge)
     ├── morgenrot-cafe.html    (Poster, Bento-Leistungen, Live-Öffnungszeiten)
@@ -46,6 +48,8 @@ genom/
 
 ## Werkzeuge im Labor
 
+- **Start-Erlebnis**: Intro beim ersten Besuch mit Schnellstart über eine Branchen-Vorlage.
+- **Evolutions-Film**: die Ahnenreihe als Zeitraffer mit Überblendung und geänderten Merkmalen.
 - **Herbarium** (Tab Evolution, Taste `S`): Lieblingsdesigns sammeln – sie bleiben über alle
   Generationen erhalten und lassen sich jederzeit weiterzüchten.
 - **Vergleich** (Taste `V`, genau zwei Proben wählen): beide Websites übereinander, Trennlinie
@@ -60,7 +64,7 @@ genom/
 - **SEO-Paket**: Vorschau beim Teilen (Open Graph), Favicon aus dem Logo und Firmendaten für
   Google (schema.org LocalBusiness inkl. Öffnungszeiten).
 
-## Neun Bereiche – jeder kann etwas anderes
+## Zehn Bereiche – jeder kann etwas anderes
 
 Im Tab **Bereiche** schaltest du Bereiche ein und aus, änderst die Reihenfolge und bearbeitest ihre Inhalte.
 
@@ -74,6 +78,7 @@ Im Tab **Bereiche** schaltest du Bereiche ein und aus, änderst die Reihenfolge 
 | Kundenstimmen | Karussell zum Wischen und Blättern |
 | FAQ | Aufklappbare Fragen – funktioniert auch ohne JavaScript |
 | Öffnungszeiten | Zeigt Besuchern live „Jetzt geöffnet" oder wann wieder offen ist, markiert den heutigen Tag |
+| Ablauf | Zeitleiste, die sich beim Scrollen Schritt für Schritt füllt |
 | Kontakt | Formular öffnet das E-Mail-Programm mit fertiger Nachricht – ohne Server |
 
 Dazu: Einblende-Animationen beim Scrollen (abgeschaltet bei „Bewegung reduzieren"), automatisch
@@ -90,9 +95,10 @@ Mit dem Schalter **Privates Projekt** entfallen Impressum und Datenschutz für �
 - **20-Gen-Genom** pro Design: Farbton, Farbharmonie, Sättigung, Hell/Dunkel, Schriftpaar,
   Typo-Skala, Schriftgewicht, Eckenradius, Dichte, Breite, Hero-Layout, Leistungs-Layout,
   Button-Stil, Navigation, Dekoration, Übergänge, Überschriften-Effekt, Farbrhythmus und Animation.
-- **10 Hero-Layouts**: Zentriert, Geteilt (Bogen- oder Versatzrahmen), Riesentitel, Farbband,
-  Magazin, Bento, Poster (mit Kontur-Schriftzug), Laufband, Typo-Stapel und Hologramm
-  (Aurora-Licht, Glas-Karte, Perspektiv-Raster, Orbit mit Satellit, HUD-Zeile).
+- **13 Hero-Layouts**: Zentriert, Geteilt (Bogen- oder Versatzrahmen), Riesentitel, Farbband,
+  Magazin, Bento, Poster (mit Kontur-Schriftzug), Laufband, Typo-Stapel, Hologramm (Aurora, Glas,
+  Orbit), Kinetik (Buchstaben weichen der Maus aus), Collage (Polaroids mit Sticker) und Terminal
+  (Slogan tippt sich selbst).
 - **5 Leistungs-Layouts**: Karten, Liste, Zickzack, Bento, interaktive Tabs.
 - **Farbrhythmus & Übergänge**: Bereiche wechseln zwischen Hintergrund, Fläche und invertierten
   Kontrast-Bändern; dazwischen Welle, Diagonale, Zickzack oder Bogen.

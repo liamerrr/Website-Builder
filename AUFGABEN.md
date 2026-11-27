@@ -31,9 +31,12 @@ Legende: 🔴 blockiert den Verkauf · 🟠 wichtig · 🟢 Verbesserung · ✅ 
 - [ ] 🟠 **Lizenzen automatisch verschicken** – Webhook vom Zahlungsanbieter → kleine
       Serverless-Funktion (z. B. Netlify Functions) signiert den Schlüssel und mailt ihn.
       Heute: von Hand mit `node tools/lizenz.mjs neu kunde@mail.de 31`.
-- [ ] 🟠 **Verkaufsseite für Genom** – Landingpage mit Beispielen aus `genom/beispiele/`,
-      Preis und Kauf-Knopf. Der Branch `codex/create-profitable-website-concept` („LaunchLab“)
-      kann als Ideenquelle dienen – danach entscheiden: übernehmen oder löschen.
+- [ ] 🔴 **Verkaufsseite fertig machen** – `genom/landing.html` steht (Entwurf). Vor dem Start:
+      Impressum und Datenschutzerklärung ergänzen und im Fuß verlinken; die Versprechen im FAQ
+      (monatlich kündbar, Websites gehören dem Kunden) prüfen und an deine echten Bedingungen anpassen.
+- [ ] 🟠 **Builder-Schriften selbst hosten** – der Builder lädt für seine Oberfläche und die Vorschauen
+      Schriften von Google. Für den öffentlichen Start wie bei der Verkaufsseite lokal ablegen.
+- [ ] 🟢 **Branch `codex/create-profitable-website-concept` („LaunchLab“)** – übernehmen oder löschen.
 - [ ] 🟢 **Logo-Upload** statt Monogramm-Buchstabe in Navigation und Favicon.
 - [ ] 🟢 **Unterseiten** – mehrseitige Websites (z. B. eigene Seite pro Leistung).
 - [ ] 🟢 **Zweisprachige Websites** (Deutsch / Englisch).
@@ -58,6 +61,7 @@ Legende: 🔴 blockiert den Verkauf · 🟠 wichtig · 🟢 Verbesserung · ✅ 
 
 ## ✅ Erledigt
 
+- ✅ Verkaufsseite (Entwurf), Intro, Evolutions-Film, Heroes Kinetik/Collage/Terminal, Bereich Ablauf (27.11.2026)
 - ✅ Alle Arbeit auf `main` gebracht (25.11.2026)
 - ✅ Besucheranzeige in der claude.ai-Seite: online, Besucher, Besuche, heute, mit Namen (27.11.2026)
 - ✅ Evolutionärer Builder mit 20-Gen-Genom, Kreuzung, Mutation, Gen-Sperren, Genom-Codes
