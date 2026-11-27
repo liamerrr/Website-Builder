@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.13 – Viele neue Funktionen
+- Websites: Englisch/Deutsch, Bereich Team, Hinweisleiste, Schrift größer (A+), Nach-oben-Knopf, Druckansicht
+- Builder: Logo-Upload mit Farbübernahme, Handy-Ansicht der Proben, Slogan-Ideen
+- Verkaufsseite: Mini-Evolution zum Ausprobieren; Beispiele neu erzeugt
+
 ## 0.12 – Kreativer & Verkaufsseite
 - Websites: Heroes Kinetik, Collage, Terminal; Bereich „Ablauf“ mit Zeitleiste; magnetische Buttons
 - Builder: Intro beim ersten Besuch, Evolutions-Film, `#pro` öffnet direkt das Pro-Fenster

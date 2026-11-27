@@ -284,6 +284,19 @@
   .pw-active p { font-family: var(--mono); color: var(--accent); margin: 0 0 12px; }
   .paywall.unlocked .pw-orb { animation: spinA 1.2s linear infinite; opacity: .7; }
 
+  /* ===== Logo, Slogan, Geräte ===== */
+  label.field span.with-btn { display: flex; gap: 6px; font-family: inherit; color: inherit; font-size: inherit; margin: 0; }
+  .with-btn input { flex: 1; min-width: 0; }
+  .with-btn .btn { padding: 6px 10px; font-size: 12px; }
+  .logo-box { display: grid; grid-template-columns: 84px 1fr; gap: 10px; align-items: center; }
+  .logo-prev { width: 84px; height: 84px; border-radius: 14px; border: 1px dashed var(--line); display: grid; place-items: center; font-size: 11px; color: var(--muted); text-align: center; overflow: hidden;
+    background: repeating-conic-gradient(rgba(255,255,255,.04) 0 25%, transparent 0 50%) 0 0 / 14px 14px; }
+  .logo-prev img { max-width: 76px; max-height: 76px; object-fit: contain; }
+  .logo-actions { display: grid; gap: 6px; }
+  .logo-actions .btn { justify-content: center; font-size: 12.5px; padding: 7px 10px; }
+  .logo-actions .btn[hidden] { display: none; }
+  .seg.device button { font-size: 12px; font-family: var(--mono); }
+  .grid.mob { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
   /* ===== Intro ===== */
   dialog.intro { width: min(760px, calc(100vw - 32px)); height: fit-content; max-height: calc(100vh - 32px); margin: auto; padding: 0; overflow: auto; border-radius: 26px;
     background: rgba(6,9,20,.94); border: 1px solid var(--line); box-shadow: 0 0 0 1px rgba(157,140,255,.25), 0 50px 140px -30px rgba(110,240,255,.45); }
@@ -429,9 +442,23 @@
       <div class="group">
         <label class="field"><span>Branchen-Vorlage</span><select id="preset"><option value="">– Vorlage wählen –</option></select></label>
         <label class="field"><span>Name</span><input type="text" id="c-name"></label>
-        <label class="field"><span>Slogan</span><input type="text" id="c-tagline"></label>
+        <label class="field"><span>Slogan</span><span class="with-btn"><input type="text" id="c-tagline"><button class="btn" id="slogan-idea" type="button" title="Slogan-Vorschlag">✨ Idee</button></span></label>
         <label class="field"><span>Beschreibung</span><textarea id="c-about" rows="4"></textarea></label>
         <label class="field"><span>Kontakt-E-Mail</span><input type="email" id="c-email"></label>
+        <label class="field"><span>Sprache der Website</span><select id="c-lang"><option value="de">Deutsch</option><option value="en">English</option></select></label>
+        <label class="field"><span>Hinweisleiste (optional) – „Text | Ziel“, z. B. „Neu: Sommerkarte | #preise“</span><input type="text" id="c-notice" placeholder="Leer lassen für keine Leiste"></label>
+      </div>
+      <div class="group">
+        <h2>Logo</h2>
+        <div class="logo-box">
+          <div class="logo-prev" id="logo-prev" aria-live="polite">Kein Logo</div>
+          <div class="logo-actions">
+            <label class="btn upload">Logo hochladen<input type="file" id="logo-in" accept="image/png,image/jpeg,image/webp,image/svg+xml"></label>
+            <button class="btn" id="logo-colors" type="button" disabled>Farben aus Logo übernehmen</button>
+            <button class="btn" id="logo-rm" type="button" hidden>Entfernen</button>
+          </div>
+        </div>
+        <p class="hint">Ersetzt den Buchstaben in Navigation und Favicon. „Farben übernehmen“ setzt Farbton und Sättigung aller Proben auf die Hauptfarbe deines Logos und sperrt die Farben.</p>
         <p class="hint">Die Inhalte der einzelnen Bereiche (Leistungen, Preise, FAQ …) bearbeitest du im Tab „Bereiche".</p>
       </div>
       <div class="group">
@@ -527,6 +554,10 @@
       <button class="btn" id="film-btn" type="button" title="Sieh dir an, wie deine Website entstanden ist">▶ Evolutions-Film</button>
       <span class="spacer"></span>
       <button class="btn" id="reset" title="Alles zurücksetzen und bei Generation 1 beginnen">Neu starten</button>
+      <span class="seg device" role="group" aria-label="Proben anzeigen als">
+        <button type="button" id="dev-desk" aria-pressed="true" title="Desktop-Ansicht">🖥 Desktop</button>
+        <button type="button" id="dev-mob" aria-pressed="false" title="Handy-Ansicht">📱 Handy</button>
+      </span>
       <button class="btn" id="share">Link teilen</button>
       <button class="btn pro-btn" id="pro-btn" type="button"></button>
       <button class="btn viewers-btn" id="viewers-btn" type="button" hidden><i class="vdot"></i><span id="viewers-pill">Besucher</span></button>
@@ -913,6 +944,7 @@ const SECTIONS = [
   { id: "stimmen", label: "Kundenstimmen", nav: null, on: true, field: "testimonials", fn: "Karussell zum Wischen und Blättern.", hint: "„Zitat — Name, Rolle“" },
   { id: "faq", label: "FAQ", nav: "FAQ", on: true, field: "faq", fn: "Fragen klappen auf – funktioniert sogar ohne JavaScript.", hint: "Eine pro Zeile: „Frage? Antwort“" },
   { id: "zeiten", label: "Öffnungszeiten", nav: null, on: false, field: "hours", fn: "Zeigt Besuchern live „Jetzt geöffnet“ oder wann wieder offen ist.", hint: "„Mo–Fr: 08:00–18:00“, „Sa: 09:00–14:00“, „So: geschlossen“ – mehrere Zeiten mit Komma" },
+  { id: "team", label: "Team", nav: "Team", on: false, field: "team", fn: "Menschen mit Avatar-Kreis, Rolle und einem Satz – baut Vertrauen auf.", hint: "Eine Person pro Zeile: „Name | Rolle | Ein Satz über sie“" },
   { id: "kontakt", label: "Kontakt", nav: "Kontakt", on: true, field: null, fn: "Formular öffnet das E-Mail-Programm mit fertiger Nachricht – ganz ohne Server.", hint: "" },
 ];
 const SECTION_BY_ID = Object.fromEntries(SECTIONS.map(s => [s.id, s]));
@@ -943,7 +975,7 @@ function parseStat(raw) {
   const dec = m[3] ? m[3].length : 0;
   return { text: v, label, pre: m[1], suf: m[4], dec, to: parseFloat(m[2].replace(/\./g, "") + (m[3] ? "." + m[3] : "")) };
 }
-const DAYS = ["mo", "di", "mi", "do", "fr", "sa", "so"];
+const DAYS = ["mo", "di", "mi", "do", "fr", "sa", "so"], DAYS_EN = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 /** „Mo–Fr: 08:00–12:00, 14:00–18:00“ → { label, times, days:[0..4], ranges:[[480,720],…] } */
 function parseHours(txt) {
   const schedule = [[], [], [], [], [], [], []], rows = [];
@@ -952,7 +984,7 @@ function parseHours(txt) {
     if (!m) continue;
     const days = [];
     for (const part of m[1].toLowerCase().split(/[,&+]|\sund\s/)) {
-      const ds = (part.match(/(mo|di|mi|do|fr|sa|so)/g) || []).map(x => DAYS.indexOf(x));
+      const ds = (part.match(/(mon|tue|wed|thu|fri|sat|sun|mo|di|mi|do|fr|sa|so)/g) || []).map(x => x.length === 3 ? DAYS_EN.indexOf(x) : DAYS.indexOf(x));
       if (ds.length >= 2 && /[–\-—]|bis/.test(part)) { for (let i = ds[0]; ; i = (i + 1) % 7) { days.push(i); if (i === ds[1]) break; } }
       else days.push(...ds);
     }
@@ -964,6 +996,37 @@ function parseHours(txt) {
   }
   return { schedule, rows };
 }
+
+/* ---- Sprache der Website: feste Texte auf Deutsch oder Englisch ---- */
+const I18N = {
+  de: { lang: "de", locale: "de_DE", welcome: "Willkommen", contactCta: "Kontakt aufnehmen", more: "Mehr erfahren →", contact: "Kontakt",
+    service: "Leistung", services: "Leistungen", issue: "Ausgabe", fig: "Abb. 1", online: "System online", writeUs: "Schreib uns",
+    theme: "Hell- oder Dunkelmodus umschalten", themeT: "Hell / Dunkel", bigger: "Schrift vergrößern", toTop: "Nach oben",
+    servicesSub: "Was wir für dich tun – klar, ehrlich und mit Sorgfalt.", steps: "So läuft es ab", stepsSub: "Schritt für Schritt – ohne Überraschungen.",
+    stats: "Zahlen und Fakten", zoom: "vergrößern", gallery: "Einblicke", gallerySub: "Klicke auf ein Bild für die Großansicht.",
+    popular: "Beliebt", ask: "Anfragen", askPrefix: "Anfrage: ", prices: "Preise", pricesSub: "Transparent und fair – ohne versteckte Kosten.",
+    voices: "Das sagen andere", prev: "Zurück", next: "Weiter", faq: "Häufige Fragen", faqSub: "Noch etwas offen? Schreib uns einfach.",
+    hours: "Öffnungszeiten", talk: "Lass uns sprechen.", talkSub: "Schreib uns – wir melden uns innerhalb eines Werktags.",
+    name: "Name", email: "E-Mail", subject: "Betreff", subjectPh: "Worum geht es?", message: "Nachricht", send: "Nachricht vorbereiten",
+    formNote: "Öffnet dein E-Mail-Programm mit der fertigen Nachricht – es werden keine Daten an einen Server gesendet.",
+    route: "Route planen →", tel: "Tel.", team: "Das Team", teamSub: "Die Menschen hinter", imprint: "Impressum", privacy: "Datenschutz",
+    close: "Schließen", noticeClose: "Hinweis schließen", lightbox: "Bildansicht",
+    nav: { leistungen: "Leistungen", ablauf: "Ablauf", galerie: "Galerie", ueber: "Über uns", preise: "Preise", faq: "FAQ", team: "Team", kontakt: "Kontakt" } },
+  en: { lang: "en", locale: "en_US", welcome: "Welcome", contactCta: "Get in touch", more: "Learn more →", contact: "Contact",
+    service: "service", services: "services", issue: "Issue", fig: "Fig. 1", online: "System online", writeUs: "Write to us",
+    theme: "Toggle light or dark mode", themeT: "Light / Dark", bigger: "Larger text", toTop: "Back to top",
+    servicesSub: "What we do for you – clear, honest and with care.", steps: "How it works", stepsSub: "Step by step – no surprises.",
+    stats: "Facts and figures", zoom: "enlarge", gallery: "Gallery", gallerySub: "Click an image to enlarge it.",
+    popular: "Popular", ask: "Enquire", askPrefix: "Enquiry: ", prices: "Pricing", pricesSub: "Transparent and fair – no hidden costs.",
+    voices: "What people say", prev: "Previous", next: "Next", faq: "FAQ", faqSub: "Anything else? Just drop us a line.",
+    hours: "Opening hours", talk: "Let's talk.", talkSub: "Write to us – we reply within one working day.",
+    name: "Name", email: "Email", subject: "Subject", subjectPh: "What is it about?", message: "Message", send: "Prepare message",
+    formNote: "Opens your email app with the finished message – no data is sent to a server.",
+    route: "Get directions →", tel: "Phone", team: "The team", teamSub: "The people behind", imprint: "Legal notice", privacy: "Privacy",
+    close: "Close", noticeClose: "Dismiss notice", lightbox: "Image view",
+    nav: { leistungen: "Services", ablauf: "Process", galerie: "Gallery", ueber: "About", preise: "Pricing", faq: "FAQ", team: "Team", kontakt: "Contact" } },
+};
+const tr = content => I18N[content && content.lang === "en" ? "en" : "de"];
 
 const SECTION_RENDER = {
   leistungen({ g, d, content }) {
@@ -981,14 +1044,14 @@ const SECTION_RENDER = {
       `<button role="tab" id="lt-${i}" aria-controls="lp-${i}" aria-selected="${i === 0}"><span>${String(i + 1).padStart(2, "0")}</span>${esc(x.t)}</button>`).join("")}</div>
 <div>${list.map((x, i) => `<div class="tp${i === 0 ? " on" : ""}" id="lp-${i}" role="tabpanel" aria-labelledby="lt-${i}"><div class="art">${artwork(g, d, i + 1, 640, 400)}</div><h3>${esc(x.t)}</h3><p>${esc(x.d)}</p></div>`).join("")}</div></div>` : "";
     return `<section class="features rv" id="leistungen"><div class="wrap">
-<div class="sec-head"><h2>${hl("Leistungen")}</h2><p>Was wir für dich tun – klar, ehrlich und mit Sorgfalt.</p></div>
+<div class="sec-head"><h2>${hl(tr(content).nav.leistungen)}</h2><p>${tr(content).servicesSub}</p></div>
 ${tabs || `<div class="${["fgrid", "flist", "fzigs", "fbento"][d.feats]}">${items}</div>`}</div></section>`;
   },
   ablauf({ content }) {
     const st = parseFeatures(content.steps).slice(0, 5);
     if (!content.steps || !st.length) return "";
     return `<section class="process rv" id="ablauf"><div class="wrap">
-<div class="sec-head"><h2>${hl("So läuft es ab")}</h2><p>Schritt für Schritt – ohne Überraschungen.</p></div>
+<div class="sec-head"><h2>${hl(tr(content).steps)}</h2><p>${tr(content).stepsSub}</p></div>
 <ol class="steps" style="--n:${st.length}">${st.map((x, i) => `<li><span class="num">${i + 1}</span><h3>${esc(x.t)}</h3><p>${esc(x.d)}</p></li>`).join("")}</ol>
 </div></section>`;
   },
@@ -996,15 +1059,16 @@ ${tabs || `<div class="${["fgrid", "flist", "fzigs", "fbento"][d.feats]}">${item
     const stats = lines(content.stats).slice(0, 4).map(parseStat);
     if (!stats.length) return "";
     const band = (g[G.shift] & 1) === 1;
-    return `<section class="stats rv${band ? " band" : ""}" id="zahlen" aria-label="Zahlen und Fakten"><div class="wrap grid">${stats.map(s =>
+    return `<section class="stats rv${band ? " band" : ""}" id="zahlen" aria-label="${tr(content).stats}"><div class="wrap grid">${stats.map(s =>
       `<div class="stat"><b${s.to !== undefined ? ` data-to="${s.to}" data-dec="${s.dec}" data-pre="${esc(s.pre)}" data-suf="${esc(s.suf)}"` : ""}>${esc(s.text)}</b><span>${esc(s.label)}</span></div>`).join("")}</div></section>`;
   },
-  galerie({ g, d, images }) {
+  galerie({ g, d, images, content }) {
+    const t = tr(content);
     const tiles = images.length
-      ? images.map(im => `<button class="tile" data-alt="${esc(im.alt)}" aria-label="${esc(im.alt || "Bild")} vergrößern"><img src="${im.src}" alt="${esc(im.alt)}" loading="lazy"></button>`)
-      : Array.from({ length: 6 }, (_, i) => `<button class="tile" aria-label="Illustration ${i + 1} vergrößern">${artwork(g, d, 40 + i, 400, 300)}</button>`);
+      ? images.map(im => `<button class="tile" data-alt="${esc(im.alt)}" aria-label="${esc(im.alt || "Bild")} ${t.zoom}"><img src="${im.src}" alt="${esc(im.alt)}" loading="lazy"></button>`)
+      : Array.from({ length: 6 }, (_, i) => `<button class="tile" aria-label="Illustration ${i + 1} ${t.zoom}">${artwork(g, d, 40 + i, 400, 300)}</button>`);
     return `<section class="gallery rv" id="galerie"><div class="wrap">
-<div class="sec-head"><h2>${hl("Einblicke")}</h2><p>Klicke auf ein Bild für die Großansicht.</p></div>
+<div class="sec-head"><h2>${hl(t.gallery)}</h2><p>${t.gallerySub}</p></div>
 <div class="gal">${tiles.join("")}</div></div></section>`;
   },
   ueber({ content }) {
@@ -1013,15 +1077,15 @@ ${tabs || `<div class="${["fgrid", "flist", "fzigs", "fbento"][d.feats]}">${item
   preise({ content, btnClass, on, email }) {
     const plans = lines(content.prices).slice(0, 4).map(l => {
       const hl = l.startsWith("*"), [n = "", p = "", feats = ""] = l.replace(/^\*\s*/, "").split("|").map(x => x.trim());
-      const subject = `Anfrage: ${n}`;
+      const subject = `${tr(content).askPrefix}${n}`;
       const href = on.has("kontakt") ? "#kontakt" : `mailto:${email}?subject=${encodeURIComponent(subject)}`;
-      return `<article class="plan${hl ? " hl-plan" : ""}">${hl ? `<span class="badge">Beliebt</span>` : ""}<h3>${esc(n)}</h3><div class="price">${esc(p)}</div>
+      return `<article class="plan${hl ? " hl-plan" : ""}">${hl ? `<span class="badge">${tr(content).popular}</span>` : ""}<h3>${esc(n)}</h3><div class="price">${esc(p)}</div>
 <ul>${feats.split(",").map(x => x.trim()).filter(Boolean).map(x => `<li>${esc(x)}</li>`).join("")}</ul>
-<a class="btn ${hl ? (btnClass === "outline" || btnClass === "link" ? "filled" : btnClass) : btnClass === "link" ? "link" : "outline"}" href="${href}" data-subject="${esc(subject)}">Anfragen</a></article>`;
+<a class="btn ${hl ? (btnClass === "outline" || btnClass === "link" ? "filled" : btnClass) : btnClass === "link" ? "link" : "outline"}" href="${href}" data-subject="${esc(subject)}">${tr(content).ask}</a></article>`;
     });
     if (!plans.length) return "";
     return `<section class="pricing rv" id="preise"><div class="wrap">
-<div class="sec-head"><h2>${hl("Preise")}</h2><p>Transparent und fair – ohne versteckte Kosten.</p></div>
+<div class="sec-head"><h2>${hl(tr(content).prices)}</h2><p>${tr(content).pricesSub}</p></div>
 <div class="plans">${plans.join("")}</div></div></section>`;
   },
   stimmen({ content }) {
@@ -1032,8 +1096,8 @@ ${tabs || `<div class="${["fgrid", "flist", "fzigs", "fbento"][d.feats]}">${item
     });
     if (!qs.length) return "";
     return `<section class="testimonials rv" id="stimmen" data-carousel><div class="wrap">
-<div class="sec-head"><h2>${hl("Das sagen andere")}</h2>${qs.length > 1 ? `<div class="qnav"><button data-dir="-1" aria-label="Vorherige Stimme">←</button><button data-dir="1" aria-label="Nächste Stimme">→</button></div>` : ""}</div>
-<div class="quotes" tabindex="0" aria-label="Kundenstimmen">${qs.join("")}</div></div></section>`;
+<div class="sec-head"><h2>${hl(tr(content).voices)}</h2>${qs.length > 1 ? `<div class="qnav"><button data-dir="-1" aria-label="${tr(content).prev}">←</button><button data-dir="1" aria-label="${tr(content).next}">→</button></div>` : ""}</div>
+<div class="quotes" tabindex="0" aria-label="${tr(content).voices}">${qs.join("")}</div></div></section>`;
   },
   faq({ content }) {
     const items = lines(content.faq).map(l => {
@@ -1042,26 +1106,36 @@ ${tabs || `<div class="${["fgrid", "flist", "fzigs", "fbento"][d.feats]}">${item
       return `<details><summary>${esc(q.trim())}</summary><p>${esc(a.trim())}</p></details>`;
     });
     if (!items.length) return "";
-    return `<section class="faq rv" id="faq"><div class="wrap split"><div class="sec-head" style="display:block"><h2>${hl("Häufige Fragen")}</h2><p>Noch etwas offen? Schreib uns einfach.</p></div><div>${items.join("")}</div></div></section>`;
+    return `<section class="faq rv" id="faq"><div class="wrap split"><div class="sec-head" style="display:block"><h2>${hl(tr(content).faq)}</h2><p>${tr(content).faqSub}</p></div><div>${items.join("")}</div></div></section>`;
   },
   zeiten({ g, d, content }) {
     const { schedule, rows } = parseHours(content.hours);
     if (!rows.length) return "";
     return `<section class="hours rv" id="zeiten"><div class="wrap split"><div>
-<h2>${hl("Öffnungszeiten")}</h2>
+<h2>${hl(tr(content).hours)}</h2>
 <p class="live" role="status" data-schedule='${JSON.stringify(schedule)}'><i></i><span></span></p>
 <table>${rows.map(r => `<tr data-days="${r.days.join(",")}"><td>${esc(r.label)}</td><td>${esc(r.times)}</td></tr>`).join("")}</table>
 </div><div class="art">${artwork(g, d, 77, 500, 400)}</div></div></section>`;
   },
+  team({ g, content }) {
+    const people = lines(content.team).slice(0, 8).map(l => { const [n = "", r = "", t = ""] = l.split("|").map(x => x.trim()); return { n, r, t }; }).filter(x => x.n);
+    if (!people.length) return "";
+    const T = tr(content);
+    return `<section class="team rv" id="team"><div class="wrap">
+<div class="sec-head"><h2>${hl(T.team)}</h2><p>${T.teamSub} ${esc(content.name || "")}.</p></div>
+<div class="people">${people.map((x, i) => `<article class="person"><span class="avatar" style="--rot:${(g[(i * 3) % g.length] % 60) - 30}deg" aria-hidden="true">${esc(x.n.split(/\s+/).map(w => w[0]).join("").slice(0, 2).toUpperCase())}</span><h3>${esc(x.n)}</h3><p class="role">${esc(x.r)}</p>${x.t ? `<p>${esc(x.t)}</p>` : ""}</article>`).join("")}</div>
+</div></section>`;
+  },
   kontakt({ content, email, btnClass }) {
+    const t = tr(content);
     return `<section class="cta rv" id="kontakt"><div class="wrap"><div class="box">
-<div><h2>${hl("Lass uns sprechen.")}</h2><p>Schreib uns – wir melden uns innerhalb eines Werktags.</p><a class="mail" href="mailto:${email}">${email}</a>${contactExtras(content)}</div>
+<div><h2>${hl(t.talk)}</h2><p>${t.talkSub}</p><a class="mail" href="mailto:${email}">${email}</a>${contactExtras(content)}</div>
 <form class="cf" data-mail="${email}">
-<div class="two"><label>Name<input name="cf-name" autocomplete="name" required></label><label>E-Mail<input name="cf-from" type="email" autocomplete="email"></label></div>
-<label>Betreff<input name="cf-subject" placeholder="Worum geht es?"></label>
-<label>Nachricht<textarea name="cf-msg" required></textarea></label>
-<button class="btn ${btnClass === "pill" ? "pill" : "filled"}" type="submit">Nachricht vorbereiten</button>
-<small>Öffnet dein E-Mail-Programm mit der fertigen Nachricht – es werden keine Daten an einen Server gesendet.</small>
+<div class="two"><label>${t.name}<input name="cf-name" autocomplete="name" required></label><label>${t.email}<input name="cf-from" type="email" autocomplete="email"></label></div>
+<label>${t.subject}<input name="cf-subject" placeholder="${t.subjectPh}"></label>
+<label>${t.message}<textarea name="cf-msg" required></textarea></label>
+<button class="btn ${btnClass === "pill" ? "pill" : "filled"}" type="submit">${t.send}</button>
+<small>${t.formNote}</small>
 </form></div></div></section>`;
   },
 };
@@ -1088,19 +1162,20 @@ function siteScript() {
 
   var live = d.querySelector(".live");
   if (live) {
-    var sch = JSON.parse(live.dataset.schedule), names = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+    var EN = d.documentElement.lang === "en";
+    var sch = JSON.parse(live.dataset.schedule), names = EN ? ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] : ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
     var hm = function (m) { m = m % 1440; return String(Math.floor(m / 60)).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0"); };
     var upd = function () {
       var now = new Date(), day = (now.getDay() + 6) % 7, min = now.getHours() * 60 + now.getMinutes();
       var cur = sch[day].filter(function (r) { return min >= r[0] && min < r[1]; })[0]
         || sch[(day + 6) % 7].filter(function (r) { return r[1] > 1440 && min < r[1] - 1440; })[0];
       var txt;
-      if (cur) { live.className = "live open"; txt = "Jetzt geöffnet · bis " + hm(cur[1]) + " Uhr"; }
+      if (cur) { live.className = "live open"; txt = EN ? "Open now · until " + hm(cur[1]) : "Jetzt geöffnet · bis " + hm(cur[1]) + " Uhr"; }
       else {
-        live.className = "live closed"; txt = "Gerade geschlossen";
+        live.className = "live closed"; txt = EN ? "Closed right now" : "Gerade geschlossen";
         for (var k = 0; k < 8; k++) {
           var dd = (day + k) % 7, nx = sch[dd].filter(function (r) { return k > 0 || r[0] > min; }).sort(function (a, b) { return a[0] - b[0]; })[0];
-          if (nx) { txt += " · öffnet " + (k === 0 ? "heute" : k === 1 ? "morgen" : "am " + names[dd]) + " um " + hm(nx[0]) + " Uhr"; break; }
+          if (nx) { txt += EN ? " · opens " + (k === 0 ? "today" : k === 1 ? "tomorrow" : "on " + names[dd]) + " at " + hm(nx[0]) : " · öffnet " + (k === 0 ? "heute" : k === 1 ? "morgen" : "am " + names[dd]) + " um " + hm(nx[0]) + " Uhr"; break; }
         }
       }
       live.querySelector("span").textContent = txt;
@@ -1205,6 +1280,24 @@ function siteScript() {
     b.addEventListener("pointerleave", function () { b.style.transform = ""; });
   });
 
+  // Schrift vergrößern (gemerkt)
+  var bigs = d.querySelectorAll(".big-t"), setBig = function (on) { d.documentElement.classList.toggle("big", on); bigs.forEach(function (b) { b.setAttribute("aria-pressed", on); }); };
+  try { if (localStorage.getItem("font-big") === "1") setBig(true); } catch (e) { /* ohne Speicher */ }
+  bigs.forEach(function (b) { b.addEventListener("click", function () { var on = !d.documentElement.classList.contains("big"); setBig(on); try { localStorage.setItem("font-big", on ? "1" : "0"); } catch (e) { /* ohne Speicher */ } }); });
+  // Hinweisleiste (wegklicken wird gemerkt)
+  var note = d.querySelector(".notice");
+  if (note) {
+    try { if (localStorage.getItem("notice-" + note.dataset.key) === "x") note.remove(); } catch (e) { /* ohne Speicher */ }
+    note.querySelector("button").addEventListener("click", function () { note.remove(); try { localStorage.setItem("notice-" + note.dataset.key, "x"); } catch (e) { /* ohne Speicher */ } });
+  }
+  // Nach oben
+  var top = d.querySelector(".totop");
+  if (top) {
+    top.addEventListener("click", function () { scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); });
+    var showTop = function () { top.classList.toggle("show", scrollY > 700); };
+    addEventListener("scroll", showTop, { passive: true }); showTop();
+  }
+
   var tbtns = d.querySelectorAll(".theme-t"), setFlip = function (on) {
     d.documentElement.classList.toggle("flip", on);
     tbtns.forEach(function (b) { b.setAttribute("aria-pressed", on); });
@@ -1221,11 +1314,12 @@ function siteScript() {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var body = F("cf-msg").value + "\n\n— " + F("cf-name").value + (F("cf-from").value ? " <" + F("cf-from").value + ">" : "");
-      location.href = "mailto:" + form.dataset.mail + "?subject=" + encodeURIComponent(F("cf-subject").value || "Anfrage über die Website") + "&body=" + encodeURIComponent(body);
+      location.href = "mailto:" + form.dataset.mail + "?subject=" + encodeURIComponent(F("cf-subject").value || (d.documentElement.lang === "en" ? "Enquiry via the website" : "Anfrage über die Website")) + "&body=" + encodeURIComponent(body);
     });
     d.querySelectorAll("[data-subject]").forEach(function (a) { a.addEventListener("click", function () {
       F("cf-subject").value = a.dataset.subject;
-      if (!F("cf-msg").value) F("cf-msg").value = "Hallo, ich interessiere mich für das Paket „" + a.dataset.subject.replace(/^Anfrage: /, "") + "“. ";
+      var pkg = a.dataset.subject.replace(/^(Anfrage|Enquiry): /, "");
+      if (!F("cf-msg").value) F("cf-msg").value = d.documentElement.lang === "en" ? "Hello, I am interested in the package “" + pkg + "”. " : "Hallo, ich interessiere mich für das Paket „" + pkg + "“. ";
       setTimeout(function () { F("cf-name").focus({ preventScroll: true }); }, 500);
     }); });
   }
@@ -1276,7 +1370,7 @@ function whatsappUrl(raw) {
 function contactExtras(content) {
   const addr = String(content.address || "").trim(), tel = String(content.phone || "").trim();
   if (!addr && !tel) return "";
-  return `<p class="addr">${addr ? esc(addr).replace(/\n/g, "<br>") : ""}${addr && tel ? "<br>" : ""}${tel ? `Tel. <a href="tel:${esc(tel.replace(/[^\d+]/g, ""))}">${esc(tel)}</a>` : ""}</p>${addr ? `<a class="route" href="https://www.openstreetmap.org/search?query=${encodeURIComponent(addr.replace(/\n/g, ", "))}" target="_blank" rel="noopener">Route planen →</a>` : ""}`;
+  return `<p class="addr">${addr ? esc(addr).replace(/\n/g, "<br>") : ""}${addr && tel ? "<br>" : ""}${tel ? `${tr(content).tel} <a href="tel:${esc(tel.replace(/[^\d+]/g, ""))}">${esc(tel)}</a>` : ""}</p>${addr ? `<a class="route" href="https://www.openstreetmap.org/search?query=${encodeURIComponent(addr.replace(/\n/g, ", "))}" target="_blank" rel="noopener">${tr(content).route}</a>` : ""}`;
 }
 /** schema.org-Daten, damit Suchmaschinen Name, Kontakt und Öffnungszeiten verstehen. */
 function structuredData(content, socials) {
@@ -1307,27 +1401,36 @@ function renderSite(g, content, opts = {}) {
   const contactHref = on.has("kontakt") ? "#kontakt" : `mailto:${email}`;
   const navItems = order.filter(s => s.on && SECTION_BY_ID[s.id].nav && s.id !== "kontakt").slice(0, 3).map(s => s.id);
   if (on.has("kontakt")) navItems.push("kontakt");
-  const navLinks = navItems.map(id => `<a href="#${id}">${SECTION_BY_ID[id].nav}</a>`).join("");
+  const T = tr(content);
+  const navLinks = navItems.map(id => `<a href="#${id}">${T.nav[id] || SECTION_BY_ID[id].nav}</a>`).join("");
   const firstSection = order.find(s => s.on);
-  const logo = `<a class="logo" href="#"><span class="mark">${initial}</span>${name}</a>`;
-  const cta = `<a class="btn ${btnClass}" href="${contactHref}">Kontakt aufnehmen</a>`;
-  const themeBtn = `<button class="theme-t" type="button" aria-pressed="false" aria-label="Hell- oder Dunkelmodus umschalten" title="Hell / Dunkel"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>`;
+  const logoSrc = /^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(opts.logo || "") ? opts.logo : "";
+  const logo = `<a class="logo" href="#">${logoSrc ? `<img class="mark-img" src="${logoSrc}" alt="">` : `<span class="mark">${initial}</span>`}${name}</a>`;
+  const cta = `<a class="btn ${btnClass}" href="${contactHref}">${T.contactCta}</a>`;
+  const themeBtn = `<button class="theme-t" type="button" aria-pressed="false" aria-label="${T.theme}" title="${T.themeT}"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>`;
+  const bigBtn = `<button class="big-t" type="button" aria-pressed="false" aria-label="${T.bigger}" title="${T.bigger}">A+</button>`;
   const nav = [
-    `<header class="nav n0"><div class="wrap">${logo}<div class="nav-r"><nav>${navLinks}</nav>${themeBtn}</div></div></header>`,
-    `<header class="nav n1"><div class="wrap">${logo}<div class="nav-r"><nav>${navLinks}</nav>${themeBtn}</div></div></header>`,
-    `<header class="nav n2"><div class="wrap">${logo}<div class="nav-r"><a class="btn ${btnClass} sm" href="${contactHref}">Kontakt</a>${themeBtn}</div></div></header>`,
+    `<header class="nav n0"><div class="wrap">${logo}<div class="nav-r"><nav>${navLinks}</nav>${bigBtn}${themeBtn}</div></div></header>`,
+    `<header class="nav n1"><div class="wrap">${logo}<div class="nav-r"><nav>${navLinks}</nav>${bigBtn}${themeBtn}</div></div></header>`,
+    `<header class="nav n2"><div class="wrap">${logo}<div class="nav-r"><a class="btn ${btnClass} sm" href="${contactHref}">${T.contact}</a>${bigBtn}${themeBtn}</div></div></header>`,
   ][d.nav];
   const socials = socialLinks(content), wa = whatsappUrl(content.whatsapp);
+  const notice = (() => {
+    const [text = "", target = ""] = String(content.notice || "").split("|").map(x => x.trim());
+    if (!text) return null;
+    const href = /^https:\/\//i.test(target) ? target : /^#[\w-]+$/.test(target) ? target : contactHref;
+    return { text, href };
+  })();
 
   /* ---------- Hero: neun Layouts ---------- */
   const tagline = content.tagline || content.name || "";
   const lead = firstSentence(content.about);
   const feats = parseFeatures(content.features);
-  const eyebrow = `<p class="eyebrow">Willkommen</p>`;
+  const eyebrow = `<p class="eyebrow">${T.welcome}</p>`;
   const h1 = `<h1>${hl(tagline)}</h1>`;
   const leadP = lead ? `<p class="lead">${esc(lead)}</p>` : "";
-  const actions = `<div class="actions">${cta}${firstSection ? `<a class="more" href="#${firstSection.id}">Mehr erfahren →</a>` : ""}</div>`;
-  const stat = lines(content.stats).map(parseStat)[0] || { text: String(feats.length), label: feats.length === 1 ? "Leistung" : "Leistungen" };
+  const actions = `<div class="actions">${cta}${firstSection ? `<a class="more" href="#${firstSection.id}">${T.more}</a>` : ""}</div>`;
+  const stat = lines(content.stats).map(parseStat)[0] || { text: String(feats.length), label: feats.length === 1 ? T.service : T.services };
   const quote = lines(content.testimonials)[0];
   const quoteM = quote && quote.match(/^(.*?)\s+[—–-]\s+([^—–]+)$/);
   const words = tagline.split(/\s+/).filter(Boolean), stack = [];
@@ -1340,14 +1443,14 @@ function renderSite(g, content, opts = {}) {
     `<section class="hero h2"><div class="wrap">${eyebrow}${h1}<div class="row">${leadP || "<span></span>"}${actions}</div></div></section>`,
     `<section class="hero h3"><div class="wrap"><div class="card">${eyebrow}${h1}${leadP}${actions}</div></div></section>`,
     `<section class="hero h4"><div class="wrap">
-<div class="mag-meta"><span>${name}</span><span>Ausgabe ${year}</span><span>${esc(feats[0] ? feats[0].t : "Willkommen")}</span></div>
+<div class="mag-meta"><span>${name}</span><span>${T.issue} ${year}</span><span>${esc(feats[0] ? feats[0].t : T.welcome)}</span></div>
 <div class="mag-grid"><p class="mag-side">Willkommen</p><div>${h1}${leadP}${actions}</div>
-<figure class="mag-art"><div class="art">${artwork(g, d, 0, 450, 600)}</div><figcaption>Abb. 1 — ${name}</figcaption></figure></div></div></section>`,
+<figure class="mag-art"><div class="art">${artwork(g, d, 0, 450, 600)}</div><figcaption>${T.fig} — ${name}</figcaption></figure></div></div></section>`,
     `<section class="hero h5"><div class="wrap bento">
 <div class="t ta">${eyebrow}${h1}${leadP}${actions}</div>
 <div class="t tb">${artwork(g, d, 0, 600, 300)}</div>
 <div class="t tc"><b>${esc(stat.text)}</b><span>${esc(stat.label)}</span></div>
-<div class="t td">${quoteM ? `<p>„${esc(quoteM[1].replace(/^[„"“]|[“"”]$/g, "").slice(0, 90))}${quoteM[1].length > 90 ? " …" : ""}“</p><small>${esc(quoteM[2])}</small>` : `<p>Schreib uns</p><a href="mailto:${email}">${email}</a>`}</div>
+<div class="t td">${quoteM ? `<p>„${esc(quoteM[1].replace(/^[„"“]|[“"”]$/g, "").slice(0, 90))}${quoteM[1].length > 90 ? " …" : ""}“</p><small>${esc(quoteM[2])}</small>` : `<p>${T.writeUs}</p><a href="mailto:${email}">${email}</a>`}</div>
 </div></section>`,
     `<section class="hero h6"><div class="ghost" aria-hidden="true">${name}</div><div class="wrap"><div>${eyebrow}${h1}${leadP}${actions}</div><div class="disc">${artwork(g, d, 0, 500, 500)}</div></div></section>`,
     `<section class="hero h7"><div class="wrap">${eyebrow}${h1}<div class="row">${leadP || "<span></span>"}${actions}</div></div></section>
@@ -1355,7 +1458,7 @@ function renderSite(g, content, opts = {}) {
     `<section class="hero h8"><div class="wrap">${eyebrow}<h1 class="stack">${stack.map((l, i) => `<span class="s${i % 4}">${esc(l)}</span>`).join("")}</h1>
 <div class="row">${leadP || "<span></span>"}${actions}<div class="mini-art">${artwork(g, d, 0, 300, 300)}</div></div></div></section>`,
     `<section class="hero h9"><div class="aurora" aria-hidden="true"></div><div class="floor" aria-hidden="true"></div><div class="wrap">
-<div class="hud" aria-hidden="true"><span>System online</span><span>${name}</span><span>ID ${toCode(g).slice(0, 6).toUpperCase()} · ${year}</span></div>
+<div class="hud" aria-hidden="true"><span>${T.online}</span><span>${name}</span><span>ID ${toCode(g).slice(0, 6).toUpperCase()} · ${year}</span></div>
 <div class="glass">${eyebrow}${h1}${leadP}${actions}</div>
 <div class="orbit" aria-hidden="true"><div class="ring"></div><div class="ring r2"><i class="sat"></i></div><div class="core">${artwork(g, d, 0, 500, 500)}</div></div>
 </div></section>`,
@@ -1363,9 +1466,9 @@ function renderSite(g, content, opts = {}) {
     `<section class="hero h11"><div class="wrap"><div>${eyebrow}${h1}${leadP}${actions}</div>
 <div class="board" aria-hidden="true">${feats.slice(0, 3).map((x, i) => `<figure class="pola p${i}"><div class="art">${artwork(g, d, 60 + i, 400, 340)}</div><figcaption>${esc(x.t)}</figcaption></figure>`).join("")}
 <span class="sticker"><b>${esc(stat.text)}</b>${esc(stat.label)}</span></div></div></section>`,
-    `<section class="hero h12"><div class="wrap"><div class="term" role="group" aria-label="Willkommen">
+    `<section class="hero h12"><div class="wrap"><div class="term" role="group" aria-label="${T.welcome}">
 <div class="term-bar" aria-hidden="true"><i></i><i></i><i></i><span>${name.toLowerCase().replace(/\s+/g, "-")} — zsh</span></div>
-<div class="term-body"><p class="cmd" aria-hidden="true"><span class="pr">~ $</span> start --willkommen</p>
+<div class="term-body"><p class="cmd" aria-hidden="true"><span class="pr">~ $</span> start --${T.lang === "en" ? "welcome" : "willkommen"}</p>
 <h1 class="typed" data-text="${esc(tagline)}">${esc(tagline)}</h1>
 ${feats.slice(0, 4).map(x => `<p class="out"><span class="ok">✓</span> ${esc(x.t)}</p>`).join("")}
 ${leadP}${actions}</div></div></div></section>`,
@@ -1387,7 +1490,7 @@ ${leadP}${actions}</div></div></div></section>`,
     prev = tone;
   });
   sectionsHtml += separator(d.divider, prev, "base", rendered.length % 2);
-  const galleryDialog = on.has("galerie") ? `<dialog class="lb" id="lb" aria-label="Bildansicht"><div class="lb-stage"></div><div class="lb-bar"><button data-prev aria-label="Vorheriges Bild">←</button><span class="lb-cap"></span><span><button data-next aria-label="Nächstes Bild">→</button> <button data-close aria-label="Schließen">✕</button></span></div></dialog>` : "";
+  const galleryDialog = on.has("galerie") ? `<dialog class="lb" id="lb" aria-label="${T.lightbox}"><div class="lb-stage"></div><div class="lb-bar"><button data-prev aria-label="Vorheriges Bild">←</button><span class="lb-cap"></span><span><button data-next aria-label="Nächstes Bild">→</button> <button data-close aria-label="${T.close}">✕</button></span></div></dialog>` : "";
 
   /* ---------- Gen-gesteuerte Stile ---------- */
   const deco = [
@@ -1424,7 +1527,8 @@ body{transition:background-color .4s,color .4s}
 .tone-surface{--bg:${c.surface};--surface:${c.bg}}
 .tone-ink{--bg:${c.text};--fg:${c.bg};--surface:${inv.surface};--muted:${inv.muted};--line:${inv.line};--at:${inv.at};--tint:${inv.tint}}
 .tone-band{--bg:${c.accent};--fg:${c.onAccent};--muted:${c.onAccent};--at:${c.onAccent}}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:"${f.b}",system-ui,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+html.big{font-size:118%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"${f.b}",system-ui,sans-serif;font-size:1.0625rem;line-height:1.6;-webkit-font-smoothing:antialiased}
 a{color:inherit}
 .wrap{max-width:${d.maxw}px;margin:0 auto;padding:0 24px}
 h1,h2,h3{font-family:"${f.d}",${f.serif ? "Georgia,serif" : "system-ui,sans-serif"};font-weight:${d.weight};letter-spacing:${d.tracking.toFixed(3)}em;line-height:1.05;margin:0 0 .4em;text-wrap:balance}
@@ -1620,6 +1724,18 @@ dialog.lb::backdrop{background:rgba(0,0,0,.88)}
 .faq details p{color:var(--muted);margin:0 0 22px;max-width:46em}
 .hours .split{grid-template-columns:1fr 1fr;align-items:center}
 .nav-r{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.mark-img{height:36px;width:auto;max-width:130px;object-fit:contain;border-radius:${Math.min(R, 8)}px}
+.big-t{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line);background:transparent;color:var(--fg);cursor:pointer;font:700 .8rem/1 system-ui,sans-serif;flex:none}
+.big-t:hover{border-color:var(--fg)}.big-t[aria-pressed=true]{background:var(--fg);color:var(--bg)}
+.notice{display:flex;align-items:center;justify-content:center;gap:12px;background:${c.accent};color:${c.onAccent};padding:10px 48px;position:relative;font-weight:600;font-size:.95rem;text-align:center}
+.notice a{color:inherit;text-decoration-thickness:2px;text-underline-offset:3px}
+.notice button{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:transparent;border:0;color:inherit;font-size:1rem;cursor:pointer;width:32px;height:32px}
+.totop{position:fixed;right:20px;bottom:20px;z-index:39;width:46px;height:46px;border-radius:50%;border:1.5px solid var(--line);background:var(--bg);color:var(--fg);font-size:1.2rem;cursor:pointer;opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .3s,transform .3s;box-shadow:0 10px 30px -10px rgba(0,0,0,.4)}
+.totop.up{bottom:90px}.totop.show{opacity:1;transform:none;pointer-events:auto}
+.people{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:22px}
+.person{text-align:center;padding:8px}
+.avatar{width:96px;height:96px;border-radius:${R > 20 ? "50%" : Math.max(R, 8) + "px"};display:grid;place-items:center;margin:0 auto 16px;font-family:"${f.d}",sans-serif;font-weight:${d.weight};font-size:1.8rem;color:${c.onAccent};background:conic-gradient(from var(--rot),${c.accent},var(--tint),${c.accent});box-shadow:0 14px 30px -14px ${c.accent}}
+.person h3{margin:0 0 2px}.person .role{color:var(--at);font-weight:600;font-size:.9rem;margin:0 0 8px}.person p{color:var(--muted);margin:0}
 .steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(var(--n),1fr);gap:28px;position:relative}
 .steps::before,.steps::after{content:"";position:absolute;top:21px;left:calc(50% / var(--n));right:calc(50% / var(--n));height:3px;border-radius:2px;background:var(--line)}
 .steps::after{right:auto;width:calc((100% - 100% / var(--n)) * var(--p, 0));background:${c.accent};transition:width .25s linear}
@@ -1668,7 +1784,13 @@ ${headline}
   .sec-head{flex-direction:column;align-items:start}.frow{gap:6px}.legal .cols{grid-template-columns:1fr;gap:8px}
   .cta .box,.split,.hours .split,.cf .two{grid-template-columns:1fr;gap:24px}.quote{padding:26px}
 }
-@media (max-width:480px){.h5 .bento{grid-template-columns:1fr}}
+@media (max-width:480px){.h5 .bento{grid-template-columns:1fr}.nav-r{gap:8px}.nav nav{gap:12px;font-size:.88rem}.theme-t,.big-t{width:34px;height:34px}}
+@media print{
+  .theme-t,.big-t,.wa,.totop,.progress,.notice,.marquee,.qnav,.sep,.cf button,.cf small,.lb{display:none!important}
+  *{animation:none!important;transition:none!important}html.js .rv{opacity:1!important;transform:none!important;clip-path:none!important}
+  body{background:#fff!important;color:#000!important}section{padding:28px 0!important;break-inside:avoid}
+  .wrap a[href^="http"]::after{content:" (" attr(href) ")";font-size:.8em}
+}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}*{animation:none!important}.btn,.tile img,.tile svg{transition:none}
   html.js .rv{opacity:1;transform:none;clip-path:none;transition:none}
@@ -1682,7 +1804,7 @@ ${deco}`;
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=${f.dq}&family=${f.bq}&display=swap">`
     : opts.fontCss ? `<style>${opts.fontCss}</style>` : "";
   return `<!doctype html>
-<html lang="de">
+<html lang="${T.lang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -1690,23 +1812,25 @@ ${deco}`;
 <meta name="description" content="${esc(metaDescription(content))}">
 <meta name="generator" content="Genom – evolutionärer Website-Builder · Genom ${toCode(g)}">
 <meta name="theme-color" content="${c.bg}">
-<meta property="og:type" content="website"><meta property="og:locale" content="de_DE">
+<meta property="og:type" content="website"><meta property="og:locale" content="${T.locale}">
 <meta property="og:title" content="${name}"><meta property="og:description" content="${esc(metaDescription(content))}">
 <meta name="twitter:card" content="summary">
-<link rel="icon" href="data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='${Math.min(R * 1.6, 32)}' fill='${c.accent}'/><text x='50%' y='54%' text-anchor='middle' dominant-baseline='middle' font-family='Arial,sans-serif' font-weight='700' font-size='36' fill='${c.onAccent}'>${initial}</text></svg>`)}">
+<link rel="icon" href="${logoSrc || `data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='${Math.min(R * 1.6, 32)}' fill='${c.accent}'/><text x='50%' y='54%' text-anchor='middle' dominant-baseline='middle' font-family='Arial,sans-serif' font-weight='700' font-size='36' fill='${c.onAccent}'>${initial}</text></svg>`)}`}">
 <script type="application/ld+json">${structuredData(content, socials)}<\/script>
 ${fontTags}
 <style>${css}</style>
 </head>
 <body>
 <div class="progress" aria-hidden="true"></div>
+${notice ? `<div class="notice" data-key="${hashGenes([...notice.text].map(ch => ch.charCodeAt(0) % 256))}"><a href="${esc(notice.href)}">${esc(notice.text)}</a><button type="button" aria-label="${T.noticeClose}">✕</button></div>` : ""}
 ${nav}
 <main>
 ${hero}
 ${sectionsHtml}
 ${content.private ? "" : legalHtml(content, on.has("kontakt"))}
 </main>
-<footer><div class="wrap"><span>© ${year} ${name}</span>${socials.length ? `<span class="socials">${socials.map(x => `<a href="${esc(x.url)}" target="_blank" rel="noopener">${x.label}</a>`).join("")}</span>` : ""}${content.private ? "" : `<span><a href="#impressum">Impressum</a> · <a href="#datenschutz">Datenschutz</a></span>`}</div></footer>
+<footer><div class="wrap"><span>© ${year} ${name}</span>${socials.length ? `<span class="socials">${socials.map(x => `<a href="${esc(x.url)}" target="_blank" rel="noopener">${x.label}</a>`).join("")}</span>` : ""}${content.private ? "" : `<span><a href="#impressum">${T.imprint}</a> · <a href="#datenschutz">${T.privacy}</a></span>`}</div></footer>
+<button class="totop${wa ? " up" : ""}" type="button" aria-label="${T.toTop}" title="${T.toTop}">↑</button>
 ${wa ? `<a class="wa" href="${esc(wa)}" target="_blank" rel="noopener" aria-label="Per WhatsApp schreiben"><svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.4.8 3.2.6a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg></a>` : ""}
 ${galleryDialog}
 <script>(${siteScript.toString()})();<\/script>
@@ -1768,10 +1892,12 @@ const DEFAULT_CONTENT = {
   steps: "Kennenlernen: Wir sprechen über Räume, Wünsche und Budget.\nKonzept: Grundriss, Licht und Material als Moodboard.\nUmsetzung: Wir koordinieren Handwerk und Einkauf.\nÜbergabe: Einziehen, ankommen, wohlfühlen.",
   legalName: "", legalAddress: "", legalRep: "", legalPhone: "", legalRegister: "", legalVat: "", host: "",
   address: "", phone: "", whatsapp: "", instagram: "", facebook: "", tiktok: "", linkedin: "",
+  lang: "de", notice: "",
+  team: "Lena Hoffmann | Gründerin & Innenarchitektin | Plant seit 15 Jahren Räume, die mit dem Licht arbeiten.\nJonas Weber | Lichtplaner | Macht aus Lampen Stimmungen.\nAylin Demir | Projektleitung | Hält Termine, Budgets und Handwerker zusammen.",
   private: false,
   sections: SECTIONS.map(s => ({ id: s.id, on: s.on })),
 };
-const state = { gen: 1, pop: [], selected: [], history: [], lineage: [], locked: new Set(), rate: 0.3, content: structuredClone(DEFAULT_CONTENT), images: [], modalIdx: -1 };
+const state = { gen: 1, pop: [], selected: [], history: [], lineage: [], locked: new Set(), rate: 0.3, content: structuredClone(DEFAULT_CONTENT), images: [], logo: "", modalIdx: -1 };
 
 function toast(msg) { const t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), Math.max(1800, msg.length * 55)); }
 
@@ -1823,7 +1949,7 @@ function analyseSpecimen(card) {
   let doc; try { doc = iframe.contentDocument; } catch { return; }
   if (!doc || !doc.body) return;
   const measure = () => {
-    const H = Math.max(860, doc.documentElement.scrollHeight);
+    const H = Math.max(card._view || 860, doc.documentElement.scrollHeight);
     card._docH = H;
     iframe.style.height = H + "px";
     const parts = [...doc.querySelectorAll("body > header, main > *, body > footer")].filter(el => el.offsetHeight > 0);
@@ -1833,7 +1959,7 @@ function analyseSpecimen(card) {
       if (!bg || bg === "rgba(0, 0, 0, 0)" || bg === "transparent") bg = bodyBg;
       return `<i style="flex:${el.offsetHeight} 0 0;background:${bg}"></i>`;
     }).join("");
-    card.querySelector(".win").style.height = (860 / H * 100) + "%";
+    card.querySelector(".win").style.height = ((card._view || 860) / H * 100) + "%";
   };
   measure();
   if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(() => { if (card.querySelector("iframe").contentDocument === doc) measure(); });
@@ -1841,7 +1967,7 @@ function analyseSpecimen(card) {
 /** Durchleuchten: scrollt die Probe einmal durch die ganze Seite. */
 function scanCard(card, on) {
   const iframe = card.querySelector("iframe"), win = card.querySelector(".win"), bar = card.querySelector(".scanbar i");
-  const s = card._scale || 0.25, H = card._docH || 860, maxY = Math.max(0, H - 860);
+  const s = card._scale || 0.25, view = card._view || 860, H = card._docH || view, maxY = Math.max(0, H - view);
   card._scanning = on && maxY > 0;
   card.querySelector(".scanbtn").setAttribute("aria-pressed", card._scanning);
   card.classList.toggle("scanning", card._scanning);
@@ -1860,11 +1986,26 @@ function buildGrid() {
   const ro = new ResizeObserver(() => cards.forEach(fitFrame));
   cards.forEach(c => ro.observe(c));
 }
+let device = "desk";
+try { if (localStorage.getItem("genom-device") === "mob") device = "mob"; } catch { /* Desktop */ }
+const VW = () => device === "mob" ? 390 : 1280;
 function fitFrame(card) {
-  const frame = card.querySelector(".frame"), w = frame.clientWidth || 320, s = w / 1280;
+  const frame = card.querySelector(".frame"), iframe = frame.querySelector("iframe"), w = frame.clientWidth || 320, s = w / VW();
   card._scale = s;
-  frame.style.height = Math.round(860 * s) + "px";
-  if (!card._scanning) frame.querySelector("iframe").style.transform = `scale(${s})`;
+  const h = device === "mob" ? Math.round(w * 1.3) : Math.round(860 * s);
+  card._view = h / s;                       // sichtbare Höhe in Seiten-Pixeln
+  frame.style.height = h + "px";
+  iframe.style.width = VW() + "px";
+  if (!card._docH) iframe.style.height = (device === "mob" ? 844 : 860) + "px";
+  if (!card._scanning) iframe.style.transform = `scale(${s})`;
+}
+function setDeviceView(dev) {
+  device = dev;
+  try { localStorage.setItem("genom-device", dev); } catch { /* egal */ }
+  $("dev-desk").setAttribute("aria-pressed", dev === "desk"); $("dev-mob").setAttribute("aria-pressed", dev === "mob");
+  $("grid").classList.toggle("mob", dev === "mob");
+  cards.forEach(c => { if (c._scanning) scanCard(c, false); c._docH = 0; fitFrame(c); });
+  setTimeout(() => cards.forEach(analyseSpecimen), 350);
 }
 
 function renderCards() {
@@ -1872,7 +2013,7 @@ function renderCards() {
   const leadDesc = state.selected.length ? describe(state.pop[state.selected[0]]) : null;
   state.pop.forEach((g, i) => {
     const card = cards[i], iframe = card.querySelector("iframe");
-    const html = renderSite(g, state.content, { images: state.images });
+    const html = renderSite(g, state.content, { images: state.images, logo: state.logo });
     if (iframe._html !== html) { iframe.srcdoc = html; iframe._html = html; if (card._scanning) scanCard(card, false); }
     const desc = describe(g);
     const parent = state.history.length ? state.history[state.history.length - 1].parents[0] : null;
@@ -2088,6 +2229,103 @@ function bindPaywall() {
 
 
 
+
+/* ---- Slogan-Ideen aus Name und Leistungen ---- */
+function sloganIdeas(c) {
+  const f = parseFeatures(c.features).map(x => x.t).filter(Boolean), a = f[0] || (c.lang === "en" ? "craft" : "Handwerk"), b = f[1] || a, n = (c.name || "").trim() || "wir";
+  return c.lang === "en" ? [
+    `${a}, done properly.`, `Where ${a.toLowerCase()} becomes a passion.`, `${n}: quality you can feel.`, `Made for people who expect more.`,
+    `Simple. Honest. ${n}.`, `${a} and ${b.toLowerCase()} – from one hand.`, `Less noise, more ${a.toLowerCase()}.`, `Good things take time. We take it.`,
+  ] : [
+    `${a} mit Herz und Verstand.`, `Wo ${a} zur Leidenschaft wird.`, `${n}: Qualität, die man spürt.`, `Gemacht für Menschen, die mehr erwarten.`,
+    `Einfach. Ehrlich. ${n}.`, `${a} und ${b} – aus einer Hand.`, `Weniger Lärm, mehr ${a}.`, `Gute Dinge brauchen Zeit. Wir nehmen sie uns.`,
+  ];
+}
+function bindSloganIdeas() {
+  let k = 0;
+  $("slogan-idea").addEventListener("click", () => {
+    const ideas = sloganIdeas(state.content).filter(x => x !== state.content.tagline);
+    const pick = ideas[k++ % ideas.length];
+    state.content.tagline = pick; $("c-tagline").value = pick;
+    scheduleRender(0); toast(`✨ ${pick}`);
+  });
+}
+
+/* ---- Logo: hochladen, anzeigen, Farben übernehmen ---- */
+const LOGO_KEY = "genom-v1-logo";
+function loadLogo() {
+  try { const v = localStorage.getItem(LOGO_KEY); if (v && /^data:image\/png;base64,/.test(v)) state.logo = v; } catch { /* kein Logo */ }
+}
+function renderLogoBox() {
+  const prev = $("logo-prev");
+  prev.textContent = "";
+  if (state.logo) prev.append(Object.assign(document.createElement("img"), { src: state.logo, alt: "Dein Logo" }));
+  else prev.textContent = "Kein Logo";
+  $("logo-colors").disabled = !state.logo; $("logo-rm").hidden = !state.logo;
+}
+function logoToPng(file) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => {
+      const w = img.naturalWidth || 256, h = img.naturalHeight || 256, s = Math.min(1, 320 / Math.max(w, h));
+      const cv = Object.assign(document.createElement("canvas"), { width: Math.max(1, Math.round(w * s)), height: Math.max(1, Math.round(h * s)) });
+      cv.getContext("2d").drawImage(img, 0, 0, cv.width, cv.height);
+      URL.revokeObjectURL(url); resolve(cv.toDataURL("image/png"));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Logo konnte nicht gelesen werden")); };
+    img.src = url;
+  });
+}
+/** Hauptfarbe: bunte Pixel nach Farbton gruppieren (Weiß, Schwarz, Grau und Transparenz zählen nicht). */
+function logoMainColor(src) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      const cv = Object.assign(document.createElement("canvas"), { width: 64, height: 64 }), ctx = cv.getContext("2d");
+      ctx.drawImage(img, 0, 0, 64, 64);
+      const px = ctx.getImageData(0, 0, 64, 64).data, bins = Array.from({ length: 36 }, () => ({ w: 0, h: 0, s: 0 }));
+      for (let i = 0; i < px.length; i += 4) {
+        if (px[i + 3] < 200) continue;
+        const r = px[i] / 255, g = px[i + 1] / 255, b = px[i + 2] / 255, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2, dd = max - min;
+        if (dd < 0.08 || l < 0.1 || l > 0.94) continue;
+        const sat = dd / (1 - Math.abs(2 * l - 1));
+        let h = max === r ? ((g - b) / dd) % 6 : max === g ? (b - r) / dd + 2 : (r - g) / dd + 4; h = (h * 60 + 360) % 360;
+        const bin = bins[Math.floor(h / 10)]; bin.w += sat; bin.h += h * sat; bin.s += sat * sat;
+      }
+      const best = bins.reduce((a, x) => x.w > a.w ? x : a, { w: 0 });
+      resolve(best.w > 3 ? { h: best.h / best.w, s: best.s / best.w } : null);
+    };
+    img.onerror = () => resolve(null);
+    img.src = src;
+  });
+}
+function bindLogo() {
+  loadLogo(); renderLogoBox();
+  if (state.logo) renderCards();
+  $("logo-in").addEventListener("change", async e => {
+    const f = e.target.files[0]; e.target.value = "";
+    if (!f) return;
+    try {
+      state.logo = await logoToPng(f);
+      try { localStorage.setItem(LOGO_KEY, state.logo); } catch { toast("Logo ist zu groß zum Speichern – es bleibt bis zum Neuladen"); }
+      renderLogoBox(); renderCards(); toast("Logo eingesetzt");
+    } catch { toast("Dieses Bild konnte nicht gelesen werden"); }
+  });
+  $("logo-rm").addEventListener("click", () => {
+    state.logo = ""; try { localStorage.removeItem(LOGO_KEY); } catch { /* egal */ }
+    renderLogoBox(); renderCards(); toast("Logo entfernt");
+  });
+  $("logo-colors").addEventListener("click", async () => {
+    const col = state.logo && await logoMainColor(state.logo);
+    if (!col) { toast("Im Logo ist kaum Farbe – die Farben bleiben, wie sie sind"); return; }
+    const hueGene = Math.round(col.h / 360 * 255) % 256, satGene = Math.max(0, Math.min(255, Math.round((col.s * 100 - 18) / 72 * 255)));
+    state.pop.forEach(g => { g[G.hue] = hueGene; g[G.saturation] = satGene; g[G.harmony] = Math.min(g[G.harmony], 50); });
+    state.locked.add("farbe");
+    document.querySelectorAll("#locks .chip-toggle").forEach(b => { if (b.textContent.includes("Farben")) { b.setAttribute("aria-pressed", "true"); b.textContent = "🔒 Farben"; } });
+    renderCards(); syncHash(); toast("Farben aus dem Logo übernommen und gesperrt");
+  });
+}
+
 /* ---- Intro beim ersten Besuch ---- */
 const INTRO_KEY = "genom-intro";
 function bindIntro() {
@@ -2122,7 +2360,7 @@ function showFrame(i) {
   const g = film.frames[film.i], sp = speciesName(g), back = film.front === "film-a" ? "film-b" : "film-a";
   const el = $(back);
   el.onload = () => { el.classList.add("on"); $(film.front).classList.remove("on"); film.front = back; };
-  el.srcdoc = renderSite(g, state.content, { images: state.images });
+  el.srcdoc = renderSite(g, state.content, { images: state.images, logo: state.logo });
   $("film-range").value = film.i;
   $("film-pos").textContent = `${film.i + 1} / ${film.frames.length}`;
   $("film-name").textContent = `${film.i === film.frames.length - 1 ? "Heute" : "Generation " + (film.i + 1)} · ${sp.genus} ${sp.epithet}`;
@@ -2334,7 +2572,7 @@ function openCompare() {
   $("cmp-tag-r").textContent = `${String(cmp.b + 1).padStart(2, "0")} · ${nb.genus} ${nb.epithet}`;
   $("cmp-names").textContent = `Probe ${cmp.a + 1} ↔ Probe ${cmp.b + 1}`;
   setSplit(50);
-  for (const [id, g] of [["cmp-a", ga], ["cmp-b", gb]]) $(id).srcdoc = renderSite(g, state.content, { images: state.images });
+  for (const [id, g] of [["cmp-a", ga], ["cmp-b", gb]]) $(id).srcdoc = renderSite(g, state.content, { images: state.images, logo: state.logo });
   $("compare").showModal();
 }
 function setSplit(x) {
@@ -2437,7 +2675,7 @@ function startField() {
 function openModal(i) {
   state.modalIdx = i;
   const g = state.pop[i];
-  $("m-frame").srcdoc = renderSite(g, state.content, { images: state.images });
+  $("m-frame").srcdoc = renderSite(g, state.content, { images: state.images, logo: state.logo });
   $("m-code").textContent = toCode(g);
   $("m-select").textContent = state.selected.includes(i) ? "Favorit entfernen" : "Als Favorit wählen";
   $("modal").showModal();
@@ -2481,7 +2719,7 @@ async function exportHtml(g) {
   let fontCss = null;
   try { fontCss = await embeddedFontCss(decode(g).font); }
   catch { toast("Schriften konnten nicht eingebettet werden (offline?) – es werden Systemschriften verwendet"); }
-  return renderSite(g, state.content, { fontCss, images: state.images });
+  return renderSite(g, state.content, { fontCss, images: state.images, logo: state.logo });
 }
 function legalWarning() {
   const miss = missingLegal(state.content);
@@ -2564,7 +2802,7 @@ function loadImages() {
 }
 
 /* ---- Branchen-Vorlagen ---- */
-const PRESET_KEYS = ["name", "tagline", "about", "features", "email", "stats", "prices", "testimonials", "faq", "hours", "steps"];
+const PRESET_KEYS = ["name", "tagline", "about", "features", "email", "stats", "prices", "testimonials", "faq", "hours", "steps", "team"];
 const PRESETS = {
   atelier: { label: "Innenarchitektur", ...DEFAULT_CONTENT, on: ["leistungen", "ablauf", "zahlen", "galerie", "ueber", "preise", "stimmen", "faq", "kontakt"] },
   cafe: { label: "Café & Bäckerei", name: "Morgenrot Café", tagline: "Guter Kaffee braucht Zeit. Wir nehmen sie uns.",
@@ -2577,6 +2815,7 @@ const PRESETS = {
     faq: "Habt ihr vegane Optionen? Ja – Hafermilch ohne Aufpreis und täglich mindestens zwei vegane Kuchen.\nKann ich reservieren? Unter der Woche nicht nötig, am Wochenende gerne per E-Mail.\nGibt es WLAN? Ja, kostenlos – fragt einfach an der Theke nach dem Passwort.",
     hours: "Mo–Fr: 07:30–18:00\nSa: 08:30–17:00\nSo: 09:00–14:00",
     steps: "Bestellen: Am Tresen oder per E-Mail für Catering.\nFrisch zubereitet: Wir rösten, backen und brühen vor Ort.\nGenießen: Am Fenster, im Garten oder zum Mitnehmen.",
+    team: "Marta Klein | Inhaberin & Röstmeisterin | Probiert jede Charge, bevor sie in die Mühle kommt.\nTim Bauer | Bäcker | Steht um vier Uhr in der Backstube.",
     on: ["zeiten", "ablauf", "leistungen", "preise", "galerie", "stimmen", "faq", "kontakt"] },
   foto: { label: "Fotografie", name: "Studio Nordlicht", tagline: "Bilder, die bleiben, wenn der Moment vorbei ist.",
     about: "Ich fotografiere Menschen, Marken und Momente – ehrlich, natürlich und ohne steife Posen. Jedes Shooting beginnt mit einem Gespräch.",
@@ -2588,6 +2827,7 @@ const PRESETS = {
     faq: "Wann bekomme ich die Bilder? Porträts innerhalb einer Woche, Hochzeiten innerhalb von vier Wochen.\nReist du auch? Ja, deutschlandweit – Anfahrt wird nach Kilometern berechnet.\nDarf ich die Bilder drucken? Natürlich, private Nutzungsrechte sind immer enthalten.",
     hours: "Mo–Fr: 10:00–18:00\nSa: nach Vereinbarung\nSo: geschlossen",
     steps: "Gespräch: Wir planen Stil, Ort und Ablauf.\nShooting: Entspannt, ohne steife Posen.\nAuswahl: Du wählst deine Favoriten in der Online-Galerie.\nLieferung: Bearbeitete Bilder in voller Auflösung.",
+    team: "Nora Lind | Fotografin | Fotografiert seit neun Jahren Menschen, die nicht gern fotografiert werden.",
     on: ["galerie", "ablauf", "leistungen", "preise", "stimmen", "faq", "kontakt"] },
   handwerk: { label: "Handwerk", name: "Holzwerk Berger", tagline: "Möbel, die Generationen überdauern.",
     about: "Seit drei Generationen bauen wir Möbel aus heimischem Massivholz – maßgefertigt, reparierbar und mit ehrlichem Handwerk.",
@@ -2599,7 +2839,8 @@ const PRESETS = {
     faq: "Wie lange dauert ein Maßmöbel? Je nach Umfang vier bis acht Wochen ab Freigabe der Planung.\nWelche Hölzer verwendet ihr? Eiche, Nussbaum, Kirsche, Esche und Ahorn – alle aus der Region.\nKommt ihr auch zu mir? Ja, Beratung und Aufmaß machen wir direkt bei dir vor Ort.",
     hours: "Mo–Fr: 07:00–12:00, 13:00–16:30\nSa: 09:00–12:00\nSo: geschlossen",
     steps: "Beratung: Vor Ort, mit Aufmaß und Holzmustern.\nEntwurf: Skizze und Angebot mit Festpreis.\nFertigung: In unserer Werkstatt aus Massivholz.\nMontage: Lieferung und Einbau bei dir.",
-    on: ["leistungen", "ablauf", "zahlen", "galerie", "ueber", "preise", "stimmen", "faq", "zeiten", "kontakt"] },
+    team: "Georg Berger | Tischlermeister | Führt die Werkstatt in dritter Generation.\nSophie Berger | Gestalterin | Zeichnet jeden Entwurf von Hand.\nMehmet Yilmaz | Geselle | Spezialist für Treppen und Einbauten.",
+    on: ["leistungen", "ablauf", "zahlen", "galerie", "ueber", "preise", "stimmen", "faq", "zeiten", "kontakt", "team"] },
   praxis: { label: "Praxis & Gesundheit", name: "Physio Balance", tagline: "Bewegung ist die beste Medizin.",
     about: "Unser Team begleitet dich auf dem Weg zurück zu schmerzfreier Bewegung – mit Zeit, Fachwissen und einem individuellen Plan.",
     features: "Physiotherapie: Gezielte Behandlung nach Verletzung oder Operation.\nManuelle Therapie: Sanfte Techniken bei Rücken- und Gelenkschmerzen.\nPrävention: Kurse und Training, damit es gar nicht erst wehtut.",
@@ -2610,7 +2851,8 @@ const PRESETS = {
     faq: "Brauche ich ein Rezept? Für Kassenleistungen ja, als Selbstzahler kannst du direkt einen Termin buchen.\nWas soll ich mitbringen? Rezept, Befunde, bequeme Kleidung und ein großes Handtuch.\nGibt es Hausbesuche? Ja, für Patient:innen mit entsprechender Verordnung.",
     hours: "Mo–Do: 07:30–19:00\nFr: 07:30–15:00\nSa–So: geschlossen",
     steps: "Termin: Online oder telefonisch vereinbaren.\nBefund: Ausführliche Untersuchung und Gespräch.\nBehandlung: Individueller Plan mit Übungen.\nNachsorge: Damit es dauerhaft besser bleibt.",
-    on: ["zeiten", "leistungen", "ablauf", "zahlen", "ueber", "preise", "stimmen", "faq", "kontakt"] },
+    team: "Dr. Anna Roth | Physiotherapeutin, Leitung | Schwerpunkt Rücken und Sportverletzungen.\nPaul Meier | Physiotherapeut | Manuelle Therapie und Lymphdrainage.\nJule Krause | Trainerin | Leitet die Präventionskurse.",
+    on: ["zeiten", "leistungen", "ablauf", "zahlen", "ueber", "preise", "stimmen", "faq", "kontakt", "team"] },
   tech: { label: "Software & Agentur", name: "Kodex Labs", tagline: "Software, die einfach funktioniert.",
     about: "Wir entwickeln Web-Apps und digitale Produkte für Unternehmen, die mehr wollen als eine Vorlage. Schnell, sicher und durchdacht.",
     features: "Web-Apps: Individuelle Anwendungen von der Idee bis zum Launch.\nUX-Design: Oberflächen, die Menschen gerne benutzen.\nBetreuung: Wartung, Hosting und Weiterentwicklung aus einer Hand.",
@@ -2621,9 +2863,10 @@ const PRESETS = {
     faq: "Mit welchen Technologien arbeitet ihr? Vor allem TypeScript, React, Node und Postgres – je nach Projekt.\nGehört mir der Code? Ja, vollständig und ab dem ersten Tag.\nArbeitet ihr remote? Ja, mit Workshops vor Ort, wenn es sinnvoll ist.",
     hours: "Mo–Fr: 09:00–18:00\nSa–So: geschlossen",
     steps: "Workshop: Ziele, Nutzer und Umfang klären.\nPrototyp: Klickbares Design in zwei Wochen.\nEntwicklung: In kurzen Sprints mit regelmäßigen Demos.\nLaunch: Live gehen, messen, verbessern.",
-    on: ["leistungen", "ablauf", "zahlen", "preise", "stimmen", "faq", "kontakt"] },
+    team: "Sven Ott | Gründer & Entwickler | Baut seit 2012 Web-Apps.\nMia Chen | UX-Designerin | Testet jede Oberfläche mit echten Menschen.\nLeon Wolf | Backend | Sorgt dafür, dass nichts ausfällt.",
+    on: ["leistungen", "ablauf", "zahlen", "preise", "stimmen", "faq", "kontakt", "team"] },
 };
-const CONTENT_FIELDS = { name: "c-name", tagline: "c-tagline", about: "c-about", email: "c-email",
+const CONTENT_FIELDS = { name: "c-name", tagline: "c-tagline", about: "c-about", email: "c-email", lang: "c-lang", notice: "c-notice",
   address: "c-address", phone: "c-phone", whatsapp: "c-wa", instagram: "c-ig", facebook: "c-fb", tiktok: "c-tt", linkedin: "c-li" };
 const LEGAL_FIELDS = { legalName: "l-name", legalAddress: "l-address", legalRep: "l-rep", legalPhone: "l-phone", legalRegister: "l-register", legalVat: "l-vat", host: "l-host" };
 function updateLegalStatus() {
@@ -2727,7 +2970,7 @@ function runChecks(g) {
   const kontrast = [[d.c.text, d.c.bg], [d.c.muted, d.c.surface], [d.c.onAccent, d.c.accent], [d.c.accentText, d.c.bg]].every(([a, b]) => contrast(h2r(a), h2r(b)) >= 4.5);
   const miss = missingLegal(C), desc = metaDescription(C), name = (C.name || "").trim();
   const imgsOk = !on.has("galerie") || state.images.every(i => i.alt.trim());
-  const kb = Math.round((renderSite(g, C, { images: state.images, fontCss: "" }).length + 70000) / 1024);
+  const kb = Math.round((renderSite(g, C, { images: state.images, logo: state.logo, fontCss: "" }).length + 70000) / 1024);
   return [
     { ok: kontrast, label: "Kontrast nach WCAG AA", detail: kontrast ? "Alle Texte sind gut lesbar." : "Einige Farben sind zu kontrastarm." },
     { ok: C.private || !miss.length, label: "Impressum & Datenschutz", detail: C.private ? "Privates Projekt – nicht nötig." : miss.length ? `Es fehlt: ${miss.join(", ")}.` : "Pflichtangaben vollständig." },
@@ -2869,7 +3112,10 @@ function bindContent() {
   try { startField(); } catch { /* Animation ist optional */ }
   bindPaywall(); bindHerb(); bindGeneEditor(); bindCompare(); renderPro(); renderGeneEditor(); loadLicense().then(renderGeneEditor);
   startViewers().catch(() => { /* Besucheranzeige ist optional */ });
-  bindFilm(); bindIntro();
+  bindFilm(); bindIntro(); bindSloganIdeas(); bindLogo();
+  $("dev-desk").addEventListener("click", () => setDeviceView("desk"));
+  $("dev-mob").addEventListener("click", () => setDeviceView("mob"));
+  if (device === "mob") setDeviceView("mob");
   if (INITIAL_HASH === "#pro") { try { localStorage.setItem(INTRO_KEY, "1"); } catch { /* egal */ } setTimeout(() => openPaywall(""), 400); }
   if (shared) toast("Geteiltes Genom geladen");
   else if (restored) toast(`Willkommen zurück – Generation ${state.gen}`);

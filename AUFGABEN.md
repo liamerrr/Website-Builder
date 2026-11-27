@@ -37,14 +37,12 @@ Legende: 🔴 blockiert den Verkauf · 🟠 wichtig · 🟢 Verbesserung · ✅ 
 - [ ] 🟠 **Builder-Schriften selbst hosten** – der Builder lädt für seine Oberfläche und die Vorschauen
       Schriften von Google. Für den öffentlichen Start wie bei der Verkaufsseite lokal ablegen.
 - [ ] 🟢 **Branch `codex/create-profitable-website-concept` („LaunchLab“)** – übernehmen oder löschen.
-- [ ] 🟢 **Logo-Upload** statt Monogramm-Buchstabe in Navigation und Favicon.
 - [ ] 🟢 **Unterseiten** – mehrseitige Websites (z. B. eigene Seite pro Leistung).
-- [ ] 🟢 **Zweisprachige Websites** (Deutsch / Englisch).
+- [ ] 🟢 **Englische Branchen-Vorlagen** – die Website-Texte sind zweisprachig, die Vorlagen-Inhalte noch deutsch.
 - [ ] 🟢 **„Zurück“ über das Neuladen hinaus speichern** – heute nur Ahnenreihe und Herbarium.
 
 ## 3. Später – Ideen
 
-- [ ] 🟢 Handy-Vorschau direkt in jeder Probe.
 - [ ] 🟢 Export als ZIP (HTML + Bilder als einzelne Dateien statt eingebettet).
 - [ ] 🟢 Herbarium teilen (Sammlung als Link oder Datei).
 - [ ] 🟢 Jahresabo mit Rabatt (z. B. 100 € / Jahr).
@@ -61,6 +59,7 @@ Legende: 🔴 blockiert den Verkauf · 🟠 wichtig · 🟢 Verbesserung · ✅ 
 
 ## ✅ Erledigt
 
+- ✅ Englisch/Deutsch, Team, Hinweisleiste, A+, Nach oben, Druckansicht, Logo + Logo-Farben, Handy-Proben, Slogan-Ideen, Mini-Evolution (27.11.2026)
 - ✅ Verkaufsseite (Entwurf), Intro, Evolutions-Film, Heroes Kinetik/Collage/Terminal, Bereich Ablauf (27.11.2026)
 - ✅ Alle Arbeit auf `main` gebracht (25.11.2026)
 - ✅ Besucheranzeige in der claude.ai-Seite: online, Besucher, Besuche, heute, mit Namen (27.11.2026)

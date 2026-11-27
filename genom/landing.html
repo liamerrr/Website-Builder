@@ -82,6 +82,34 @@
   .steps li::after { content: ""; position: absolute; width: 180px; height: 180px; right: -60px; bottom: -80px; border-radius: 50%; filter: blur(50px); opacity: .35; }
   .steps li:nth-child(1)::after { background: var(--pink); } .steps li:nth-child(2)::after { background: var(--cyan); } .steps li:nth-child(3)::after { background: var(--gold); }
 
+  /* Mini-Evolution */
+  .mini-bar { display: flex; align-items: center; gap: 14px; margin: 34px 0 16px; flex-wrap: wrap; }
+  .mini-bar .mono { color: var(--cyan); font-size: 14px; letter-spacing: .08em; }
+  .mini-dots { display: flex; gap: 5px; flex: 1; }
+  .mini-dots i { width: 22px; height: 6px; border-radius: 3px; background: var(--line); }
+  .mini-dots i.on { background: var(--holo); animation: spinA 4s linear infinite; }
+  .mini-bar .btn { padding: 9px 14px; font-size: 14px; }
+  .minis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  .mini { all: unset; box-sizing: border-box; cursor: pointer; border-radius: 16px; overflow: hidden; border: 1px solid var(--line); aspect-ratio: 16 / 10; position: relative; display: flex; flex-direction: column;
+          transition: transform .25s, box-shadow .25s; animation: born .6s cubic-bezier(.2,.7,.2,1) backwards; }
+  .mini:nth-child(2) { animation-delay: .06s; } .mini:nth-child(3) { animation-delay: .12s; } .mini:nth-child(4) { animation-delay: .18s; } .mini:nth-child(5) { animation-delay: .24s; } .mini:nth-child(6) { animation-delay: .3s; }
+  @keyframes born { from { opacity: 0; transform: scale(.92); filter: blur(6px) saturate(0); } }
+  .mini:hover { transform: translateY(-4px); box-shadow: 0 20px 50px -24px rgba(110,240,255,.6); }
+  .mini:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+  .mini .mn { display: flex; justify-content: space-between; align-items: center; padding: 8% 7% 0; }
+  .mini .mn i { display: block; height: 6px; border-radius: 3px; background: currentColor; opacity: .35; }
+  .mini .mb { flex: 1; display: grid; align-content: center; gap: 6%; padding: 0 7%; }
+  .mini .mt { font-size: clamp(16px, 2.4vw, 26px); line-height: 1; font-weight: 700; letter-spacing: -.02em; }
+  .mini .ml { height: 5px; border-radius: 3px; background: currentColor; opacity: .3; width: 70%; }
+  .mini .ms { height: 5px; border-radius: 3px; background: currentColor; opacity: .3; width: 46%; }
+  .mini .mc { width: 34%; height: 14px; }
+  .mini .orb { position: absolute; border-radius: 50%; }
+  .mini.l1 .mb { justify-items: center; text-align: center; } .mini.l1 .ml, .mini.l1 .ms { justify-self: center; }
+  .mini.l2 .mb { padding-right: 46%; }
+  .mini-done { margin-top: 22px; padding: 18px 20px; border-radius: 16px; background: var(--panel); border: 1px solid rgba(110,240,255,.35); color: var(--text); }
+  .mini-done a { color: var(--cyan); font-weight: 600; }
+  @media (max-width: 760px) { .minis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
   /* Beispiele */
   .head-row { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; }
   .head-row p { color: var(--muted); max-width: 28em; margin: 0; }
@@ -171,7 +199,7 @@
       </svg>
       GENOM
     </a>
-    <nav aria-label="Seitenbereiche"><a href="#so-gehts">So geht's</a><a href="#beispiele">Beispiele</a><a href="#funktionen">Funktionen</a><a href="#preis">Preis</a><a href="#fragen">Fragen</a></nav>
+    <nav aria-label="Seitenbereiche"><a href="#so-gehts">So geht's</a><a href="#ausprobieren">Ausprobieren</a><a href="#beispiele">Beispiele</a><a href="#funktionen">Funktionen</a><a href="#preis">Preis</a><a href="#fragen">Fragen</a></nav>
     <a class="btn" href="index.html" data-builder>Kostenlos starten</a>
   </div>
 </header>
@@ -190,9 +218,9 @@
         <p class="note">Ohne Anmeldung · läuft im Browser · fertige Website als eine Datei</p>
       </div>
       <div class="lab" aria-label="Drei Beispiel-Websites, mit Genom gezüchtet">
-        <div class="pod p1"><div class="pod-head"><b data-species="1">Collagia aurantia</b><span>PROBE 02</span></div><div class="shot"><iframe title="Beispiel: Morgenrot Café" data-src="beispiele/morgenrot-cafe.html" tabindex="-1"></iframe></div><div class="dna" aria-hidden="true"></div></div>
-        <div class="pod p2"><div class="pod-head"><b>Kinetica caerulea</b><span>PROBE 05</span></div><div class="shot"><iframe title="Beispiel: Lumen Atelier" data-src="beispiele/lumen-atelier.html" tabindex="-1"></iframe></div><div class="dna" aria-hidden="true"></div></div>
-        <div class="pod p3"><div class="pod-head"><b>Terminalis flava var. nocturna</b><span>PROBE 01</span></div><div class="shot"><iframe title="Beispiel: Kodex Labs" data-src="beispiele/kodex-labs.html" tabindex="-1"></iframe></div><div class="dna" aria-hidden="true"></div></div>
+        <div class="pod p1"><div class="pod-head"><b data-species="1">Collagia viridis</b><span>PROBE 02</span></div><div class="shot"><iframe title="Beispiel: Morgenrot Café" data-src="beispiele/morgenrot-cafe.html" tabindex="-1"></iframe></div><div class="dna" aria-hidden="true"></div></div>
+        <div class="pod p2"><div class="pod-head"><b>Kinetica viridis</b><span>PROBE 05</span></div><div class="shot"><iframe title="Beispiel: Lumen Atelier" data-src="beispiele/lumen-atelier.html" tabindex="-1"></iframe></div><div class="dna" aria-hidden="true"></div></div>
+        <div class="pod p3"><div class="pod-head"><b>Terminalis violacea var. nocturna</b><span>PROBE 01</span></div><div class="shot"><iframe title="Beispiel: Kodex Labs" data-src="beispiele/kodex-labs.html" tabindex="-1"></iframe></div><div class="dna" aria-hidden="true"></div></div>
       </div>
     </div>
   </section>
@@ -209,6 +237,18 @@
     </div>
   </section>
 
+  <section id="ausprobieren">
+    <div class="wrap reveal">
+      <div class="head-row">
+        <div><p class="kicker">Probier's aus</p><h2>Züchte hier im Kleinen.</h2></div>
+        <p>Klick auf die Mini-Website, die dir am besten gefällt. Die nächste Generation entsteht aus ihren Genen – mit ein paar Mutationen.</p>
+      </div>
+      <div class="mini-bar"><span class="mono" id="mini-gen">Generation 1</span><span class="mini-dots" id="mini-dots" aria-hidden="true"></span><button class="btn" id="mini-reset" type="button">Neu würfeln</button></div>
+      <div class="minis" id="minis" role="group" aria-label="Sechs Mini-Websites zum Auswählen"></div>
+      <p class="mini-done" id="mini-done" hidden>Gesehen, wie schnell das geht? Im echten Genom hat jede Website 20 Gene, 13 Layouts und echte Inhalte. <a href="index.html" data-builder>Jetzt mit deiner Website →</a></p>
+    </div>
+  </section>
+
   <section id="beispiele">
     <div class="wrap reveal">
       <div class="head-row">
@@ -216,12 +256,12 @@
         <p>Jede Probe bekommt einen Artnamen aus ihrem Erbgut. Klick auf eine Website, um sie in voller Größe auszuprobieren.</p>
       </div>
       <div class="gallery">
-        <a class="card" href="beispiele/holzwerk-berger.html" target="_blank" rel="noopener"><div class="shot"><iframe title="Holzwerk Berger" data-src="beispiele/holzwerk-berger.html" tabindex="-1"></iframe></div><div class="meta"><b>Holzwerk Berger</b><i>Periodica rosea</i><span>Magazin · Welle</span></div></a>
-        <a class="card" href="beispiele/morgenrot-cafe.html" target="_blank" rel="noopener"><div class="shot"><iframe title="Morgenrot Café" data-src="beispiele/morgenrot-cafe.html" tabindex="-1"></iframe></div><div class="meta"><b>Morgenrot Café</b><i>Collagia aurantia</i><span>Collage · Bogen</span></div></a>
-        <a class="card" href="beispiele/studio-nordlicht.html" target="_blank" rel="noopener"><div class="shot"><iframe title="Studio Nordlicht" data-src="beispiele/studio-nordlicht.html" tabindex="-1"></iframe></div><div class="meta"><b>Studio Nordlicht</b><i>Litterata rubra var. nocturna</i><span>Typo-Stapel · Diagonale</span></div></a>
-        <a class="card" href="beispiele/physio-balance.html" target="_blank" rel="noopener"><div class="shot"><iframe title="Physio Balance" data-src="beispiele/physio-balance.html" tabindex="-1"></iframe></div><div class="meta"><b>Physio Balance</b><i>Tessellata flava</i><span>Bento · Tabs</span></div></a>
-        <a class="card" href="beispiele/kodex-labs.html" target="_blank" rel="noopener"><div class="shot"><iframe title="Kodex Labs" data-src="beispiele/kodex-labs.html" tabindex="-1"></iframe></div><div class="meta"><b>Kodex Labs</b><i>Terminalis flava var. nocturna</i><span>Terminal · Zickzack</span></div></a>
-        <a class="card" href="beispiele/lumen-atelier.html" target="_blank" rel="noopener"><div class="shot"><iframe title="Lumen Atelier" data-src="beispiele/lumen-atelier.html" tabindex="-1"></iframe></div><div class="meta"><b>Lumen Atelier</b><i>Kinetica caerulea</i><span>Kinetik · Welle</span></div></a>
+        <a class="card" href="beispiele/holzwerk-berger.html" target="_blank" rel="noopener"><div class="shot"><iframe title="Holzwerk Berger" data-src="beispiele/holzwerk-berger.html" tabindex="-1"></iframe></div><div class="meta"><b>Holzwerk Berger</b><i>Periodica flava</i><span>Magazin · Welle</span></div></a>
+        <a class="card" href="beispiele/morgenrot-cafe.html" target="_blank" rel="noopener"><div class="shot"><iframe title="Morgenrot Café" data-src="beispiele/morgenrot-cafe.html" tabindex="-1"></iframe></div><div class="meta"><b>Morgenrot Café</b><i>Collagia viridis</i><span>Collage · Bogen</span></div></a>
+        <a class="card" href="beispiele/studio-nordlicht.html" target="_blank" rel="noopener"><div class="shot"><iframe title="Studio Nordlicht" data-src="beispiele/studio-nordlicht.html" tabindex="-1"></iframe></div><div class="meta"><b>Studio Nordlicht</b><i>Litterata violacea var. nocturna</i><span>Typo-Stapel · Diagonale</span></div></a>
+        <a class="card" href="beispiele/physio-balance.html" target="_blank" rel="noopener"><div class="shot"><iframe title="Physio Balance" data-src="beispiele/physio-balance.html" tabindex="-1"></iframe></div><div class="meta"><b>Physio Balance</b><i>Tessellata purpurea</i><span>Bento · Tabs</span></div></a>
+        <a class="card" href="beispiele/kodex-labs.html" target="_blank" rel="noopener"><div class="shot"><iframe title="Kodex Labs" data-src="beispiele/kodex-labs.html" tabindex="-1"></iframe></div><div class="meta"><b>Kodex Labs</b><i>Terminalis violacea var. nocturna</i><span>Terminal · Zickzack</span></div></a>
+        <a class="card" href="beispiele/lumen-atelier.html" target="_blank" rel="noopener"><div class="shot"><iframe title="Lumen Atelier" data-src="beispiele/lumen-atelier.html" tabindex="-1"></iframe></div><div class="meta"><b>Lumen Atelier</b><i>Kinetica viridis</i><span>Kinetik · Welle</span></div></a>
       </div>
     </div>
   </section>
@@ -232,12 +272,15 @@
       <h2>Mehr als hübsch. Jeder Bereich kann etwas.</h2>
       <div class="features">
         <div class="feat"><b>13</b><h3>Layouts für den Start</h3><p>Von Magazin über Poster bis Hologramm, Kinetik und Terminal.</p></div>
-        <div class="feat"><b>10</b><h3>Bereiche mit Funktion</h3><p>Live-Öffnungszeiten, Preise, die das Kontaktformular ausfüllen, Galerie, Zeitleiste …</p></div>
+        <div class="feat"><b>11</b><h3>Bereiche mit Funktion</h3><p>Live-Öffnungszeiten, Preise, die das Kontaktformular ausfüllen, Team, Galerie, Zeitleiste …</p></div>
         <div class="feat"><b>20</b><h3>Gene pro Website</h3><p>Farben, Schrift, Rhythmus, Übergänge, Animation – alles vererbbar.</p></div>
         <div class="feat"><b>4,5:1</b><h3>Kontrast garantiert</h3><p>Jede Farbkombination erfüllt WCAG AA – auch im Dunkelmodus.</p></div>
         <div class="feat wide"><b>0</b><h3>Cookies, Tracker, Google-Verbindungen</h3><p>Schriften sind eingebettet, Impressum und Datenschutzerklärung werden aus deinen Angaben erzeugt.</p></div>
-        <div class="feat"><b>◐</b><h3>Hell und Dunkel</h3><p>Besucher schalten selbst um. Dazu WhatsApp-Button, Social-Links, Route.</p></div>
-        <div class="feat"><b>▶</b><h3>Labor-Werkzeuge</h3><p>Herbarium für Favoriten, Vergleich mit Trennlinie, Evolutions-Film, Gen-Editor.</p></div>
+        <div class="feat"><b>◐</b><h3>Hell, Dunkel, A+</h3><p>Besucher schalten Farben und Schriftgröße selbst um. Dazu WhatsApp, Social-Links, Route.</p></div>
+        <div class="feat"><b>DE/EN</b><h3>Zweisprachig</h3><p>Alle festen Texte der Website auf Deutsch oder Englisch – bis zu den Live-Öffnungszeiten.</p></div>
+        <div class="feat"><b>◉</b><h3>Dein Logo, deine Farben</h3><p>Logo hochladen, und Genom übernimmt auf Knopfdruck seine Hauptfarbe.</p></div>
+        <div class="feat"><b>📱</b><h3>Handy-Ansicht</h3><p>Alle Proben mit einem Klick so ansehen, wie sie auf dem Smartphone erscheinen.</p></div>
+        <div class="feat wide"><b>▶</b><h3>Labor-Werkzeuge</h3><p>Herbarium für Favoriten, Vergleich mit Trennlinie, Evolutions-Film, Gen-Editor.</p></div>
       </div>
     </div>
   </section>
@@ -325,6 +368,37 @@
   document.querySelectorAll(".dna").forEach((el, n) => {
     el.innerHTML = Array.from({ length: 20 }, (_, k) => `<i style="height:${20 + ((k * 37 + n * 53) % 80)}%;background:hsl(${k * 18} 92% 68%)"></i>`).join("");
   });
+  // Mini-Evolution: sechs kleine Genome, Klick = Elter der nächsten Generation
+  (() => {
+    const FONTS = ['"Space Grotesk", sans-serif', 'Georgia, "Times New Roman", serif', '"JetBrains Mono", monospace', 'system-ui, sans-serif'];
+    const rnd = (a, b) => a + Math.random() * (b - a), gauss = () => (Math.random() + Math.random() + Math.random() - 1.5) * 1.2;
+    const random = () => ({ h: rnd(0, 360), s: rnd(35, 90), dark: Math.random() < .35, font: Math.floor(rnd(0, 4)), r: rnd(0, 22), lay: Math.floor(rnd(0, 3)), orb: Math.random() < .5 });
+    const mutate = g => ({ h: (g.h + gauss() * 28 + 360) % 360, s: Math.max(25, Math.min(95, g.s + gauss() * 12)), dark: Math.random() < .12 ? !g.dark : g.dark,
+      font: Math.random() < .18 ? Math.floor(rnd(0, 4)) : g.font, r: Math.max(0, Math.min(24, g.r + gauss() * 5)), lay: Math.random() < .2 ? Math.floor(rnd(0, 3)) : g.lay, orb: Math.random() < .15 ? !g.orb : g.orb });
+    let pop = Array.from({ length: 6 }, random), gen = 1;
+    const box = document.getElementById("minis");
+    const draw = () => {
+      box.innerHTML = pop.map((g, i) => {
+        const bg = g.dark ? `hsl(${g.h} ${g.s * .35}% 9%)` : `hsl(${g.h} ${g.s * .4}% 96%)`, fg = g.dark ? "#f3f3f6" : "#15151c", acc = `hsl(${(g.h + 160) % 360} ${g.s}% ${g.dark ? 62 : 46}%)`;
+        return `<button class="mini l${g.lay}" type="button" data-i="${i}" aria-label="Mini-Website ${i + 1} als Elter wählen" style="background:${bg};color:${fg};font-family:${FONTS[g.font]}">
+          ${g.orb ? `<span class="orb" style="width:38%;aspect-ratio:1;right:${g.lay === 2 ? 6 : -8}%;top:${g.lay === 2 ? 26 : -18}%;background:${acc};opacity:${g.lay === 2 ? 1 : .35}"></span>` : ""}
+          <span class="mn"><i style="width:22%"></i><i style="width:30%"></i></span>
+          <span class="mb"><span class="mt">Aa Titel</span><span class="ml"></span><span class="ms"></span><span class="mc" style="background:${acc};border-radius:${g.r}px"></span></span></button>`;
+      }).join("");
+      document.getElementById("mini-gen").textContent = `Generation ${gen}`;
+      document.getElementById("mini-dots").innerHTML = Array.from({ length: 5 }, (_, k) => `<i class="${k < gen ? "on" : ""}"></i>`).join("");
+      document.getElementById("mini-done").hidden = gen < 4;
+    };
+    box.addEventListener("click", e => {
+      const b = e.target.closest(".mini"); if (!b) return;
+      const parent = pop[+b.dataset.i];
+      pop = [parent, ...Array.from({ length: 5 }, () => mutate(parent))];
+      gen++; draw();
+      if (gen === 4) document.getElementById("mini-done").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "nearest" });
+    });
+    document.getElementById("mini-reset").addEventListener("click", () => { pop = Array.from({ length: 6 }, random); gen = 1; draw(); });
+    draw();
+  })();
   // Bereiche einblenden
   const rv = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); rv.unobserve(e.target); } }), { threshold: .12 });
   document.querySelectorAll(".reveal").forEach(el => rv.observe(el));

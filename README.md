@@ -48,6 +48,10 @@ genom/
 
 ## Werkzeuge im Labor
 
+- **Logo & Logo-Farben**: Logo hochladen ersetzt Monogramm und Favicon; „Farben aus Logo übernehmen“
+  setzt Farbton und Sättigung aller Proben auf die Hauptfarbe des Logos.
+- **Handy-Ansicht**: alle Proben auf Smartphone-Breite (390 px) ansehen, inkl. Durchleuchten.
+- **Slogan-Ideen**: Vorschläge aus Name und Leistungen, auf Deutsch oder Englisch.
 - **Start-Erlebnis**: Intro beim ersten Besuch mit Schnellstart über eine Branchen-Vorlage.
 - **Evolutions-Film**: die Ahnenreihe als Zeitraffer mit Überblendung und geänderten Merkmalen.
 - **Herbarium** (Tab Evolution, Taste `S`): Lieblingsdesigns sammeln – sie bleiben über alle
@@ -58,13 +62,16 @@ genom/
 
 ## Extras in jeder Website
 
+- **Deutsch oder Englisch**: alle festen Texte der Website, bis zu Formular und Live-Öffnungszeiten.
+- **Hinweisleiste** oben (z. B. „Neu: Sommerkarte“), Besucher können sie wegklicken.
+- **A+**-Knopf für größere Schrift, **Nach-oben-Knopf**, saubere **Druckansicht**.
 - **Hell/Dunkel-Schalter** für Besucher (Wahl wird gemerkt, Kontraste geprüft).
 - **WhatsApp-Chat-Button**, **Social-Links** (Instagram, Facebook, TikTok, LinkedIn),
   **Adresse und Telefon** mit „Route planen“ (OpenStreetMap).
 - **SEO-Paket**: Vorschau beim Teilen (Open Graph), Favicon aus dem Logo und Firmendaten für
   Google (schema.org LocalBusiness inkl. Öffnungszeiten).
 
-## Zehn Bereiche – jeder kann etwas anderes
+## Elf Bereiche – jeder kann etwas anderes
 
 Im Tab **Bereiche** schaltest du Bereiche ein und aus, änderst die Reihenfolge und bearbeitest ihre Inhalte.
 
@@ -79,6 +86,7 @@ Im Tab **Bereiche** schaltest du Bereiche ein und aus, änderst die Reihenfolge 
 | FAQ | Aufklappbare Fragen – funktioniert auch ohne JavaScript |
 | Öffnungszeiten | Zeigt Besuchern live „Jetzt geöffnet" oder wann wieder offen ist, markiert den heutigen Tag |
 | Ablauf | Zeitleiste, die sich beim Scrollen Schritt für Schritt füllt |
+| Team | Personen mit Avatar-Kreis aus Initialen, Rolle und einem Satz |
 | Kontakt | Formular öffnet das E-Mail-Programm mit fertiger Nachricht – ohne Server |
 
 Dazu: Einblende-Animationen beim Scrollen (abgeschaltet bei „Bewegung reduzieren"), automatisch
