@@ -1,25 +1,18 @@
 # Aufgaben
 
-Stand: 25.11.2026 · Projekt: **Genom** – evolutionärer Website-Builder mit 10-€-Abo (Genom Pro)
+Stand: 27.11.2026 · Projekt: **Genom** – evolutionärer Website-Builder, **zurzeit kostenlos** (Abo vorbereitet)
 
 Legende: 🔴 blockiert den Verkauf · 🟠 wichtig · 🟢 Verbesserung · ✅ erledigt
 
 ---
 
-## 1. Jetzt – bevor Geld verdient werden kann
+## 1. Jetzt – damit Leute Genom nutzen können
 
-- [ ] 🔴 **Repo auf privat stellen** – es ist öffentlich; jeder kann den Builder samt Pro-Funktionen
-      herunterladen und die Bezahlschranke entfernen.
-      GitHub → Settings → General → Danger Zone → *Change visibility*.
-- [ ] 🔴 **Zahlungsanbieter einrichten** – Abo-Produkt 10 € / Monat bei Lemon Squeezy
-      (übernimmt EU-Umsatzsteuer) oder Stripe. Link in `genom/index.html` bei
-      `SHOP.checkoutUrl` eintragen. Bis dahin zeigt der Kauf-Knopf „Kauf bald verfügbar“.
-- [ ] 🔴 **Privaten Lizenzschlüssel sichern** – Datei `tools/lizenz-privat.jwk` ablegen
-      (wurde im Chat geschickt) und ein Backup machen. Oder neu erzeugen:
-      `node tools/lizenz.mjs einrichten --neu` (macht alte Testschlüssel ungültig).
-- [ ] 🔴 **Rechtliches klären** – Gewerbeanmeldung, Impressum / AGB / Widerrufsbelehrung /
-      Datenschutz für den Verkauf von Genom selbst. Zahlungsanbieter verlangen Volljährigkeit
-      (sonst Konto der Eltern).
+
+
+
+- [ ] 🔴 **Rechtliches klären** – auch ein kostenloses, öffentliches Angebot braucht in der Regel ein
+      Impressum und eine Datenschutzerklärung (Verkaufsseite und Builder).
 - [ ] 🟠 **Builder öffentlich erreichbar machen** – Ordner `genom/` bei Netlify hochladen oder eigene
       Domain; alternativ den claude.ai-Link über „Teilen“ freigeben.
 
@@ -28,12 +21,9 @@ Legende: 🔴 blockiert den Verkauf · 🟠 wichtig · 🟢 Verbesserung · ✅ 
 - [ ] 🟠 **Besucherzählung unter eigener Domain** – in der claude.ai-Seite gibt es sie schon (nur für
       dich sichtbar). Für die öffentliche Version: Plausible oder GoatCounter (ohne Cookies), um
       Besucher → Gratis-Limit → Kauf zu messen.
-- [ ] 🟠 **Lizenzen automatisch verschicken** – Webhook vom Zahlungsanbieter → kleine
-      Serverless-Funktion (z. B. Netlify Functions) signiert den Schlüssel und mailt ihn.
-      Heute: von Hand mit `node tools/lizenz.mjs neu kunde@mail.de 31`.
-- [ ] 🔴 **Verkaufsseite fertig machen** – `genom/landing.html` steht (Entwurf). Vor dem Start:
-      Impressum und Datenschutzerklärung ergänzen und im Fuß verlinken; die Versprechen im FAQ
-      (monatlich kündbar, Websites gehören dem Kunden) prüfen und an deine echten Bedingungen anpassen.
+
+- [ ] 🔴 **Startseite fertig machen** – `genom/landing.html` steht. Vor dem Start Impressum und
+      Datenschutzerklärung ergänzen und im Fuß verlinken.
 - [ ] 🟠 **Builder-Schriften selbst hosten** – der Builder lädt für seine Oberfläche und die Vorschauen
       Schriften von Google. Für den öffentlichen Start wie bei der Verkaufsseite lokal ablegen.
 - [ ] 🟢 **Branch `codex/create-profitable-website-concept` („LaunchLab“)** – übernehmen oder löschen.
@@ -41,7 +31,25 @@ Legende: 🔴 blockiert den Verkauf · 🟠 wichtig · 🟢 Verbesserung · ✅ 
 - [ ] 🟢 **Englische Branchen-Vorlagen** – die Website-Texte sind zweisprachig, die Vorlagen-Inhalte noch deutsch.
 - [ ] 🟢 **„Zurück“ über das Neuladen hinaus speichern** – heute nur Ahnenreihe und Herbarium.
 
-## 3. Später – Ideen
+## 3. Später – Bezahlversion (Genom Pro, 10 € / Monat)
+
+Einschalten mit `SHOP.enabled: true` in `genom/index.html`. Vorher:
+
+- [ ] 🟢 **Repo auf privat stellen** – es ist öffentlich; jeder kann den Builder samt Pro-Funktionen
+      herunterladen und die Bezahlschranke entfernen.
+      GitHub → Settings → General → Danger Zone → *Change visibility*.
+- [ ] 🟢 **Zahlungsanbieter einrichten** – Abo-Produkt 10 € / Monat bei Lemon Squeezy
+      (übernimmt EU-Umsatzsteuer) oder Stripe. Link in `genom/index.html` bei
+      `SHOP.checkoutUrl` eintragen. Bis dahin zeigt der Kauf-Knopf „Kauf bald verfügbar“.
+- [ ] 🟢 **Privaten Lizenzschlüssel sichern** – Datei `tools/lizenz-privat.jwk` ablegen
+      (wurde im Chat geschickt) und ein Backup machen. Oder neu erzeugen:
+      `node tools/lizenz.mjs einrichten --neu` (macht alte Testschlüssel ungültig).
+- [ ] 🟢 **Lizenzen automatisch verschicken** – Webhook vom Zahlungsanbieter → kleine
+      Serverless-Funktion (z. B. Netlify Functions) signiert den Schlüssel und mailt ihn.
+      Heute: von Hand mit `node tools/lizenz.mjs neu kunde@mail.de 31`.
+- [ ] 🟢 Verkaufsseite wieder auf Kostenlos + Pro umstellen (frühere Version im Git-Verlauf).
+
+## 4. Später – Ideen
 
 - [ ] 🟢 Export als ZIP (HTML + Bilder als einzelne Dateien statt eingebettet).
 - [ ] 🟢 Herbarium teilen (Sammlung als Link oder Datei).
@@ -59,6 +67,7 @@ Legende: 🔴 blockiert den Verkauf · 🟠 wichtig · 🟢 Verbesserung · ✅ 
 
 ## ✅ Erledigt
 
+- ✅ Genom vorerst kostenlos: Bezahlschranke per Schalter aus, Verkaufsseite angepasst (27.11.2026)
 - ✅ Englisch/Deutsch, Team, Hinweisleiste, A+, Nach oben, Druckansicht, Logo + Logo-Farben, Handy-Proben, Slogan-Ideen, Mini-Evolution (27.11.2026)
 - ✅ Verkaufsseite (Entwurf), Intro, Evolutions-Film, Heroes Kinetik/Collage/Terminal, Bereich Ablauf (27.11.2026)
 - ✅ Alle Arbeit auf `main` gebracht (25.11.2026)

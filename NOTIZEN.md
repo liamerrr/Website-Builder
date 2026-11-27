@@ -6,8 +6,9 @@
 Entwürfe („Proben“), markiert Favoriten, und die nächste Generation entsteht durch Kreuzung und
 Mutation. Am Ende lädt man eine fertige, eigenständige HTML-Datei herunter.
 
-Geschäftsmodell: **kostenlos** ausprobieren bis Generation 5, **Genom Pro für 10 € / Monat** für
-unbegrenztes Züchten, Download, HTML-Export und den Gen-Editor.
+Geschäftsmodell: **zurzeit komplett kostenlos** (`SHOP.enabled: false`). Vorbereitet und abschaltbar:
+kostenlos bis Generation 5, **Genom Pro für 10 € / Monat** für unbegrenztes Züchten, Download,
+HTML-Export und Gen-Editor.
 
 ## Ordner
 
@@ -73,7 +74,8 @@ Die Datei ist in nummerierte Abschnitte gegliedert:
 - **Datenschutz zuerst** – erzeugte Websites setzen keine Cookies, kein Tracking, Schriften
   eingebettet; externe Dienste nur als einfache Links.
 - **Kontrast ist Pflicht** – Farben werden so lange verschoben, bis WCAG AA erfüllt ist.
-- **Gratis-Grenze bei Generation 5** – genug, um begeistert zu sein, zu wenig, um fertig zu werden.
+- **Erst kostenlos** (27.11.2026) – zuerst Nutzer gewinnen; das Abo bleibt eingebaut und ist mit einem
+  Schalter wieder aktiv. Die Gratis-Grenze läge dann bei Generation 5.
 
 ## Testen
 

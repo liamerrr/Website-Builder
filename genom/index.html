@@ -284,6 +284,7 @@
   .pw-active p { font-family: var(--mono); color: var(--accent); margin: 0 0 12px; }
   .paywall.unlocked .pw-orb { animation: spinA 1.2s linear infinite; opacity: .7; }
 
+  body.free-mode .pro-only, body.free-mode #pro-btn { display: none; }
   /* ===== Logo, Slogan, Geräte ===== */
   label.field span.with-btn { display: flex; gap: 6px; font-family: inherit; color: inherit; font-size: inherit; margin: 0; }
   .with-btn input { flex: 1; min-width: 0; }
@@ -496,7 +497,7 @@
         <p class="hint">Deine Lieblingsdesigns bleiben hier über alle Generationen erhalten.</p>
       </div>
       <div class="group">
-        <h2>Gen-Editor <span class="locked-badge">PRO</span></h2>
+        <h2>Gen-Editor <span class="locked-badge pro-only">PRO</span></h2>
         <div id="geneditor"></div>
       </div>
       <div class="group">
@@ -2126,8 +2127,11 @@ function undo() {
 }
 
 /* ---- Genom Pro: Abo, Lizenz, Paywall ---- */
-// ▼ HIER EINSTELLEN ▼  checkoutUrl = dein Zahlungslink (Stripe Payment Link oder Lemon Squeezy Checkout).
+// ▼ HIER EINSTELLEN ▼
+//   enabled:     false = alles kostenlos (keine Grenze, kein Pro-Fenster). true = 10-€-Abo mit Lizenzschlüsseln.
+//   checkoutUrl: dein Zahlungslink (Stripe Payment Link oder Lemon Squeezy Checkout), nur wenn enabled: true.
 const SHOP = {
+  enabled: false,
   price: "10 €",
   period: "/ Monat",
   checkoutUrl: "",
@@ -2156,6 +2160,7 @@ const pro = { active: false, email: "", until: 0 };
 function freeUsed() { try { return +localStorage.getItem(USE_KEY) || 0; } catch { return 0; } }
 function countUse() { try { localStorage.setItem(USE_KEY, String(freeUsed() + 1)); } catch { /* egal */ } }
 async function loadLicense() {
+  if (!SHOP.enabled) return;
   let key = null; try { key = localStorage.getItem(LIC_KEY); } catch { /* egal */ }
   if (!key) return;
   const r = await verifyLicense(key);
@@ -2164,18 +2169,22 @@ async function loadLicense() {
   renderPro();
 }
 /** Darf gezüchtet werden? Kostenlos bis SHOP.freeGenerations, danach Pro. */
+/** Alles frei, solange der Verkauf abgeschaltet ist – oder mit gültiger Lizenz. */
+const hasPro = () => !SHOP.enabled || pro.active;
 function canBreed() {
-  if (pro.active || freeUsed() < SHOP.freeGenerations - 1) return true;
+  if (hasPro() || freeUsed() < SHOP.freeGenerations - 1) return true;
   openPaywall(`Du hast deine ${SHOP.freeGenerations} kostenlosen Generationen genutzt.`);
   return false;
 }
 function canExport() {
-  if (pro.active) return true;
+  if (hasPro()) return true;
   openPaywall("Herunterladen und HTML-Export sind in Genom Pro enthalten.");
   return false;
 }
 function renderPro() {
   const b = $("pro-btn"), left = Math.max(0, SHOP.freeGenerations - 1 - freeUsed());
+  document.body.classList.toggle("free-mode", !SHOP.enabled);
+  if (!SHOP.enabled) { b.hidden = true; if ($("quota")) $("quota").hidden = true; return; }
   b.className = "btn pro-btn " + (pro.active ? "active" : "free");
   b.textContent = pro.active ? `PRO · bis ${new Date(pro.until).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit" })}` : `Pro freischalten · ${SHOP.price} ${SHOP.period}`;
   let q = $("quota");
@@ -2538,7 +2547,7 @@ function geneValueName(k, v) {
 }
 function renderGeneEditor() {
   const el = $("geneditor");
-  if (!pro.active) {
+  if (!hasPro()) {
     el.innerHTML = `<div class="ge-lock"><span>Stelle jedes der 20 Gene deines Favoriten direkt ein – Layout, Schrift, Farben, Übergänge, Animation.</span><button class="btn" id="ge-unlock" type="button">Mit Pro freischalten</button></div>`;
     $("ge-unlock").addEventListener("click", () => openPaywall("Der Gen-Editor ist in Genom Pro enthalten."));
     renderGeneEditor.lead = -1; return;
@@ -2554,7 +2563,7 @@ function renderGeneEditor() {
 function bindGeneEditor() {
   let t;
   $("geneditor").addEventListener("input", e => {
-    const k = e.target.dataset && e.target.dataset.gene; if (k === undefined || !pro.active) return;
+    const k = e.target.dataset && e.target.dataset.gene; if (k === undefined || !hasPro()) return;
     const lead = renderGeneEditor.lead < 0 ? 0 : renderGeneEditor.lead, v = +e.target.value;
     state.pop[lead][+k] = v;
     e.target.nextElementSibling.textContent = geneValueName(+k, v);
@@ -3116,7 +3125,7 @@ function bindContent() {
   $("dev-desk").addEventListener("click", () => setDeviceView("desk"));
   $("dev-mob").addEventListener("click", () => setDeviceView("mob"));
   if (device === "mob") setDeviceView("mob");
-  if (INITIAL_HASH === "#pro") { try { localStorage.setItem(INTRO_KEY, "1"); } catch { /* egal */ } setTimeout(() => openPaywall(""), 400); }
+  if (INITIAL_HASH === "#pro" && SHOP.enabled) { try { localStorage.setItem(INTRO_KEY, "1"); } catch { /* egal */ } setTimeout(() => openPaywall(""), 400); }
   if (shared) toast("Geteiltes Genom geladen");
   else if (restored) toast(`Willkommen zurück – Generation ${state.gen}`);
 })();

@@ -131,7 +131,11 @@ Mit dem Schalter **Privates Projekt** entfallen Impressum und Datenschutz für �
 - **WYSIWYG-Export**: Vorschau und Download nutzen denselben Renderer; die exportierte Seite ist
   eigenständig, responsiv und enthält ihren Genom-Code im `<meta name="generator">`.
 
-## Genom Pro – 10 € im Monat
+## Genom Pro – 10 € im Monat (zurzeit abgeschaltet)
+
+> **Genom ist im Moment komplett kostenlos.** In `genom/index.html` steht `SHOP.enabled: false` –
+> keine Generationen-Grenze, Download, HTML-Export und Gen-Editor für alle. Das Abo-System unten ist
+> fertig eingebaut und lässt sich jederzeit mit `enabled: true` wieder einschalten.
 
 | Kostenlos | Genom Pro (10 € / Monat) |
 |---|---|

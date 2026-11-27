@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.14 – Kostenlos
+- Bezahlschranke abgeschaltet (`SHOP.enabled: false`): alle Funktionen frei, Pro-Knopf und Abzeichen ausgeblendet
+- Verkaufsseite auf „Kostenlos. Mit allem.“ umgestellt
+
 ## 0.13 – Viele neue Funktionen
 - Websites: Englisch/Deutsch, Bereich Team, Hinweisleiste, Schrift größer (A+), Nach-oben-Knopf, Druckansicht
 - Builder: Logo-Upload mit Farbübernahme, Handy-Ansicht der Proben, Slogan-Ideen
